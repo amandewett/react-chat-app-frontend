@@ -1,4 +1,4 @@
-# Chat App (React + TypeScript + TailwindCSS + Vite)
+# Chat App Frontend (React + TypeScript + TailwindCSS + Vite)
 
 ## Run
 
