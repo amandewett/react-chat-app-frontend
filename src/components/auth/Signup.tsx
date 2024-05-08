@@ -1,12 +1,4 @@
-import {
-  Button,
-  FormControl,
-  FormLabel,
-  Input,
-  InputGroup,
-  InputRightElement,
-  VStack,
-} from "@chakra-ui/react";
+import { Button, FormControl, FormLabel, Input, InputGroup, InputRightElement, VStack } from "@chakra-ui/react";
 import { useContext, useRef, useState } from "react";
 import Form from "./Form";
 import { useCustomToast } from "../../hooks/useCustomToast";
@@ -23,9 +15,14 @@ const Signup = ({ handleTabChange }: SignupComponentType) => {
   const [profilePicture, setProfilePicture] = useState("");
   const [isPasswordVisible, setIsPasswordVisible] = useState<boolean>(false);
   const toast = useCustomToast();
-  const { enableLoader, disableLoader } = useContext(LoaderContext);
+  const { enableLoader, disableLoader, isLoading } = useContext(LoaderContext);
   const { mutate: mutateSignup } = useMutation({
-    mutationFn: (postData: any) => axios.post(`/api/user/signup`, postData),
+    mutationFn: (postData: any) =>
+      axios.post(`/api/user/signup`, postData, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }),
     onSettled: () => {
       disableLoader();
     },
@@ -95,6 +92,24 @@ const Signup = ({ handleTabChange }: SignupComponentType) => {
   };
 
   const onSubmitHandler = () => {
+    //validation
+    if (!name || !email || !password) {
+      toast({
+        title: "Error",
+        description: "Please fill all the required fields",
+        status: "error",
+      });
+      return;
+    }
+    if (!email.match(/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i)) {
+      toast({
+        title: "Error",
+        description: "Invalid email",
+        status: "error",
+      });
+      return;
+    }
+
     enableLoader();
     if (profilePicture !== "") {
       mutateSignup({ name, email, password, profilePicture });
@@ -114,24 +129,8 @@ const Signup = ({ handleTabChange }: SignupComponentType) => {
   return (
     <>
       <VStack spacing="5px">
-        <Form
-          isRequired={true}
-          label="Email"
-          inputType="email"
-          value={email}
-          placeHolder="Enter your email"
-          id="signupEmail"
-          onChange={(value) => setEmail(value)}
-        />
-        <Form
-          isRequired={true}
-          label="Name"
-          value={name}
-          inputType="text"
-          placeHolder="Enter your name"
-          id="name"
-          onChange={(value) => setName(value)}
-        />
+        <Form isRequired={true} label="Name" value={name} inputType="text" placeHolder="Enter your name" id="name" onChange={(value) => setName(value)} />
+        <Form isRequired={true} label="Email" inputType="email" value={email} placeHolder="Enter your email" id="signupEmail" onChange={(value) => setEmail(value)} />
         <FormControl isRequired id="password">
           <FormLabel>Password</FormLabel>
           <InputGroup>
@@ -140,16 +139,10 @@ const Signup = ({ handleTabChange }: SignupComponentType) => {
               value={password}
               placeholder="Enter your password"
               type={isPasswordVisible ? "text" : "password"}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                setPassword(e.target.value)
-              }
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
             />
             <InputRightElement width={"4.5rem"}>
-              <Button
-                h="1.75rem"
-                size="sm"
-                onClick={() => setIsPasswordVisible(!isPasswordVisible)}
-              >
+              <Button h="1.75rem" size="sm" onClick={() => setIsPasswordVisible(!isPasswordVisible)}>
                 {isPasswordVisible ? "Hide" : "Show"}
               </Button>
             </InputRightElement>
@@ -157,22 +150,9 @@ const Signup = ({ handleTabChange }: SignupComponentType) => {
         </FormControl>
         <FormControl isRequired={false} id="pic">
           <FormLabel>Profile picture</FormLabel>
-          <Input
-            type="file"
-            p={1.5}
-            ref={profilePictureRef}
-            accept="image/*"
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-              profilePickerDetails(e.target.files)
-            }
-          />
+          <Input type="file" p={1.5} ref={profilePictureRef} accept="image/*" onChange={(e: React.ChangeEvent<HTMLInputElement>) => profilePickerDetails(e.target.files)} />
         </FormControl>
-        <Button
-          colorScheme="blue"
-          width={"100%"}
-          style={{ marginTop: 15 }}
-          onClick={onSubmitHandler}
-        >
+        <Button colorScheme="blue" width={"100%"} disabled={isLoading} isLoading={isLoading} style={{ marginTop: 15 }} onClick={onSubmitHandler}>
           Sign up
         </Button>
       </VStack>

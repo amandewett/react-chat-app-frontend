@@ -19,12 +19,17 @@ const Login = () => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [isPasswordVisible, setIsPasswordVisible] = useState<boolean>(false);
-  const { enableLoader, disableLoader } = useContext(LoaderContext);
+  const { enableLoader, disableLoader, isLoading } = useContext(LoaderContext);
   const toast = useCustomToast();
   const navigate = useNavigate();
 
   const { mutate: loginMutate } = useMutation({
-    mutationFn: (postData: any) => axios.post(`/api/user/login`, postData),
+    mutationFn: (postData: any) =>
+      axios.post(`/api/user/login`, postData, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }),
     onSettled: () => {
       disableLoader();
     },
@@ -49,6 +54,25 @@ const Login = () => {
   });
 
   const onSubmitHandler = () => {
+    //validation
+    if (!email || !password) {
+      toast({
+        title: "Error",
+        description: "Please fill all the required fields",
+        status: "error",
+      });
+      return;
+    }
+
+    if (!email.match(/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i)) {
+      toast({
+        title: "Error",
+        description: "Invalid email",
+        status: "error",
+      });
+      return;
+    }
+
     enableLoader();
     loginMutate({ email, password });
   };
@@ -97,6 +121,8 @@ const Login = () => {
         <Button
           colorScheme="blue"
           width={"100%"}
+          isLoading={isLoading}
+          disabled={isLoading}
           style={{ marginTop: 15 }}
           onClick={onSubmitHandler}
         >
@@ -105,6 +131,7 @@ const Login = () => {
         <Button
           colorScheme="red"
           variant={"solid"}
+          disabled={isLoading}
           width={"100%"}
           style={{ marginTop: 15 }}
           onClick={() => {
