@@ -8,6 +8,7 @@ const Form = ({
   placeHolder,
   id,
   inputType,
+  value,
 }: FormType) => {
   return (
     <>
@@ -16,6 +17,7 @@ const Form = ({
         <Input
           placeholder={placeHolder}
           type={inputType}
+          value={value}
           onChange={(e) => onChange(e.target.value)}
         />
       </FormControl>
