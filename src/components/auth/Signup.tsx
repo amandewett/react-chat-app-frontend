@@ -16,6 +16,7 @@ const Signup = ({ handleTabChange }: SignupComponentType) => {
   const [isPasswordVisible, setIsPasswordVisible] = useState<boolean>(false);
   const toast = useCustomToast();
   const { enableLoader, disableLoader, isLoading } = useContext(LoaderContext);
+
   const { mutate: mutateSignup } = useMutation({
     mutationFn: (postData: any) =>
       axios.post(`/api/user/signup`, postData, {
@@ -32,7 +33,6 @@ const Signup = ({ handleTabChange }: SignupComponentType) => {
         description: error.response.data.message,
         status: "error",
       });
-      // console.log(`==> ${JSON.stringify(error.response.data)}`);
     },
     onSuccess(data: any) {
       toast({
@@ -42,7 +42,6 @@ const Signup = ({ handleTabChange }: SignupComponentType) => {
       });
       resetForm();
       handleTabChange(0);
-      // console.log(`--> ${JSON.stringify(data.data)}`);
     },
   });
 

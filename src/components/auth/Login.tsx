@@ -1,12 +1,4 @@
-import {
-  Button,
-  FormControl,
-  FormLabel,
-  Input,
-  InputGroup,
-  InputRightElement,
-  VStack,
-} from "@chakra-ui/react";
+import { Button, FormControl, FormLabel, Input, InputGroup, InputRightElement, VStack } from "@chakra-ui/react";
 import { useContext, useState } from "react";
 import Form from "./Form";
 import { LoaderContext } from "../../store/context/loaderContext";
@@ -14,6 +6,7 @@ import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 import { useCustomToast } from "../../hooks/useCustomToast";
 import { useNavigate } from "react-router-dom";
+import { ChatContext } from "../../store/context/chatContext";
 
 const Login = () => {
   const [email, setEmail] = useState<string>("");
@@ -22,6 +15,7 @@ const Login = () => {
   const { enableLoader, disableLoader, isLoading } = useContext(LoaderContext);
   const toast = useCustomToast();
   const navigate = useNavigate();
+  const { setUserDetails } = useContext(ChatContext);
 
   const { mutate: loginMutate } = useMutation({
     mutationFn: (postData: any) =>
@@ -39,7 +33,6 @@ const Login = () => {
         description: error.response.data.message,
         status: "error",
       });
-      // console.log(`==> ${JSON.stringify(error.response.data)}`);
     },
     onSuccess(data: any) {
       resetForm();
@@ -48,10 +41,16 @@ const Login = () => {
         description: data.data.message,
         status: "success",
       });
+      //store data in local storage
+      storeDataToLocalStorage(data.data.result);
       navigate(`/chat`);
-      // console.log(`--> ${JSON.stringify(data.data)}`);
     },
   });
+
+  const storeDataToLocalStorage = (data: any) => {
+    localStorage.setItem("user", JSON.stringify(data));
+    setUserDetails(data);
+  };
 
   const onSubmitHandler = () => {
     //validation
@@ -85,15 +84,7 @@ const Login = () => {
   return (
     <>
       <VStack spacing="5px">
-        <Form
-          isRequired={true}
-          label="Email"
-          inputType="email"
-          value={email}
-          placeHolder="Enter your email"
-          id="email"
-          onChange={(value) => setEmail(value)}
-        />
+        <Form isRequired={true} label="Email" inputType="email" value={email} placeHolder="Enter your email" id="email" onChange={(value) => setEmail(value)} />
         <FormControl isRequired id="password">
           <FormLabel>Password</FormLabel>
           <InputGroup>
@@ -102,30 +93,17 @@ const Login = () => {
               placeholder="Enter your password"
               value={password}
               type={isPasswordVisible ? "text" : "password"}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                setPassword(e.target.value)
-              }
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
             />
             <InputRightElement width={"4.5rem"}>
-              <Button
-                h="1.75rem"
-                size="sm"
-                onClick={() => setIsPasswordVisible(!isPasswordVisible)}
-              >
+              <Button h="1.75rem" size="sm" onClick={() => setIsPasswordVisible(!isPasswordVisible)}>
                 {isPasswordVisible ? "Hide" : "Show"}
               </Button>
             </InputRightElement>
           </InputGroup>
         </FormControl>
 
-        <Button
-          colorScheme="blue"
-          width={"100%"}
-          isLoading={isLoading}
-          disabled={isLoading}
-          style={{ marginTop: 15 }}
-          onClick={onSubmitHandler}
-        >
+        <Button colorScheme="blue" width={"100%"} isLoading={isLoading} disabled={isLoading} style={{ marginTop: 15 }} onClick={onSubmitHandler}>
           Login
         </Button>
         <Button
@@ -135,8 +113,8 @@ const Login = () => {
           width={"100%"}
           style={{ marginTop: 15 }}
           onClick={() => {
-            setEmail(`guest@chat.com`);
-            setPassword(`1234567890`);
+            setEmail(`user1@yopmail.com`);
+            setPassword(`123456`);
           }}
         >
           Login as guest user

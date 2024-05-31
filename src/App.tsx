@@ -3,10 +3,11 @@ import RootLayout from "./layouts/RootLayout";
 import ErrorLayout from "./layouts/ErrorLayout";
 import AuthPage from "./pages/AuthPage";
 import ChatPage from "./pages/ChatPage";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { LoaderContext } from "./store/context/loaderContext";
 import Loader from "./components/Loader";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { ChatContext } from "./store/context/chatContext";
 
 const routerConfig = createBrowserRouter([
   {
@@ -29,6 +30,20 @@ const routerConfig = createBrowserRouter([
 const App = () => {
   const { isLoading } = useContext(LoaderContext);
   const queryClient = new QueryClient();
+  const { setUserDetails } = useContext(ChatContext);
+
+  useEffect(() => {
+    const getUser = () => {
+      const userData = localStorage.getItem("user");
+
+      if (userData && userData !== "undefined") {
+        setUserDetails(JSON.parse(userData));
+      } else {
+        setUserDetails(undefined);
+      }
+    };
+    getUser();
+  }, []);
 
   return (
     <>

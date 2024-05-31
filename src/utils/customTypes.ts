@@ -1,4 +1,10 @@
-export type FormType = {
+import { ReactNode } from "react";
+
+export type DefaultReactComponentType = {
+  children?: ReactNode;
+};
+
+export type FormType = DefaultReactComponentType & {
   label: string;
   isRequired: boolean;
   placeHolder: string;
