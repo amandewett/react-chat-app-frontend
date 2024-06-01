@@ -3,9 +3,8 @@ import RootLayout from "./layouts/RootLayout";
 import ErrorLayout from "./layouts/ErrorLayout";
 import AuthPage from "./pages/AuthPage";
 import ChatPage from "./pages/ChatPage";
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { LoaderContext } from "./store/context/loaderContext";
-import Loader from "./components/Loader";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ChatContext } from "./store/context/chatContext";
 import LoadingBar from "./components/LoadingBar";
@@ -32,6 +31,7 @@ const App = () => {
   const { isLoading } = useContext(LoaderContext);
   const queryClient = new QueryClient();
   const { setUserDetails } = useContext(ChatContext);
+  const [isPageLoading, setIsPageLoading] = useState(true);
 
   useEffect(() => {
     const getUser = () => {
@@ -42,27 +42,27 @@ const App = () => {
       } else {
         setUserDetails(undefined);
       }
+      setTimeout(() => {
+        setIsPageLoading(false);
+      }, 3000);
     };
     getUser();
   }, []);
 
+  if (isPageLoading) {
+    return <LoadingBar asPageLoader={true} />;
+  }
+
   return (
     <>
       <div className="relative">
+        {isLoading && <LoadingBar />}
         <div className="fixed bg-[url('../images/bg.webp')] bg-fixed w-screen h-screen bg-cover bg-no-repeat bg-center brightness-[0.4]" />
         <div className="absolute z-[1] w-full">
           <QueryClientProvider client={queryClient}>
             <RouterProvider router={routerConfig} />
           </QueryClientProvider>
         </div>
-        {isLoading && (
-          <div className="bg-black bg-opacity-90 w-screen h-screen absolute flex flex-row justify-center items-center z-[2]">
-            <section className="flex flex-col items-center">
-              <h2 className="text-white text-3xl font-semibold">Chit Chat</h2>
-              <LoadingBar />
-            </section>
-          </div>
-        )}
       </div>
     </>
   );

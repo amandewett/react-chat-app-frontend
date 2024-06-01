@@ -1,6 +1,6 @@
 import { Button, FormControl, FormLabel, Input, InputGroup, InputRightElement, VStack } from "@chakra-ui/react";
 import { useContext, useState } from "react";
-import Form from "./Form";
+import CustomFormInput from "./Form";
 import { LoaderContext } from "../../store/context/loaderContext";
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
@@ -42,7 +42,11 @@ const Login = () => {
         status: "success",
       });
       //store data in local storage
-      storeDataToLocalStorage(data.data.result);
+      const userDetails = {
+        ...data.data.result,
+        token: data.data.token,
+      };
+      storeDataToLocalStorage(userDetails);
       navigate(`/chat`);
     },
   });
@@ -81,45 +85,53 @@ const Login = () => {
     setPassword("");
   };
 
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    onSubmitHandler();
+  };
+
   return (
     <>
-      <VStack spacing="5px">
-        <Form isRequired={true} label="Email" inputType="email" value={email} placeHolder="Enter your email" id="email" onChange={(value) => setEmail(value)} />
-        <FormControl isRequired id="password">
-          <FormLabel>Password</FormLabel>
-          <InputGroup>
-            <Input
-              id="password"
-              placeholder="Enter your password"
-              value={password}
-              type={isPasswordVisible ? "text" : "password"}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
-            />
-            <InputRightElement width={"4.5rem"}>
-              <Button h="1.75rem" size="sm" onClick={() => setIsPasswordVisible(!isPasswordVisible)}>
-                {isPasswordVisible ? "Hide" : "Show"}
-              </Button>
-            </InputRightElement>
-          </InputGroup>
-        </FormControl>
+      <form onSubmit={(e: React.FormEvent<HTMLFormElement>) => handleSubmit(e)}>
+        <VStack spacing="5px">
+          <CustomFormInput isRequired={true} label="Email" inputType="email" value={email} placeHolder="Enter your email" id="email" onChange={(value) => setEmail(value)} />
+          <FormControl isRequired id="password">
+            <FormLabel>Password</FormLabel>
+            <InputGroup>
+              <Input
+                id="password"
+                placeholder="Enter your password"
+                value={password}
+                type={isPasswordVisible ? "text" : "password"}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
+              />
+              <InputRightElement width={"4.5rem"}>
+                <Button h="1.75rem" size="sm" onClick={() => setIsPasswordVisible(!isPasswordVisible)}>
+                  {isPasswordVisible ? "Hide" : "Show"}
+                </Button>
+              </InputRightElement>
+            </InputGroup>
+          </FormControl>
 
-        <Button colorScheme="blue" width={"100%"} isLoading={isLoading} disabled={isLoading} style={{ marginTop: 15 }} onClick={onSubmitHandler}>
-          Login
-        </Button>
-        <Button
-          colorScheme="red"
-          variant={"solid"}
-          disabled={isLoading}
-          width={"100%"}
-          style={{ marginTop: 15 }}
-          onClick={() => {
-            setEmail(`user2@yopmail.com`);
-            setPassword(`123456`);
-          }}
-        >
-          Login as guest user
-        </Button>
-      </VStack>
+          <Button colorScheme="blue" width={"100%"} isLoading={isLoading} disabled={isLoading} style={{ marginTop: 15 }} onClick={onSubmitHandler} type="submit">
+            Login
+          </Button>
+
+          <Button
+            colorScheme="red"
+            variant={"solid"}
+            disabled={isLoading}
+            width={"100%"}
+            style={{ marginTop: 15 }}
+            onClick={() => {
+              setEmail(`user2@yopmail.com`);
+              setPassword(`123456`);
+            }}
+          >
+            Login as guest user
+          </Button>
+        </VStack>
+      </form>
     </>
   );
 };

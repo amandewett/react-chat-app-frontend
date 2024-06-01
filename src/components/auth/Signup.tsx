@@ -91,6 +91,7 @@ const Signup = ({ handleTabChange }: SignupComponentType) => {
   };
 
   const onSubmitHandler = () => {
+    console.log("called");
     //validation
     if (!name || !email || !password) {
       toast({
@@ -125,36 +126,43 @@ const Signup = ({ handleTabChange }: SignupComponentType) => {
     profilePictureRef.current!.value = "";
   };
 
+  function handleOnSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    onSubmitHandler();
+  }
+
   return (
     <>
-      <VStack spacing="5px">
-        <Form isRequired={true} label="Name" value={name} inputType="text" placeHolder="Enter your name" id="name" onChange={(value) => setName(value)} />
-        <Form isRequired={true} label="Email" inputType="email" value={email} placeHolder="Enter your email" id="signupEmail" onChange={(value) => setEmail(value)} />
-        <FormControl isRequired id="password">
-          <FormLabel>Password</FormLabel>
-          <InputGroup>
-            <Input
-              id="signupPassword"
-              value={password}
-              placeholder="Enter your password"
-              type={isPasswordVisible ? "text" : "password"}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
-            />
-            <InputRightElement width={"4.5rem"}>
-              <Button h="1.75rem" size="sm" onClick={() => setIsPasswordVisible(!isPasswordVisible)}>
-                {isPasswordVisible ? "Hide" : "Show"}
-              </Button>
-            </InputRightElement>
-          </InputGroup>
-        </FormControl>
-        <FormControl isRequired={false} id="pic">
-          <FormLabel>Profile picture</FormLabel>
-          <Input type="file" p={1.5} ref={profilePictureRef} accept="image/*" onChange={(e: React.ChangeEvent<HTMLInputElement>) => profilePickerDetails(e.target.files)} />
-        </FormControl>
-        <Button colorScheme="blue" width={"100%"} disabled={isLoading} isLoading={isLoading} style={{ marginTop: 15 }} onClick={onSubmitHandler}>
-          Sign up
-        </Button>
-      </VStack>
+      <form onSubmit={(e: React.FormEvent<HTMLFormElement>) => handleOnSubmit(e)}>
+        <VStack spacing="5px">
+          <Form isRequired={true} label="Name" value={name} inputType="text" placeHolder="Enter your name" id="name" onChange={(value) => setName(value)} />
+          <Form isRequired={true} label="Email" inputType="email" value={email} placeHolder="Enter your email" id="signupEmail" onChange={(value) => setEmail(value)} />
+          <FormControl isRequired id="password">
+            <FormLabel>Password</FormLabel>
+            <InputGroup>
+              <Input
+                id="signupPassword"
+                value={password}
+                placeholder="Enter your password"
+                type={isPasswordVisible ? "text" : "password"}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
+              />
+              <InputRightElement width={"4.5rem"}>
+                <Button h="1.75rem" size="sm" onClick={() => setIsPasswordVisible(!isPasswordVisible)}>
+                  {isPasswordVisible ? "Hide" : "Show"}
+                </Button>
+              </InputRightElement>
+            </InputGroup>
+          </FormControl>
+          <FormControl isRequired={false} id="pic">
+            <FormLabel>Profile picture</FormLabel>
+            <Input type="file" p={1.5} ref={profilePictureRef} accept="image/*" onChange={(e: React.ChangeEvent<HTMLInputElement>) => profilePickerDetails(e.target.files)} />
+          </FormControl>
+          <Button colorScheme="blue" width={"100%"} disabled={isLoading} isLoading={isLoading} style={{ marginTop: 15 }} type="submit" onClick={onSubmitHandler}>
+            Sign up
+          </Button>
+        </VStack>
+      </form>
     </>
   );
 };

@@ -6,7 +6,7 @@ import ChatBody from "../components/chat/ChatBody";
 
 const ChatPage = () => {
   const navigate = useNavigate();
-  const { userDetails, setUserDetails } = useContext(ChatContext);
+  const { userDetails } = useContext(ChatContext);
 
   useEffect(() => {
     if (!userDetails) {

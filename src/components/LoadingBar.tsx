@@ -1,7 +1,18 @@
-const LoadingBar = () => {
+import IosSpinner from "./IosSpinner";
+
+const LoadingBar = ({ asPageLoader = false }: { asPageLoader?: boolean }) => {
   return (
-    <div className="bg-white h-[2px] m-[1em] overflow-hidden relative w-[12em] rounded-sm">
-      <div className="loading-bar absolute h-full w-1/2 bg-red-500"></div>
+    <div className="linear-loading-container" style={{ position: "absolute", zIndex: "20" }} id="loader-container">
+      <section>
+        <h2>Chit Chat</h2>
+        {asPageLoader ? (
+          <div className="linear-loader-bg">
+            <div className="linear-loader"></div>
+          </div>
+        ) : (
+          <IosSpinner />
+        )}
+      </section>
     </div>
   );
 };
