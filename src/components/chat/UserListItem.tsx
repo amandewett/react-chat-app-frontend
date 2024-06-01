@@ -1,4 +1,4 @@
-import { Avatar, Box, Divider, Text } from "@chakra-ui/react";
+import { Avatar, Box, Text } from "@chakra-ui/react";
 import { UserListItemProps } from "../../utils/customTypes";
 
 const UserListItem = ({ id, name, email, profilePicture, handleOnClick }: UserListItemProps) => {

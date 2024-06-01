@@ -1,4 +1,4 @@
-import { createContext, useReducer, useState } from "react";
+import { createContext, useReducer } from "react";
 import { DefaultReactComponentType, SelectedChatType } from "../../utils/customTypes";
 
 export type ChatContextType = {
@@ -16,7 +16,7 @@ export type ReducerActionType = {
 export const ChatContext = createContext<ChatContextType>({
   userDetails: undefined,
   setUserDetails: () => {},
-  setSelectedChat: (chat: any) => {},
+  setSelectedChat: () => {},
   selectedChat: undefined,
 });
 
@@ -40,7 +40,7 @@ const userReducer = (state: ChatContextType, action: ReducerActionType) => {
 const userReducerInitialArguments = {
   userDetails: undefined,
   setUserDetails: () => {},
-  setSelectedChat: (chat: any) => {},
+  setSelectedChat: () => {},
   selectedChat: undefined,
 };
 

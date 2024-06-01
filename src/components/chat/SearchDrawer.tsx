@@ -7,7 +7,6 @@ import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 import { ChatContext } from "../../store/context/chatContext";
 import UserListItem from "./UserListItem";
-import { LoaderContext } from "../../store/context/loaderContext";
 import IosSpinner from "../IosSpinner";
 
 const SearchDrawer = ({ isOpen, onClose }: SearchDrawerProps) => {
