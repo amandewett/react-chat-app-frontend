@@ -27,3 +27,31 @@ export type SearchDrawerProps = {
   onClose: () => void;
   isOpen: boolean;
 };
+
+export type UserListItemProps = {
+  id: string;
+  name: string;
+  email: string;
+  profilePicture: string;
+  handleOnClick: (id: string) => void;
+};
+
+export type SelectedChatType = {
+  id: string;
+  createdAt: Date;
+  updatedAt: Date;
+  chatName: null;
+  isGroupChat: boolean;
+  groupAdminID: null;
+  participantIDs: string[];
+  messageIDs: any[];
+  latestMessageId: null;
+  participants: Participant[];
+};
+
+export type Participant = {
+  name: string;
+  email: string;
+  id: string;
+  profilePicture: string;
+};

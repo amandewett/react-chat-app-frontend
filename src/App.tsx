@@ -44,7 +44,7 @@ const App = () => {
       }
       setTimeout(() => {
         setIsPageLoading(false);
-      }, 3000);
+      }, 10);
     };
     getUser();
   }, []);
