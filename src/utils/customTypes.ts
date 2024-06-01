@@ -17,3 +17,13 @@ export type FormType = DefaultReactComponentType & {
 export type SignupComponentType = {
   handleTabChange: (index: number) => void;
 };
+
+export type MyDrawerProps = DefaultReactComponentType & {
+  onClose: () => void;
+  isOpen: boolean;
+};
+
+export type SearchDrawerProps = {
+  onClose: () => void;
+  isOpen: boolean;
+};

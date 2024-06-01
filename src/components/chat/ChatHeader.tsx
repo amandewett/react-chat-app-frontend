@@ -2,15 +2,17 @@ import { useContext, useState } from "react";
 import { ChatContext } from "../../store/context/chatContext";
 import { motion, useMotionValueEvent, useScroll } from "framer-motion";
 import SideDrawer from "./SideDrawer";
-import { Avatar, Button, Menu, MenuButton, MenuItem, MenuList, Text, useDisclosure } from "@chakra-ui/react";
+import { Avatar, Button, Menu, MenuButton, MenuDivider, MenuItem, MenuList, useDisclosure } from "@chakra-ui/react";
 import { BellIcon, ChevronDownIcon } from "@chakra-ui/icons";
 import ProfileModal from "./ProfileModal";
+import SearchDrawer from "./SearchDrawer";
 
 const ChatHeader = () => {
   const { setUserDetails, userDetails } = useContext(ChatContext);
   const { scrollY } = useScroll();
   const [isSticky, setIsSticky] = useState<boolean>(false);
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const { isOpen: searchDrawerIsOpen, onOpen: searchDrawerOnOpen, onClose: searchDrawerOnClose } = useDisclosure();
 
   useMotionValueEvent(scrollY, "change", (latest: number) => {
     latest >= 200 ? setIsSticky(true) : setIsSticky(false);
@@ -28,7 +30,8 @@ const ChatHeader = () => {
         </section>
         <section className="absolute z-10 flex justify-between w-full px-5">
           <nav>
-            <SideDrawer />
+            <SideDrawer onClick={searchDrawerOnOpen} />
+            <SearchDrawer isOpen={searchDrawerIsOpen} onClose={searchDrawerOnClose} />
           </nav>
           <div>
             <Menu>
@@ -51,6 +54,7 @@ const ChatHeader = () => {
               <MenuList>
                 <MenuItem onClick={onOpen}>My Profile</MenuItem>
                 <ProfileModal isOpen={isOpen} onClose={onClose} />
+                <MenuDivider />
                 <MenuItem onClick={logout}>Logout</MenuItem>
               </MenuList>
             </Menu>
@@ -68,7 +72,8 @@ const ChatHeader = () => {
         </section>
         <section className="absolute z-10 flex justify-between w-full px-5">
           <nav>
-            <SideDrawer />
+            <SideDrawer onClick={searchDrawerOnOpen} />
+            <SearchDrawer isOpen={searchDrawerIsOpen} onClose={searchDrawerOnClose} />
           </nav>
           <div>
             <Menu>
@@ -90,6 +95,8 @@ const ChatHeader = () => {
               </MenuButton>
               <MenuList>
                 <MenuItem>My Profile</MenuItem>
+                <ProfileModal isOpen={isOpen} onClose={onClose} />
+                <MenuDivider />
                 <MenuItem onClick={logout}>Logout</MenuItem>
               </MenuList>
             </Menu>
