@@ -1,6 +1,8 @@
 import { useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { ChatContext } from "../store/context/chatContext";
+import ChatHeader from "../components/chat/ChatHeader";
+import ChatBody from "../components/chat/ChatBody";
 
 const ChatPage = () => {
   const navigate = useNavigate();
@@ -10,17 +12,12 @@ const ChatPage = () => {
     if (!userDetails) {
       navigate("/");
     }
-  }, [userDetails]);
-
-  const logout = () => {
-    localStorage.removeItem("user");
-    setUserDetails(undefined);
-  };
+  }, [userDetails, navigate]);
 
   return (
     <>
-      <div>{JSON.stringify(userDetails)}</div>
-      <button onClick={logout}>Logout</button>
+      <ChatHeader />
+      <ChatBody />
     </>
   );
 };

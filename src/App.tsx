@@ -8,6 +8,7 @@ import { LoaderContext } from "./store/context/loaderContext";
 import Loader from "./components/Loader";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ChatContext } from "./store/context/chatContext";
+import LoadingBar from "./components/LoadingBar";
 
 const routerConfig = createBrowserRouter([
   {
@@ -48,14 +49,18 @@ const App = () => {
   return (
     <>
       <div className="relative">
-        <div className="absolute w-screen">
+        <div className="fixed bg-[url('../images/bg.jpg')] bg-fixed w-screen h-screen bg-cover bg-no-repeat bg-center brightness-[0.4]" />
+        <div className="absolute z-[1] w-full">
           <QueryClientProvider client={queryClient}>
             <RouterProvider router={routerConfig} />
           </QueryClientProvider>
         </div>
         {isLoading && (
-          <div className="bg-black bg-opacity-80 w-screen h-screen absolute flex flex-row justify-center items-center">
-            <Loader />
+          <div className="bg-black bg-opacity-90 w-screen h-screen absolute flex flex-row justify-center items-center z-[2]">
+            <section className="flex flex-col items-center">
+              <h2 className="text-white text-3xl font-semibold">Chit Chat</h2>
+              <LoadingBar />
+            </section>
           </div>
         )}
       </div>

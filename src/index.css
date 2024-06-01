@@ -45,3 +45,19 @@ body {
     transform: rotate(360deg);
   }
 }
+
+.loading-bar {
+  animation: side2side 2s ease-in-out infinite;
+}
+
+@keyframes side2side {
+
+  0%,
+  100% {
+    transform: translateX(-50%);
+  }
+
+  50% {
+    transform: translateX(150%);
+  }
+}

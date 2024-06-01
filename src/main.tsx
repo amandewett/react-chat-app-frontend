@@ -9,9 +9,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
   <ChatContextProvider>
     <LoaderContextProvider>
       <ChakraProvider>
-        <div className="bg-[url('../images/bg.jpg')] w-screen h-screen bg-cover bg-center">
-          <App />
-        </div>
+        <App />
       </ChakraProvider>
     </LoaderContextProvider>
   </ChatContextProvider>

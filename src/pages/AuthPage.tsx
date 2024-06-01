@@ -13,7 +13,7 @@ const AuthPage = () => {
     if (userDetails) {
       navigate("/chat");
     }
-  }, [userDetails]);
+  }, [userDetails, navigate]);
 
   return (
     <Container centerContent maxWidth={"xl"}>
