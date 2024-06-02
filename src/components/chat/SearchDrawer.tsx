@@ -1,22 +1,32 @@
 import { DrawerHeader, DrawerBody, Box, Input, Button, Stack, Skeleton, Text } from "@chakra-ui/react";
 import { SearchDrawerProps } from "../../utils/customTypes";
 import MyDrawer from "../MyDrawer";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useCustomToast } from "../../hooks/useCustomToast";
-import { useMutation } from "@tanstack/react-query";
-import axios from "axios";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { ChatContext } from "../../store/context/chatContext";
 import UserListItem from "./UserListItem";
 import IosSpinner from "../IosSpinner";
+import axiosInstance from "../../utils/axiosInstance";
 
 const SearchDrawer = ({ isOpen, onClose }: SearchDrawerProps) => {
-  const [users, setUsers] = useState<any[]>([]);
   const [search, setSearch] = useState<string>("");
-  const { userDetails, setUserDetails, setSelectedChat } = useContext(ChatContext);
+  /* const { data: usersList } = useQuery({
+    queryKey: ["search", "dd"],
+    queryFn: ({ signal }) => axiosInstance.get(`api/user/all`, { params: { search: "" }, signal: signal }),
+  });
+  useEffect(() => {
+    if (usersList && usersList.data.result.length != 0) {
+      setUsers(usersList?.data.result);
+    }
+  }, [usersList]); */
+  const [users, setUsers] = useState<any[]>([]);
+  const { userDetails, setSelectedChat } = useContext(ChatContext);
   const toast = useCustomToast();
+
   const { mutate: searchMutate, isPending } = useMutation({
     mutationFn: (queryParams: any) =>
-      axios.get(`api/user/all`, {
+      axiosInstance.get(`api/user/all`, {
         params: queryParams,
         headers: {
           "Content-Type": "application/json",
@@ -30,9 +40,6 @@ const SearchDrawer = ({ isOpen, onClose }: SearchDrawerProps) => {
         description: error.response.data.message,
         status: "error",
       });
-      if (error.response.status === 401) {
-        logout();
-      }
     },
     onSuccess(data: any) {
       setUsers(data.data.result);
@@ -41,7 +48,7 @@ const SearchDrawer = ({ isOpen, onClose }: SearchDrawerProps) => {
 
   const { mutate: mutateCreateChat, isPending: createChatIsPending } = useMutation({
     mutationFn: (body: any) =>
-      axios.post(`api/chat/create`, body, {
+      axiosInstance.post(`api/chat/create`, body, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${userDetails.token}`,
@@ -57,29 +64,13 @@ const SearchDrawer = ({ isOpen, onClose }: SearchDrawerProps) => {
         description: error.response.data.message,
         status: "error",
       });
-      if (error.response.status === 401) {
-        logout();
-      }
     },
     onSuccess(data: any) {
       setSelectedChat(data.data.result);
     },
   });
 
-  const logout = () => {
-    localStorage.removeItem("user");
-    setUserDetails(undefined);
-  };
-
   const handleSearch = () => {
-    if (!search) {
-      toast({
-        title: "Please enter something to search",
-        position: "top-left",
-        status: "warning",
-      });
-      return;
-    }
     searchMutate({ search });
   };
 
@@ -93,8 +84,7 @@ const SearchDrawer = ({ isOpen, onClose }: SearchDrawerProps) => {
   };
 
   const restSearchForm = () => {
-    setSearch("");
-    setUsers([]);
+    // setSearch("");
   };
 
   return (
@@ -104,9 +94,7 @@ const SearchDrawer = ({ isOpen, onClose }: SearchDrawerProps) => {
         <form onSubmit={(e: React.FormEvent<HTMLFormElement>) => onSearchSubmit(e)}>
           <Box display={"flex"} pb={2}>
             <Input placeholder="Search Users" mr={2} value={search} onChange={(e) => setSearch(e.target.value)} />
-            <Button onClick={handleSearch} type="submit">
-              Go
-            </Button>
+            <Button type="submit">Go</Button>
           </Box>
         </form>
         {isPending && (

@@ -3,10 +3,10 @@ import { useContext, useState } from "react";
 import CustomFormInput from "./Form";
 import { LoaderContext } from "../../store/context/loaderContext";
 import { useMutation } from "@tanstack/react-query";
-import axios from "axios";
 import { useCustomToast } from "../../hooks/useCustomToast";
 import { useNavigate } from "react-router-dom";
 import { ChatContext } from "../../store/context/chatContext";
+import axiosInstance from "../../utils/axiosInstance";
 
 const Login = () => {
   const [email, setEmail] = useState<string>("");
@@ -17,13 +17,8 @@ const Login = () => {
   const navigate = useNavigate();
   const { setUserDetails } = useContext(ChatContext);
 
-  const { mutate: loginMutate } = useMutation({
-    mutationFn: (postData: any) =>
-      axios.post(`/api/user/login`, postData, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }),
+  const { mutate: mutateLoginApi } = useMutation({
+    mutationFn: (postData: any) => axiosInstance.post(`/api/user/login`, postData),
     onSettled: () => {
       disableLoader();
     },
@@ -56,7 +51,7 @@ const Login = () => {
     setUserDetails(data);
   };
 
-  const onSubmitHandler = () => {
+  const onSubmitHandler = async () => {
     //validation
     if (!email || !password) {
       toast({
@@ -77,7 +72,7 @@ const Login = () => {
     }
 
     enableLoader();
-    loginMutate({ email, password });
+    mutateLoginApi({ email, password });
   };
 
   const resetForm = () => {

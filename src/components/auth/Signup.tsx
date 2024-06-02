@@ -2,10 +2,10 @@ import { Button, FormControl, FormLabel, Input, InputGroup, InputRightElement, V
 import { useContext, useRef, useState } from "react";
 import Form from "./Form";
 import { useCustomToast } from "../../hooks/useCustomToast";
-import axios from "axios";
 import { LoaderContext } from "../../store/context/loaderContext";
 import { useMutation } from "@tanstack/react-query";
 import { SignupComponentType } from "../../utils/customTypes";
+import axiosInstance from "../../utils/axiosInstance";
 
 const Signup = ({ handleTabChange }: SignupComponentType) => {
   const [email, setEmail] = useState<string>("");
@@ -19,7 +19,7 @@ const Signup = ({ handleTabChange }: SignupComponentType) => {
 
   const { mutate: mutateSignup } = useMutation({
     mutationFn: (postData: any) =>
-      axios.post(`/api/user/signup`, postData, {
+      axiosInstance.post(`/api/user/signup`, postData, {
         headers: {
           "Content-Type": "application/json",
         },
@@ -51,7 +51,7 @@ const Signup = ({ handleTabChange }: SignupComponentType) => {
       formData.append("files", files[0]);
       try {
         enableLoader();
-        const { data } = await axios.post("/api/file/upload", formData, {
+        const { data } = await axiosInstance.post("/api/file/upload", formData, {
           headers: {
             "Content-Type": "multipart/form-data",
           },

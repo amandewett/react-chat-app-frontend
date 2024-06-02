@@ -22,6 +22,7 @@ const ChatHeader = () => {
     localStorage.removeItem("user");
     setUserDetails(undefined);
   };
+
   return (
     <>
       <header className="h-16 bg-white drop-shadow-lg flex items-center justify-center relative">
