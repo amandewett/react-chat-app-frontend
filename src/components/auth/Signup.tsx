@@ -51,11 +51,7 @@ const Signup = ({ handleTabChange }: SignupComponentType) => {
       formData.append("files", files[0]);
       try {
         enableLoader();
-        const { data } = await axiosInstance.post("/api/file/upload", formData, {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        });
+        const { data } = await axiosInstance.post("/api/file/upload", formData);
 
         disableLoader();
         if (data.status) {

@@ -11,15 +11,15 @@ import axiosInstance from "../../utils/axiosInstance";
 
 const SearchDrawer = ({ isOpen, onClose }: SearchDrawerProps) => {
   const [search, setSearch] = useState<string>("");
-  /* const { data: usersList } = useQuery({
+  const { data: usersList } = useQuery({
     queryKey: ["search", "dd"],
-    queryFn: ({ signal }) => axiosInstance.get(`api/user/all`, { params: { search: "" }, signal: signal }),
+    queryFn: ({ signal }) => axiosInstance.get(`api/user/all`, { signal: signal }),
   });
   useEffect(() => {
     if (usersList && usersList.data.result.length != 0) {
       setUsers(usersList?.data.result);
     }
-  }, [usersList]); */
+  }, [usersList]);
   const [users, setUsers] = useState<any[]>([]);
   const { userDetails, setSelectedChat } = useContext(ChatContext);
   const toast = useCustomToast();
@@ -28,10 +28,6 @@ const SearchDrawer = ({ isOpen, onClose }: SearchDrawerProps) => {
     mutationFn: (queryParams: any) =>
       axiosInstance.get(`api/user/all`, {
         params: queryParams,
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${userDetails.token}`,
-        },
       }),
     onSettled: () => {},
     onError(error: any) {
