@@ -79,9 +79,7 @@ const SearchDrawer = ({ isOpen, onClose }: SearchDrawerProps) => {
     mutateCreateChat({ receiverId: id });
   };
 
-  const restSearchForm = () => {
-    // setSearch("");
-  };
+  const restSearchForm = () => {};
 
   return (
     <MyDrawer isOpen={isOpen} onClose={onClose}>
@@ -118,11 +116,7 @@ const SearchDrawer = ({ isOpen, onClose }: SearchDrawerProps) => {
             )}
           </Stack>
         )}
-        {createChatIsPending && (
-          <div className="items-center justify-center flex mt-10">
-            <IosSpinner />
-          </div>
-        )}
+        {createChatIsPending && <IosSpinner />}
       </DrawerBody>
     </MyDrawer>
   );

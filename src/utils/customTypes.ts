@@ -55,3 +55,16 @@ export type Participant = {
   id: string;
   profilePicture: string;
 };
+
+export type ChatListItemType = {
+  id: string;
+  createdAt: Date;
+  updatedAt: Date;
+  chatName: null;
+  isGroupChat: boolean;
+  groupAdminID: null;
+  participantIDs: string[];
+  messageIDs: any[];
+  latestMessageId: null;
+  participants: Participant[];
+};

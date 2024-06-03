@@ -95,7 +95,7 @@ const ChatHeader = () => {
                 )}
               </MenuButton>
               <MenuList>
-                <MenuItem>My Profile</MenuItem>
+                <MenuItem onClick={onOpen}>My Profile</MenuItem>
                 <ProfileModal isOpen={isOpen} onClose={onClose} />
                 <MenuDivider />
                 <MenuItem onClick={logout}>Logout</MenuItem>
