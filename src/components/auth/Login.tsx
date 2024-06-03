@@ -1,4 +1,4 @@
-import { Button, FormControl, FormLabel, Input, InputGroup, InputRightElement, VStack } from "@chakra-ui/react";
+import { Box, Button, FormControl, FormLabel, Input, InputGroup, InputRightElement, VStack } from "@chakra-ui/react";
 import { useContext, useState } from "react";
 import CustomFormInput from "./Form";
 import { LoaderContext } from "../../store/context/loaderContext";
@@ -7,6 +7,8 @@ import { useCustomToast } from "../../hooks/useCustomToast";
 import { useNavigate } from "react-router-dom";
 import { ChatContext } from "../../store/context/chatContext";
 import axiosInstance from "../../utils/axiosInstance";
+import MyInput from "../MyInputs/MyInput";
+import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 
 const Login = () => {
   const [email, setEmail] = useState<string>("");
@@ -17,23 +19,25 @@ const Login = () => {
   const navigate = useNavigate();
   const { setUserDetails } = useContext(ChatContext);
 
-  const { mutate: mutateLoginApi } = useMutation({
+  const {
+    mutate: mutateLoginApi,
+    isError,
+    error,
+  } = useMutation({
     mutationFn: (postData: any) => axiosInstance.post(`/api/user/login`, postData),
     onSettled: () => {
       disableLoader();
     },
     onError(error: any) {
       toast({
-        title: "Error",
-        description: error.response.data.message,
+        title: error.response.data.message,
         status: "error",
       });
     },
     onSuccess(data: any) {
       resetForm();
       toast({
-        title: "Success",
-        description: data.data.message,
+        title: data.data.message,
         status: "success",
       });
       //store data in local storage
@@ -87,26 +91,21 @@ const Login = () => {
 
   return (
     <>
-      <form onSubmit={(e: React.FormEvent<HTMLFormElement>) => handleSubmit(e)}>
+      <form onSubmit={(e: React.FormEvent<HTMLFormElement>) => handleSubmit(e)} autoComplete="off">
         <VStack spacing="5px">
-          <CustomFormInput isRequired={true} label="Email" inputType="email" value={email} placeHolder="Enter your email" id="email" onChange={(value) => setEmail(value)} />
-          <FormControl isRequired id="password">
-            <FormLabel>Password</FormLabel>
-            <InputGroup>
-              <Input
-                id="password"
-                placeholder="Enter your password"
-                value={password}
-                type={isPasswordVisible ? "text" : "password"}
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
-              />
-              <InputRightElement width={"4.5rem"}>
-                <Button h="1.75rem" size="sm" onClick={() => setIsPasswordVisible(!isPasswordVisible)}>
-                  {isPasswordVisible ? "Hide" : "Show"}
-                </Button>
-              </InputRightElement>
-            </InputGroup>
-          </FormControl>
+          <MyInput isRequired={true} formLabelText="Email" isFormLabelVisible={true} value={email} type="email" placeHolder="Enter your email" onChange={(e) => setEmail(e.target.value)} />
+          <MyInput
+            isRequired={true}
+            formLabelText="Password"
+            isFormLabelVisible={true}
+            value={password}
+            type={isPasswordVisible ? "text" : "password"}
+            placeHolder="Enter your password"
+            onChange={(e) => setPassword(e.target.value)}
+            hasRightElement={true}
+          >
+            <Box onClick={() => setIsPasswordVisible(!isPasswordVisible)}>{isPasswordVisible ? <ViewIcon /> : <ViewOffIcon />}</Box>
+          </MyInput>
 
           <Button colorScheme="amberScheme" width={"100%"} isLoading={isLoading} disabled={isLoading} style={{ marginTop: 15 }} onClick={onSubmitHandler} type="submit">
             Login

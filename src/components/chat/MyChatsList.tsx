@@ -7,7 +7,6 @@ import UserListItem from "./UserListItem";
 import { ChatListItemType } from "../../utils/customTypes";
 import IosSpinner from "../IosSpinner";
 import { AddIcon } from "@chakra-ui/icons";
-import MyModalContainer from "../MyModalContainer";
 import CreateGroupChatModal from "./CreateGroupChatModal";
 
 const MyChatsList = () => {

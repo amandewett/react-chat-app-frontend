@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { CreateGroupChatModalType } from "../../utils/customTypes";
 import MyModalContainer from "../MyModalContainer";
-import { Text, Box, Input, Divider, VStack, FormControl, Button } from "@chakra-ui/react";
+import { Text, Box, Input, VStack, FormControl, Button } from "@chakra-ui/react";
+import MyInput from "../MyInputs/MyInput";
 
 const CreateGroupChatModal = ({ isOpen, onClose, groupName = "", isCreating = false }: CreateGroupChatModalType) => {
   const [chatGroupName, setChatGroupName] = useState(groupName);
@@ -15,26 +16,8 @@ const CreateGroupChatModal = ({ isOpen, onClose, groupName = "", isCreating = fa
   return (
     <MyModalContainer isOpen={isOpen} onClose={onClose} modalHeader={<Text>{isCreating ? "Create Group" : chatGroupName}</Text>}>
       <VStack spacing={5}>
-        <FormControl>
-          <Input
-            value={chatGroupName}
-            onChange={(e) => {
-              setChatGroupName(e.target.value);
-            }}
-            type="text"
-            placeholder="Group name"
-          />
-        </FormControl>
-        <FormControl colorScheme="amberScheme">
-          <Input
-            value={search}
-            onChange={(e) => {
-              handleSearchInputOnChange(e);
-            }}
-            type="text"
-            placeholder="Search users"
-          />
-        </FormControl>
+        <MyInput value={chatGroupName} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setChatGroupName(e.target.validationMessage)} placeHolder="Group name" />
+        <MyInput value={search} onChange={handleSearchInputOnChange} placeHolder="Search users" />
         {/* selected users */}
         {/* render search users list */}
         <Box display={"flex"} justifyContent={"end"} w={"100%"}>

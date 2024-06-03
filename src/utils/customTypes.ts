@@ -1,4 +1,4 @@
-import { ReactNode } from "react";
+import { ChangeEventHandler, ReactNode } from "react";
 
 export type DefaultReactComponentType = {
   children?: ReactNode;
@@ -90,4 +90,15 @@ export type CreateGroupChatModalType = {
   isCreating?: boolean;
   onClose: () => void;
   groupName?: string;
+};
+
+export type MyInputType = DefaultReactComponentType & {
+  value: string;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  type?: string;
+  placeHolder?: string;
+  isFormLabelVisible?: boolean;
+  formLabelText?: string;
+  isRequired?: boolean;
+  hasRightElement?: boolean;
 };

@@ -1,11 +1,12 @@
-import { Button, FormControl, FormLabel, Input, InputGroup, InputRightElement, VStack } from "@chakra-ui/react";
+import { Button, FormControl, FormLabel, Input, VStack, Text, Box } from "@chakra-ui/react";
 import { useContext, useRef, useState } from "react";
-import Form from "./Form";
 import { useCustomToast } from "../../hooks/useCustomToast";
 import { LoaderContext } from "../../store/context/loaderContext";
 import { useMutation } from "@tanstack/react-query";
 import { SignupComponentType } from "../../utils/customTypes";
 import axiosInstance from "../../utils/axiosInstance";
+import MyInput from "../MyInputs/MyInput";
+import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 
 const Signup = ({ handleTabChange }: SignupComponentType) => {
   const [email, setEmail] = useState<string>("");
@@ -29,15 +30,13 @@ const Signup = ({ handleTabChange }: SignupComponentType) => {
     },
     onError(error: any) {
       toast({
-        title: "Error",
-        description: error.response.data.message,
+        title: error.response.data.message,
         status: "error",
       });
     },
     onSuccess(data: any) {
       toast({
-        title: "Success",
-        description: data.data.message,
+        title: data.data.message,
         status: "success",
       });
       resetForm();
@@ -129,27 +128,23 @@ const Signup = ({ handleTabChange }: SignupComponentType) => {
 
   return (
     <>
-      <form onSubmit={(e: React.FormEvent<HTMLFormElement>) => handleOnSubmit(e)}>
+      <form onSubmit={(e: React.FormEvent<HTMLFormElement>) => handleOnSubmit(e)} autoComplete="off">
         <VStack spacing="5px">
-          <Form isRequired={true} label="Name" value={name} inputType="text" placeHolder="Enter your name" id="name" onChange={(value) => setName(value)} />
-          <Form isRequired={true} label="Email" inputType="email" value={email} placeHolder="Enter your email" id="signupEmail" onChange={(value) => setEmail(value)} />
-          <FormControl isRequired id="password">
-            <FormLabel>Password</FormLabel>
-            <InputGroup>
-              <Input
-                id="signupPassword"
-                value={password}
-                placeholder="Enter your password"
-                type={isPasswordVisible ? "text" : "password"}
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
-              />
-              <InputRightElement width={"4.5rem"}>
-                <Button h="1.75rem" size="sm" onClick={() => setIsPasswordVisible(!isPasswordVisible)}>
-                  {isPasswordVisible ? "Hide" : "Show"}
-                </Button>
-              </InputRightElement>
-            </InputGroup>
-          </FormControl>
+          <MyInput isRequired={true} formLabelText="Name" isFormLabelVisible={true} value={name} type="text" placeHolder="Enter your name" onChange={(e) => setName(e.target.value)} />
+          <MyInput isRequired={true} formLabelText="Email" isFormLabelVisible={true} value={email} type="email" placeHolder="Enter your email" onChange={(e) => setEmail(e.target.value)} />
+          <MyInput
+            isRequired={true}
+            formLabelText="Password"
+            isFormLabelVisible={true}
+            value={password}
+            type={isPasswordVisible ? "text" : "password"}
+            placeHolder="Enter your password"
+            onChange={(e) => setPassword(e.target.value)}
+            hasRightElement={true}
+          >
+            <Box onClick={() => setIsPasswordVisible(!isPasswordVisible)}>{isPasswordVisible ? <ViewIcon /> : <ViewOffIcon />}</Box>
+          </MyInput>
+
           <FormControl isRequired={false} id="pic">
             <FormLabel>Profile picture</FormLabel>
             <Input type="file" p={1.5} ref={profilePictureRef} accept="image/*" onChange={(e: React.ChangeEvent<HTMLInputElement>) => profilePickerDetails(e.target.files)} />

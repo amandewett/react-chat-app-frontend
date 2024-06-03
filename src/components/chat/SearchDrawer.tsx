@@ -8,6 +8,7 @@ import { ChatContext } from "../../store/context/chatContext";
 import UserListItem from "./UserListItem";
 import IosSpinner from "../IosSpinner";
 import axiosInstance from "../../utils/axiosInstance";
+import MyInput from "../MyInputs/MyInput";
 
 const SearchDrawer = ({ isOpen, onClose }: SearchDrawerProps) => {
   const [search, setSearch] = useState<string>("");
@@ -104,8 +105,9 @@ const SearchDrawer = ({ isOpen, onClose }: SearchDrawerProps) => {
       <DrawerBody>
         <form onSubmit={(e: React.FormEvent<HTMLFormElement>) => onSearchSubmit(e)}>
           <Box display={"flex"} pb={2}>
-            <Input placeholder="Search Users" mr={2} value={search} onChange={(e) => setSearch(e.target.value)} />
-            <Button type="submit" bgColor={"primaryColor"}>
+            <MyInput placeHolder="Search Users" value={search} onChange={(e) => setSearch(e.target.value)} />
+            {/* <Input placeholder="Search Users" mr={2} value={search} onChange={(e) => setSearch(e.target.value)} /> */}
+            <Button type="submit" bgColor={"primaryColor"} ml={2}>
               Go
             </Button>
           </Box>
