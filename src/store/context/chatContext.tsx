@@ -6,6 +6,8 @@ export type ChatContextType = {
   setUserDetails: (data: any) => void;
   setSelectedChat: (chat: any) => void;
   selectedChat: SelectedChatType | undefined;
+  setChats: (chats: any) => void;
+  chats: SelectedChatType[] | [];
 };
 
 export type ReducerActionType = {
@@ -18,6 +20,8 @@ export const ChatContext = createContext<ChatContextType>({
   setUserDetails: () => {},
   setSelectedChat: () => {},
   selectedChat: undefined,
+  setChats: () => {},
+  chats: [],
 });
 
 const userReducer = (state: ChatContextType, action: ReducerActionType) => {
@@ -34,6 +38,14 @@ const userReducer = (state: ChatContextType, action: ReducerActionType) => {
       selectedChat: action.payload,
     };
   }
+
+  if (action.type === "SET_CHATS") {
+    return {
+      ...state,
+      chats: action.payload,
+    };
+  }
+
   return state;
 };
 
@@ -42,6 +54,8 @@ const userReducerInitialArguments = {
   setUserDetails: () => {},
   setSelectedChat: () => {},
   selectedChat: undefined,
+  setChats: () => {},
+  chats: [],
 };
 
 const chatContextProvider = ({ children }: DefaultReactComponentType) => {
@@ -61,11 +75,20 @@ const chatContextProvider = ({ children }: DefaultReactComponentType) => {
     });
   };
 
+  const handleSetChats = (chats: SelectedChatType) => {
+    userDispatch({
+      type: "SET_CHATS",
+      payload: chats,
+    });
+  };
+
   const defaultValue = {
     userDetails: userState.userDetails,
     setUserDetails: setUserDetails,
     setSelectedChat: handleSetSelectedChat,
     selectedChat: userState.selectedChat,
+    setChats: handleSetChats,
+    chats: userState.chats,
   };
   return <ChatContext.Provider value={defaultValue}>{children}</ChatContext.Provider>;
 };

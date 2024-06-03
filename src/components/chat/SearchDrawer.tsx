@@ -21,7 +21,7 @@ const SearchDrawer = ({ isOpen, onClose }: SearchDrawerProps) => {
     }
   }, [usersList]);
   const [users, setUsers] = useState<any[]>([]);
-  const { userDetails, setSelectedChat } = useContext(ChatContext);
+  const { userDetails, setSelectedChat, setChats } = useContext(ChatContext);
   const toast = useCustomToast();
 
   const { mutate: searchMutate, isPending } = useMutation({
@@ -42,7 +42,7 @@ const SearchDrawer = ({ isOpen, onClose }: SearchDrawerProps) => {
     },
   });
 
-  const { mutate: mutateCreateChat, isPending: createChatIsPending } = useMutation({
+  const { mutate: mutateCreateChat, isPending: isPendingCreateChat } = useMutation({
     mutationFn: (body: any) =>
       axiosInstance.post(`api/chat/create`, body, {
         headers: {
@@ -50,6 +50,23 @@ const SearchDrawer = ({ isOpen, onClose }: SearchDrawerProps) => {
           Authorization: `Bearer ${userDetails.token}`,
         },
       }),
+    onSettled: () => {
+      mutateAllChats();
+    },
+    onError(error: any) {
+      toast({
+        title: "Error",
+        description: error.response.data.message,
+        status: "error",
+      });
+    },
+    onSuccess(data: any) {
+      setSelectedChat(data.data.result);
+    },
+  });
+
+  const { mutate: mutateAllChats, isPending: isPendingAllChats } = useMutation({
+    mutationFn: () => axiosInstance.get(`api/chat/all`),
     onSettled: () => {
       restSearchForm();
       onClose();
@@ -62,7 +79,7 @@ const SearchDrawer = ({ isOpen, onClose }: SearchDrawerProps) => {
       });
     },
     onSuccess(data: any) {
-      setSelectedChat(data.data.result);
+      setChats(data.data.result);
     },
   });
 
@@ -116,7 +133,7 @@ const SearchDrawer = ({ isOpen, onClose }: SearchDrawerProps) => {
             )}
           </Stack>
         )}
-        {createChatIsPending && <IosSpinner />}
+        {isPendingCreateChat || (isPendingAllChats && <IosSpinner />)}
       </DrawerBody>
     </MyDrawer>
   );

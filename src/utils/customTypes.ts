@@ -34,6 +34,7 @@ export type UserListItemProps = {
   email: string;
   profilePicture: string;
   handleOnClick: (id: string) => void;
+  chatId?: string;
 };
 
 export type SelectedChatType = {
