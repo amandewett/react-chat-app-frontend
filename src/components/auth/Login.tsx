@@ -1,6 +1,5 @@
-import { Box, Button, FormControl, FormLabel, Input, InputGroup, InputRightElement, VStack } from "@chakra-ui/react";
+import { Box, Button, VStack } from "@chakra-ui/react";
 import { useContext, useState } from "react";
-import CustomFormInput from "./Form";
 import { LoaderContext } from "../../store/context/loaderContext";
 import { useMutation } from "@tanstack/react-query";
 import { useCustomToast } from "../../hooks/useCustomToast";
@@ -19,11 +18,7 @@ const Login = () => {
   const navigate = useNavigate();
   const { setUserDetails } = useContext(ChatContext);
 
-  const {
-    mutate: mutateLoginApi,
-    isError,
-    error,
-  } = useMutation({
+  const { mutate: mutateLoginApi } = useMutation({
     mutationFn: (postData: any) => axiosInstance.post(`/api/user/login`, postData),
     onSettled: () => {
       disableLoader();
@@ -55,7 +50,13 @@ const Login = () => {
     setUserDetails(data);
   };
 
-  const onSubmitHandler = async () => {
+  const resetForm = () => {
+    setEmail("");
+    setPassword("");
+  };
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     //validation
     if (!email || !password) {
       toast({
@@ -79,19 +80,9 @@ const Login = () => {
     mutateLoginApi({ email, password });
   };
 
-  const resetForm = () => {
-    setEmail("");
-    setPassword("");
-  };
-
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    onSubmitHandler();
-  };
-
   return (
     <>
-      <form onSubmit={(e: React.FormEvent<HTMLFormElement>) => handleSubmit(e)} autoComplete="off">
+      <form onSubmit={handleSubmit} autoComplete="off" noValidate>
         <VStack spacing="5px">
           <MyInput isRequired={true} formLabelText="Email" isFormLabelVisible={true} value={email} type="email" placeHolder="Enter your email" onChange={(e) => setEmail(e.target.value)} />
           <MyInput
@@ -107,7 +98,17 @@ const Login = () => {
             <Box onClick={() => setIsPasswordVisible(!isPasswordVisible)}>{isPasswordVisible ? <ViewIcon /> : <ViewOffIcon />}</Box>
           </MyInput>
 
-          <Button colorScheme="amberScheme" width={"100%"} isLoading={isLoading} disabled={isLoading} style={{ marginTop: 15 }} onClick={onSubmitHandler} type="submit">
+          <Button
+            colorScheme="amberScheme"
+            width={"100%"}
+            isLoading={isLoading}
+            disabled={isLoading}
+            style={{ marginTop: 15 }}
+            onClick={() => {
+              handleSubmit;
+            }}
+            type="submit"
+          >
             Login
           </Button>
 

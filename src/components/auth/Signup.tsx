@@ -1,4 +1,4 @@
-import { Button, FormControl, FormLabel, Input, VStack, Text, Box } from "@chakra-ui/react";
+import { Button, FormControl, FormLabel, Input, VStack, Box } from "@chakra-ui/react";
 import { useContext, useRef, useState } from "react";
 import { useCustomToast } from "../../hooks/useCustomToast";
 import { LoaderContext } from "../../store/context/loaderContext";
@@ -85,8 +85,16 @@ const Signup = ({ handleTabChange }: SignupComponentType) => {
     }
   };
 
-  const onSubmitHandler = () => {
-    console.log("called");
+  const resetForm = () => {
+    setEmail("");
+    setName("");
+    setPassword("");
+    setProfilePicture("");
+    profilePictureRef.current!.value = "";
+  };
+
+  function handleOnSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
     //validation
     if (!name || !email || !password) {
       toast({
@@ -111,24 +119,11 @@ const Signup = ({ handleTabChange }: SignupComponentType) => {
     } else {
       mutateSignup({ name, email, password });
     }
-  };
-
-  const resetForm = () => {
-    setEmail("");
-    setName("");
-    setPassword("");
-    setProfilePicture("");
-    profilePictureRef.current!.value = "";
-  };
-
-  function handleOnSubmit(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-    onSubmitHandler();
   }
 
   return (
     <>
-      <form onSubmit={(e: React.FormEvent<HTMLFormElement>) => handleOnSubmit(e)} autoComplete="off">
+      <form onSubmit={handleOnSubmit} autoComplete="off" noValidate>
         <VStack spacing="5px">
           <MyInput isRequired={true} formLabelText="Name" isFormLabelVisible={true} value={name} type="text" placeHolder="Enter your name" onChange={(e) => setName(e.target.value)} />
           <MyInput isRequired={true} formLabelText="Email" isFormLabelVisible={true} value={email} type="email" placeHolder="Enter your email" onChange={(e) => setEmail(e.target.value)} />
@@ -149,7 +144,17 @@ const Signup = ({ handleTabChange }: SignupComponentType) => {
             <FormLabel>Profile picture</FormLabel>
             <Input type="file" p={1.5} ref={profilePictureRef} accept="image/*" onChange={(e: React.ChangeEvent<HTMLInputElement>) => profilePickerDetails(e.target.files)} />
           </FormControl>
-          <Button colorScheme="amberScheme" width={"100%"} disabled={isLoading} isLoading={isLoading} style={{ marginTop: 15 }} type="submit" onClick={onSubmitHandler}>
+          <Button
+            colorScheme="amberScheme"
+            width={"100%"}
+            disabled={isLoading}
+            isLoading={isLoading}
+            style={{ marginTop: 15 }}
+            type="submit"
+            onClick={() => {
+              handleOnSubmit;
+            }}
+          >
             Sign up
           </Button>
         </VStack>
