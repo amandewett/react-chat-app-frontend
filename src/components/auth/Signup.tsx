@@ -154,7 +154,7 @@ const Signup = ({ handleTabChange }: SignupComponentType) => {
             <FormLabel>Profile picture</FormLabel>
             <Input type="file" p={1.5} ref={profilePictureRef} accept="image/*" onChange={(e: React.ChangeEvent<HTMLInputElement>) => profilePickerDetails(e.target.files)} />
           </FormControl>
-          <Button colorScheme="blue" width={"100%"} disabled={isLoading} isLoading={isLoading} style={{ marginTop: 15 }} type="submit" onClick={onSubmitHandler}>
+          <Button colorScheme="amberScheme" width={"100%"} disabled={isLoading} isLoading={isLoading} style={{ marginTop: 15 }} type="submit" onClick={onSubmitHandler}>
             Sign up
           </Button>
         </VStack>

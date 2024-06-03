@@ -84,8 +84,8 @@ body {
   z-index: 10;
   height: 100%;
   width: 50%;
-  background-color: #FF1744;
-  color: #FF1744;
+  background-color: #FFCA28;
+  color: #FFCA28;
   animation: side2side 2s ease-in-out infinite;
 }
 
@@ -134,7 +134,7 @@ div.spinner {
 div.spinner div {
   width: 15%;
   height: 16%;
-  background: #FF1744;
+  background: #FFCA28;
   position: absolute;
   left: 50%;
   top: 50%;
@@ -215,3 +215,7 @@ div.spinner div.bar12 {
 }
 
 /* ios spinner */
+
+.transitions:hover {
+  transition: background-color 0.5s linear !important;
+}

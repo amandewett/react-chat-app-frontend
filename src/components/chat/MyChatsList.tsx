@@ -1,4 +1,4 @@
-import { Box, Stack } from "@chakra-ui/react";
+import { Box, Button, Stack, Text, useDisclosure } from "@chakra-ui/react";
 import { useQuery } from "@tanstack/react-query";
 import axiosInstance from "../../utils/axiosInstance";
 import { useContext, useEffect } from "react";
@@ -6,8 +6,12 @@ import { ChatContext } from "../../store/context/chatContext";
 import UserListItem from "./UserListItem";
 import { ChatListItemType } from "../../utils/customTypes";
 import IosSpinner from "../IosSpinner";
+import { AddIcon } from "@chakra-ui/icons";
+import MyModalContainer from "../MyModalContainer";
+import CreateGroupChatModal from "./CreateGroupChatModal";
 
 const MyChatsList = () => {
+  const { isOpen: isOpenCreateGroupModal, onOpen: onOpenCreateGroupModal, onClose: onCloseCreateGroupModal } = useDisclosure();
   const {
     data: myChatsList,
     isPending,
@@ -33,6 +37,16 @@ const MyChatsList = () => {
   return (
     <>
       <Box w={"100%"}>
+        <Box display={"flex"} justifyContent={"space-between"} alignItems={"center"} p={"10px"} overflowX={"hidden"}>
+          <Text fontSize={"x-large"} fontWeight={"600"}>
+            My Chats
+          </Text>
+          <Button display={"flex"} justifyContent={"space-between"} alignItems={"center"} onClick={onOpenCreateGroupModal}>
+            <Text mr={2}>New Group Chats</Text>
+            <AddIcon />
+          </Button>
+          <CreateGroupChatModal isOpen={isOpenCreateGroupModal} onClose={onCloseCreateGroupModal} isCreating />
+        </Box>
         {isPending && <IosSpinner />}
         {isError && <div>Error</div>}
         {!isPending && !isError && (

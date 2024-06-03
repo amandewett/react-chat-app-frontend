@@ -25,7 +25,7 @@ const ChatHeader = () => {
 
   return (
     <>
-      <header className="h-16 bg-white drop-shadow-lg flex items-center justify-center relative">
+      <header className="h-16 bg-white drop-shadow-lg flex items-center justify-center relative z-10">
         <section className="absolute z-0">
           <h1 className="capitalize font-bold w-full text-4xl">Chit chat</h1>
         </section>
@@ -34,9 +34,9 @@ const ChatHeader = () => {
             <SideDrawer onClick={searchDrawerOnOpen} />
             <SearchDrawer isOpen={searchDrawerIsOpen} onClose={searchDrawerOnClose} />
           </nav>
-          <div>
+          <div className="z-10">
             <Menu>
-              <MenuButton as={Button} rightIcon={<BellIcon />}>
+              <MenuButton as={Button} rightIcon={<BellIcon />} bgColor={"primaryColor"}>
                 Notifications
               </MenuButton>
               <MenuList></MenuList>
@@ -78,7 +78,7 @@ const ChatHeader = () => {
           </nav>
           <div>
             <Menu>
-              <MenuButton as={Button} rightIcon={<BellIcon />}>
+              <MenuButton as={Button} rightIcon={<BellIcon />} bgColor={"primaryColor"}>
                 Notifications
               </MenuButton>
               <MenuList></MenuList>

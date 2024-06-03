@@ -105,7 +105,9 @@ const SearchDrawer = ({ isOpen, onClose }: SearchDrawerProps) => {
         <form onSubmit={(e: React.FormEvent<HTMLFormElement>) => onSearchSubmit(e)}>
           <Box display={"flex"} pb={2}>
             <Input placeholder="Search Users" mr={2} value={search} onChange={(e) => setSearch(e.target.value)} />
-            <Button type="submit">Go</Button>
+            <Button type="submit" bgColor={"primaryColor"}>
+              Go
+            </Button>
           </Box>
         </form>
         {isPending && (

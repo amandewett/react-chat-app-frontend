@@ -108,7 +108,7 @@ const Login = () => {
             </InputGroup>
           </FormControl>
 
-          <Button colorScheme="blue" width={"100%"} isLoading={isLoading} disabled={isLoading} style={{ marginTop: 15 }} onClick={onSubmitHandler} type="submit">
+          <Button colorScheme="amberScheme" width={"100%"} isLoading={isLoading} disabled={isLoading} style={{ marginTop: 15 }} onClick={onSubmitHandler} type="submit">
             Login
           </Button>
 

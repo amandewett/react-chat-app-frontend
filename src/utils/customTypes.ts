@@ -69,3 +69,25 @@ export type ChatListItemType = {
   latestMessageId: null;
   participants: Participant[];
 };
+
+export type ProfileModalType = {
+  isOpen: boolean;
+  onClose: () => void;
+  isForOtherUser?: boolean;
+  userName?: string;
+  userEmail?: string;
+  profilePicture?: string;
+};
+
+export type MyModalContainerType = DefaultReactComponentType & {
+  modalHeader: React.ReactNode;
+  isOpen: boolean;
+  onClose: () => void;
+};
+
+export type CreateGroupChatModalType = {
+  isOpen: boolean;
+  isCreating?: boolean;
+  onClose: () => void;
+  groupName?: string;
+};
