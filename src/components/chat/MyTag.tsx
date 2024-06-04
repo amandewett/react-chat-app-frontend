@@ -1,4 +1,4 @@
-import { Avatar, HStack, Tag, TagCloseButton, TagLabel } from "@chakra-ui/react";
+import { Avatar, Tag, TagCloseButton, TagLabel } from "@chakra-ui/react";
 import { MyTagType } from "../../utils/customTypes";
 
 const MyTag = ({ profilePicture, userName }: MyTagType) => {

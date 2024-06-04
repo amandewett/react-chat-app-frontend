@@ -20,7 +20,7 @@ const CreateGroupChatModal = ({ isOpen, onClose, groupName = "", isCreating = fa
   const [search, setSearch] = useState("");
   const debouncedSearch = useDebounce(search.trim());
   const toast = useCustomToast();
-  const { enableLoader, disableLoader, isLoading } = useContext(LoaderContext);
+  const { enableLoader, disableLoader } = useContext(LoaderContext);
   const { setChats } = useContext(ChatContext);
 
   let { mutate: mutateSearchUsers, isPending } = useMutation({
