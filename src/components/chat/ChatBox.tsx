@@ -49,7 +49,7 @@ const ChatBox = () => {
             backgroundSize={"cover"}
             className="bg-no-repeat bg-center"
           >
-            <Box display={"flex"} justifyContent={"space-between"} p={"10px"} bgColor={"white"} h={"10%"} w={"100%"} roundedTopLeft={"15px"} roundedTopRight={"15px"}>
+            <Box display={"flex"} justifyContent={"space-between"} p={"10px"} bgColor={"white"} h={"15%"} w={"100%"} roundedTopLeft={"15px"} roundedTopRight={"15px"}>
               <Text fontSize={"x-large"} fontWeight={"400"}>
                 {chatName}
               </Text>

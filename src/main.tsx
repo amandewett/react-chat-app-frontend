@@ -1,7 +1,7 @@
 import ReactDOM from "react-dom/client";
 import App from "./App.tsx";
 import "./index.css";
-import { ChakraProvider, createMultiStyleConfigHelpers, extendTheme, withDefaultProps } from "@chakra-ui/react";
+import { ChakraProvider, createMultiStyleConfigHelpers, extendTheme } from "@chakra-ui/react";
 import { inputAnatomy } from "@chakra-ui/anatomy";
 import LoaderContextProvider from "./store/context/loaderContextProvider.tsx";
 import ChatContextProvider from "./store/context/chatContext.tsx";

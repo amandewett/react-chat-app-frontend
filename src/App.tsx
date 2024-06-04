@@ -56,13 +56,13 @@ const App = () => {
   return (
     <>
       <div className="relative">
-        {isLoading && <LoadingBar />}
         <div className="fixed bg-[url('../images/bg.webp')] bg-fixed w-screen h-screen bg-cover bg-no-repeat bg-center brightness-[0.4]" />
         <div className="absolute z-[1] w-full">
           <QueryClientProvider client={queryClient}>
             <RouterProvider router={routerConfig} />
           </QueryClientProvider>
         </div>
+        {isLoading && <LoadingBar />}
       </div>
     </>
   );

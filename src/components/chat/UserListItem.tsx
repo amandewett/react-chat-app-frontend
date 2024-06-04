@@ -15,6 +15,7 @@ const UserListItem = ({ id, name, email, profilePicture, handleOnClick, chatId }
         textColor="textColor"
         _hover={{ bgColor: selectedChat ? (chatId === selectedChat!.id ? "primaryColor" : "hoverColor") : "hoverColor" }}
         borderRadius={"16px"}
+        w={"100%"}
         p={"10px"}
         alignItems={"center"}
         cursor={"pointer"}

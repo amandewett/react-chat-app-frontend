@@ -102,3 +102,24 @@ export type MyInputType = DefaultReactComponentType & {
   isRequired?: boolean;
   hasRightElement?: boolean;
 };
+
+export type UseDebounceHookType = {
+  value: any;
+  delay?: number;
+};
+
+export type UserType = {
+  id: string;
+  createdAt: Date;
+  updatedAt: Date;
+  name: string;
+  email: string;
+  profilePicture: string;
+  chatIDs: any[];
+  participantChats: any[];
+};
+
+export type MyTagType = {
+  profilePicture: string;
+  userName: string;
+};

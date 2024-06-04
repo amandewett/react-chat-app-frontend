@@ -1,4 +1,4 @@
-import { DrawerHeader, DrawerBody, Box, Input, Button, Stack, Skeleton, Text } from "@chakra-ui/react";
+import { DrawerHeader, DrawerBody, Box, Button, Stack, Skeleton, Text } from "@chakra-ui/react";
 import { SearchDrawerProps } from "../../utils/customTypes";
 import MyDrawer from "../MyDrawer";
 import { useContext, useEffect, useState } from "react";
@@ -101,17 +101,17 @@ const SearchDrawer = ({ isOpen, onClose }: SearchDrawerProps) => {
 
   return (
     <MyDrawer isOpen={isOpen} onClose={onClose}>
-      <DrawerHeader borderBottomWidth="1px">Search Users</DrawerHeader>
-      <DrawerBody>
+      <DrawerHeader borderBottomWidth="1px">
         <form onSubmit={(e: React.FormEvent<HTMLFormElement>) => onSearchSubmit(e)}>
           <Box display={"flex"} pb={2}>
             <MyInput placeHolder="Search Users" value={search} onChange={(e) => setSearch(e.target.value)} />
-            {/* <Input placeholder="Search Users" mr={2} value={search} onChange={(e) => setSearch(e.target.value)} /> */}
             <Button type="submit" bgColor={"primaryColor"} ml={2}>
               Go
             </Button>
           </Box>
         </form>
+      </DrawerHeader>
+      <DrawerBody>
         {isPending && (
           <Stack>
             <Skeleton height="30px" />
