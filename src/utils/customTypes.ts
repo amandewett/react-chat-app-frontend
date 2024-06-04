@@ -83,6 +83,7 @@ export type MyModalContainerType = DefaultReactComponentType & {
   modalHeader: React.ReactNode;
   isOpen: boolean;
   onClose: () => void;
+  onCloseClicked: () => void;
 };
 
 export type CreateGroupChatModalType = {
@@ -90,6 +91,7 @@ export type CreateGroupChatModalType = {
   isCreating?: boolean;
   onClose: () => void;
   groupName?: string;
+  groupParticipants?: UserType[];
 };
 
 export type MyInputType = DefaultReactComponentType & {
@@ -101,6 +103,7 @@ export type MyInputType = DefaultReactComponentType & {
   formLabelText?: string;
   isRequired?: boolean;
   hasRightElement?: boolean;
+  h?: string;
 };
 
 export type UseDebounceHookType = {
@@ -122,4 +125,6 @@ export type UserType = {
 export type MyTagType = {
   profilePicture: string;
   userName: string;
+  id: string;
+  handleDelete: (id: string) => void;
 };

@@ -19,7 +19,7 @@ const Signup = ({ handleTabChange }: SignupComponentType) => {
   const toast = useCustomToast();
   const { enableLoader, disableLoader, isLoading } = useContext(LoaderContext);
   const [uploadProgress, setUploadProgress] = useState<number>(0);
-  const allowedFileSize = import.meta.env.VITE_ALLOWED_FILE_SIZE_IN_MB || 2;
+  const allowedFileSize = import.meta.env.VITE_ALLOWED_FILE_SIZE_IN_MB || "2";
 
   const { mutate: mutateSignup } = useMutation({
     mutationFn: (postData: any) =>
@@ -49,7 +49,7 @@ const Signup = ({ handleTabChange }: SignupComponentType) => {
 
   const profilePickerDetails = async (files: any | null) => {
     if (files[0].type === "image/jpeg" || files[0].type === "image/png") {
-      if ((files[0].size / 1024 / 1024).toFixed(1) <= "2") {
+      if ((files[0].size / 1024 / 1024).toFixed(1) <= allowedFileSize) {
         const formData = new FormData();
         formData.append("files", files[0]);
         try {

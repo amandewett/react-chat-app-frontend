@@ -13,9 +13,9 @@ import MyTag from "./MyTag";
 import { LoaderContext } from "../../store/context/loaderContext";
 import { ChatContext } from "../../store/context/chatContext";
 
-const CreateGroupChatModal = ({ isOpen, onClose, groupName = "", isCreating = false }: CreateGroupChatModalType) => {
+const CreateGroupChatModal = ({ isOpen, onClose, groupName = "", isCreating = false, groupParticipants = [] }: CreateGroupChatModalType) => {
   const [chatGroupName, setChatGroupName] = useState(groupName);
-  const [selectedUsers, setSelectedUsers] = useState<UserType[]>([]);
+  const [selectedUsers, setSelectedUsers] = useState<UserType[]>(groupParticipants);
   const [userSearchList, setUserSearchList] = useState<UserType[]>([]);
   const [search, setSearch] = useState("");
   const debouncedSearch = useDebounce(search.trim());
@@ -84,6 +84,11 @@ const CreateGroupChatModal = ({ isOpen, onClose, groupName = "", isCreating = fa
     }
   }, [debouncedSearch]);
 
+  useEffect(() => {
+    setChatGroupName(groupName);
+    setSelectedUsers(groupParticipants);
+  }, [groupName]);
+
   const handleSearchInputOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearch(e.target.value);
     if (search === "") {
@@ -111,7 +116,10 @@ const CreateGroupChatModal = ({ isOpen, onClose, groupName = "", isCreating = fa
     }
 
     enableLoader();
-    mutateCreateGroup({ groupName: chatGroupName, groupParticipants: selectedUsers.map((selectedUser) => selectedUser.id) });
+    if (isCreating) {
+      mutateCreateGroup({ groupName: chatGroupName, groupParticipants: selectedUsers.map((selectedUser) => selectedUser.id) });
+    } else {
+    }
     onClose();
 
     return;
@@ -132,17 +140,30 @@ const CreateGroupChatModal = ({ isOpen, onClose, groupName = "", isCreating = fa
     setSearch("");
     setChatGroupName("");
     setUserSearchList([]);
+    setSelectedUsers([]);
+  };
+
+  const handleTagDelete = (id: string) => {
+    setSelectedUsers((prev: UserType[]) => prev.filter((u: UserType) => u.id !== id));
+  };
+
+  const onGroupModalCanceled = () => {
+    if (isCreating) resetForm();
+    setSearch("");
+    setUserSearchList([]);
+    onClose();
   };
 
   return (
-    <MyModalContainer isOpen={isOpen} onClose={onClose} modalHeader={<Text>{isCreating ? "Create Group" : chatGroupName}</Text>}>
+    <MyModalContainer isOpen={isOpen} onClose={onClose} modalHeader={<Text>{isCreating ? "Create Group" : chatGroupName}</Text>} onCloseClicked={onGroupModalCanceled}>
       <form onSubmit={handleOnFormSubmit} autoComplete="off" noValidate>
         <VStack spacing={5}>
           <MyInput value={chatGroupName} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setChatGroupName(e.target.value)} placeHolder="Group name" />
           <MyInput isRequired={true} value={search} onChange={handleSearchInputOnChange} placeHolder="Search users" />
           {/* selected users */}
           <Wrap display={"flex"} w={"100%"}>
-            {selectedUsers.length !== 0 && selectedUsers.map((user: UserType) => <MyTag profilePicture={user.profilePicture} userName={user.name} key={user.id} />)}
+            {selectedUsers.length !== 0 &&
+              selectedUsers.map((user: UserType) => <MyTag id={user.id} handleDelete={handleTagDelete} profilePicture={user.profilePicture} userName={user.name} key={user.id} />)}
           </Wrap>
           {/* render search users list */}
           {isPending && <IosSpinner />}
@@ -164,17 +185,19 @@ const CreateGroupChatModal = ({ isOpen, onClose, groupName = "", isCreating = fa
               </VStack>
             </Box>
           )}
-          <Box display={"flex"} justifyContent={"end"} w={"100%"}>
-            <Button
-              bgColor={"primaryColor"}
-              type="submit"
-              onClick={() => {
-                handleOnFormSubmit;
-              }}
-            >
-              {isCreating ? "Create" : "Update"}
-            </Button>
-          </Box>
+          {isCreating && (
+            <Box display={"flex"} justifyContent={"end"} w={"100%"}>
+              <Button
+                bgColor={"primaryColor"}
+                type="submit"
+                onClick={() => {
+                  handleOnFormSubmit;
+                }}
+              >
+                Create
+              </Button>
+            </Box>
+          )}
         </VStack>
       </form>
     </MyModalContainer>

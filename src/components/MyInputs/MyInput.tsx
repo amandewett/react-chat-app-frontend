@@ -11,12 +11,13 @@ const MyInput = ({
   formLabelText = "",
   isRequired = false,
   hasRightElement = false,
+  ...restProps
 }: MyInputType) => {
   return (
     <FormControl isRequired={isRequired}>
       {isFormLabelVisible && <FormLabel>{formLabelText}</FormLabel>}
       <InputGroup>
-        <Input autoComplete="off" value={value} onChange={onChange} type={type} placeholder={placeHolder} _focusVisible={{ borderColor: "primaryColor", borderWidth: 2 }} />
+        <Input autoComplete="off" value={value} onChange={onChange} type={type} placeholder={placeHolder} _focusVisible={{ borderColor: "primaryColor", borderWidth: 2 }} {...restProps} />
         {hasRightElement && <InputRightElement>{children}</InputRightElement>}
       </InputGroup>
     </FormControl>
