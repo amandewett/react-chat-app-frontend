@@ -53,7 +53,7 @@ const CreateGroupChatModal = ({ isOpen, onClose, groupName = "", isCreating = fa
         status: "error",
       });
     },
-    onSuccess: (data: any) => {
+    onSuccess: () => {
       toast({
         title: `Group created successfully`,
         status: "success",
