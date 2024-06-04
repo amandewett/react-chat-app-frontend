@@ -119,7 +119,7 @@ const Login = () => {
             width={"100%"}
             style={{ marginTop: 15 }}
             onClick={() => {
-              setEmail(`user2@yopmail.com`);
+              setEmail(`guestuser@yopmail.com`);
               setPassword(`123456`);
             }}
           >

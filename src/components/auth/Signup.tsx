@@ -1,4 +1,4 @@
-import { Button, FormControl, FormLabel, Input, VStack, Box } from "@chakra-ui/react";
+import { Button, FormControl, FormLabel, Input, VStack, Box, Progress } from "@chakra-ui/react";
 import { useContext, useRef, useState } from "react";
 import { useCustomToast } from "../../hooks/useCustomToast";
 import { LoaderContext } from "../../store/context/loaderContext";
@@ -7,6 +7,7 @@ import { SignupComponentType } from "../../utils/customTypes";
 import axiosInstance from "../../utils/axiosInstance";
 import MyInput from "../MyInputs/MyInput";
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
+import axios, { AxiosProgressEvent } from "axios";
 
 const Signup = ({ handleTabChange }: SignupComponentType) => {
   const [email, setEmail] = useState<string>("");
@@ -17,6 +18,8 @@ const Signup = ({ handleTabChange }: SignupComponentType) => {
   const [isPasswordVisible, setIsPasswordVisible] = useState<boolean>(false);
   const toast = useCustomToast();
   const { enableLoader, disableLoader, isLoading } = useContext(LoaderContext);
+  const [uploadProgress, setUploadProgress] = useState<number>(0);
+  const allowedFileSize = import.meta.env.VITE_ALLOWED_FILE_SIZE_IN_MB || 2;
 
   const { mutate: mutateSignup } = useMutation({
     mutationFn: (postData: any) =>
@@ -46,37 +49,52 @@ const Signup = ({ handleTabChange }: SignupComponentType) => {
 
   const profilePickerDetails = async (files: any | null) => {
     if (files[0].type === "image/jpeg" || files[0].type === "image/png") {
-      const formData = new FormData();
-      formData.append("files", files[0]);
-      try {
-        enableLoader();
-        const { data } = await axiosInstance.post("/api/file/upload", formData);
-
-        disableLoader();
-        if (data.status) {
-          setProfilePicture(data.result[0]);
-          toast({
-            title: `File uploaded successfully`,
-            status: "success",
+      if ((files[0].size / 1024 / 1024).toFixed(1) <= "2") {
+        const formData = new FormData();
+        formData.append("files", files[0]);
+        try {
+          const { data } = await axios.post("/api/file/upload", formData, {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+            onUploadProgress(progressEvent: AxiosProgressEvent) {
+              setUploadProgress(Math.round(100 * progressEvent.loaded) / progressEvent.total!);
+            },
           });
-        } else {
+
+          if (data.status) {
+            setProfilePicture(data.result[0]);
+            setUploadProgress(0);
+            toast({
+              title: `File uploaded successfully`,
+              status: "success",
+            });
+          } else {
+            toast({
+              title: `File upload failed`,
+              status: "error",
+            });
+          }
+
+          return;
+        } catch (e: any) {
           toast({
-            title: `File upload failed`,
+            title: `Error`,
+            description: JSON.stringify(e.response.data.message),
             status: "error",
           });
+          throw e;
         }
-
-        return;
-      } catch (e: any) {
-        disableLoader();
+      } else {
+        profilePictureRef.current!.value = "";
         toast({
-          title: `Error`,
-          description: JSON.stringify(e.response.data.message),
-          status: "error",
+          title: "Invalid file size",
+          description: "Max size allowed is 2MB",
+          status: "warning",
         });
-        throw e;
       }
     } else {
+      profilePictureRef.current!.value = "";
       toast({
         title: "Invalid file type",
         description: "Please select a JPEG or PNG only",
@@ -143,12 +161,14 @@ const Signup = ({ handleTabChange }: SignupComponentType) => {
           <FormControl isRequired={false} id="pic">
             <FormLabel>Profile picture</FormLabel>
             <Input type="file" p={1.5} ref={profilePictureRef} accept="image/*" onChange={(e: React.ChangeEvent<HTMLInputElement>) => profilePickerDetails(e.target.files)} />
+            {uploadProgress > 0 && <Progress mt={"10px"} borderRadius={"15px"} hasStripe value={uploadProgress} colorScheme="amberScheme" isAnimated />}
           </FormControl>
+
           <Button
             colorScheme="amberScheme"
             width={"100%"}
-            disabled={isLoading}
-            isLoading={isLoading}
+            disabled={isLoading || uploadProgress > 0}
+            isLoading={isLoading || uploadProgress > 0}
             style={{ marginTop: 15 }}
             type="submit"
             onClick={() => {

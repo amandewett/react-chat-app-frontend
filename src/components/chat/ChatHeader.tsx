@@ -39,7 +39,14 @@ const ChatHeader = () => {
               <MenuButton as={Button} rightIcon={<BellIcon />} bgColor={"primaryColor"}>
                 Notifications
               </MenuButton>
-              <MenuList></MenuList>
+              <MenuList>
+                <MenuItem>Notification 1</MenuItem>
+                <MenuItem>Notification 2</MenuItem>
+                <MenuItem>Notification 3</MenuItem>
+                <MenuItem>Notification 4</MenuItem>
+                <MenuItem>Notification 5</MenuItem>
+                <MenuItem>Notification 6</MenuItem>
+              </MenuList>
             </Menu>
             <span className="px-2" />
             <Menu>
@@ -81,7 +88,14 @@ const ChatHeader = () => {
               <MenuButton as={Button} rightIcon={<BellIcon />} bgColor={"primaryColor"}>
                 Notifications
               </MenuButton>
-              <MenuList></MenuList>
+              <MenuList>
+                <MenuItem>Notification 1</MenuItem>
+                <MenuItem>Notification 2</MenuItem>
+                <MenuItem>Notification 3</MenuItem>
+                <MenuItem>Notification 4</MenuItem>
+                <MenuItem>Notification 5</MenuItem>
+                <MenuItem>Notification 6</MenuItem>
+              </MenuList>
             </Menu>
             <span className="px-2" />
             <Menu>
