@@ -1,36 +1,37 @@
 import { DrawerHeader, DrawerBody, Box, Button, Stack, Skeleton, Text } from "@chakra-ui/react";
-import { SearchDrawerProps } from "../../utils/customTypes";
-import MyDrawer from "../MyDrawer";
+import { SearchDrawerProps } from "../../../utils/customTypes";
+import AppDrawerContainer from "../../modals/AppDrawerContainer";
 import { useContext, useEffect, useState } from "react";
-import { useCustomToast } from "../../hooks/useCustomToast";
+import { useCustomToast } from "../../../hooks/useCustomToast";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { ChatContext } from "../../store/context/chatContext";
-import UserListItem from "./UserListItem";
-import IosSpinner from "../IosSpinner";
-import axiosInstance from "../../utils/axiosInstance";
-import MyInput from "../MyInputs/MyInput";
+import { ChatContext } from "../../../store/context/chatContext";
+import UserListItem from "../UserListItem";
+import IosSpinner from "../../IosSpinner";
+import axiosInstance from "../../../utils/axiosInstance";
+import MyInput from "../../MyInputs/MyInput";
 
 const SearchDrawer = ({ isOpen, onClose }: SearchDrawerProps) => {
   const [search, setSearch] = useState<string>("");
+  const [users, setUsers] = useState<any[]>([]);
+  const { userDetails, setSelectedChat, setChats } = useContext(ChatContext);
+  const toast = useCustomToast();
+
   const { data: usersList } = useQuery({
-    queryKey: ["search", "dd"],
+    queryKey: ["usersList"],
     queryFn: ({ signal }) => axiosInstance.get(`api/user/all`, { signal: signal }),
   });
+
   useEffect(() => {
     if (usersList && usersList.data.result.length != 0) {
       setUsers(usersList?.data.result);
     }
   }, [usersList]);
-  const [users, setUsers] = useState<any[]>([]);
-  const { userDetails, setSelectedChat, setChats } = useContext(ChatContext);
-  const toast = useCustomToast();
 
-  const { mutate: searchMutate, isPending } = useMutation({
+  const { mutate: mutateUserSearch, isPending: isPendingUserSearch } = useMutation({
     mutationFn: (queryParams: any) =>
       axiosInstance.get(`api/user/all`, {
         params: queryParams,
       }),
-    onSettled: () => {},
     onError(error: any) {
       toast({
         title: "Error",
@@ -69,7 +70,6 @@ const SearchDrawer = ({ isOpen, onClose }: SearchDrawerProps) => {
   const { mutate: mutateAllChats, isPending: isPendingAllChats } = useMutation({
     mutationFn: () => axiosInstance.get(`api/chat/all`),
     onSettled: () => {
-      restSearchForm();
       onClose();
     },
     onError(error: any) {
@@ -84,35 +84,36 @@ const SearchDrawer = ({ isOpen, onClose }: SearchDrawerProps) => {
     },
   });
 
-  const handleSearch = () => {
-    searchMutate({ search });
-  };
-
-  function onSearchSubmit(e: React.FormEvent<HTMLFormElement>) {
+  function handleSearchSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    handleSearch();
+    mutateUserSearch({ search });
   }
 
   const handleItemOnClick = (id: string) => {
     mutateCreateChat({ receiverId: id });
   };
 
-  const restSearchForm = () => {};
-
   return (
-    <MyDrawer isOpen={isOpen} onClose={onClose}>
+    <AppDrawerContainer isOpen={isOpen} onClose={onClose}>
       <DrawerHeader borderBottomWidth="1px">
-        <form onSubmit={(e: React.FormEvent<HTMLFormElement>) => onSearchSubmit(e)}>
+        <form onSubmit={handleSearchSubmit}>
           <Box display={"flex"} pb={2}>
             <MyInput placeHolder="Search Users" value={search} onChange={(e) => setSearch(e.target.value)} />
-            <Button type="submit" bgColor={"primaryColor"} ml={2}>
+            <Button
+              type="submit"
+              onClick={() => {
+                handleSearchSubmit;
+              }}
+              bgColor={"primaryColor"}
+              ml={2}
+            >
               Go
             </Button>
           </Box>
         </form>
       </DrawerHeader>
       <DrawerBody>
-        {isPending && (
+        {isPendingUserSearch && (
           <Stack>
             <Skeleton height="30px" />
             <Skeleton height="20px" width={"70%"} />
@@ -126,7 +127,7 @@ const SearchDrawer = ({ isOpen, onClose }: SearchDrawerProps) => {
             <Skeleton height="20px" width={"70%"} />
           </Stack>
         )}
-        {!isPending && (
+        {!isPendingUserSearch && (
           <Stack>
             {users.length !== 0 ? (
               users.map((user: any) => {
@@ -139,7 +140,7 @@ const SearchDrawer = ({ isOpen, onClose }: SearchDrawerProps) => {
         )}
         {isPendingCreateChat || (isPendingAllChats && <IosSpinner />)}
       </DrawerBody>
-    </MyDrawer>
+    </AppDrawerContainer>
   );
 };
 export default SearchDrawer;

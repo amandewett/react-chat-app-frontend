@@ -18,7 +18,7 @@ export type SignupComponentType = {
   handleTabChange: (index: number) => void;
 };
 
-export type MyDrawerProps = DefaultReactComponentType & {
+export type AppDrawerContainerProps = DefaultReactComponentType & {
   onClose: () => void;
   isOpen: boolean;
 };
@@ -79,17 +79,17 @@ export type ProfileModalType = {
   profilePicture?: string;
 };
 
-export type MyModalContainerType = DefaultReactComponentType & {
-  modalHeader: React.ReactNode;
+export type AppModalContainerType = DefaultReactComponentType & {
   isOpen: boolean;
   onClose: () => void;
-  onCloseClicked: () => void;
+  closeOnOverlayClick?: boolean;
 };
 
 export type CreateGroupChatModalType = {
   isOpen: boolean;
-  isCreating?: boolean;
   onClose: () => void;
+  isCreating?: boolean;
+  chatId?: string;
   groupName?: string;
   groupParticipants?: UserType[];
 };
@@ -127,4 +127,10 @@ export type MyTagType = {
   userName: string;
   id: string;
   handleDelete: (id: string) => void;
+};
+
+export type UserProfileModalProps = {
+  userName: string;
+  userEmail: string;
+  userProfilePicture: string;
 };

@@ -11,7 +11,7 @@ const UserListItem = ({ id, name, email, profilePicture, handleOnClick, chatId }
       <Box
         display="flex"
         flexDirection={"row"}
-        bgColor={chatId ? (selectedChat ? (chatId === selectedChat!.id ? "primaryColor" : "#ECEFF1") : "#ECEFF1") : "#ECEFF1"}
+        bgColor={chatId ? (selectedChat ? (chatId === selectedChat!.id ? "primaryColor" : "buttonColor") : "buttonColor") : "buttonColor"}
         textColor="textColor"
         _hover={{ bgColor: selectedChat ? (chatId === selectedChat!.id ? "primaryColor" : "hoverColor") : "hoverColor" }}
         borderRadius={"16px"}

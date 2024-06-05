@@ -1,8 +1,8 @@
 import ReactDOM from "react-dom/client";
 import App from "./App.tsx";
 import "./index.css";
-import { ChakraProvider, createMultiStyleConfigHelpers, extendTheme } from "@chakra-ui/react";
-import { inputAnatomy } from "@chakra-ui/anatomy";
+import { ChakraProvider, StyleFunctionProps, createMultiStyleConfigHelpers, extendTheme } from "@chakra-ui/react";
+import { inputAnatomy, buttonAnatomy } from "@chakra-ui/anatomy";
 import LoaderContextProvider from "./store/context/loaderContextProvider.tsx";
 import ChatContextProvider from "./store/context/chatContext.tsx";
 import { useEffect } from "react";
@@ -30,6 +30,7 @@ const chakraTheme = extendTheme({
       900: "#FF6F00",
     },
     primaryColor: "#FFD54F",
+    buttonColor: "#ECEFF1",
     hoverColor: "#FFECB3",
     textColor: "#424242",
   },
@@ -37,6 +38,16 @@ const chakraTheme = extendTheme({
     Input: defineMultiStyleConfig({
       baseStyle: definePartsStyle({}),
     }),
+    Button: {
+      variants: {
+        solid: (props: StyleFunctionProps) => ({
+          bg: "buttonColor",
+          _hover: {
+            bg: "hoverColor",
+          },
+        }),
+      },
+    },
   },
 });
 

@@ -4,7 +4,7 @@ const useCustomToast = () => {
   const toast = useToast({
     isClosable: true,
     duration: 2000,
-    variant: "left-accent",
+    variant: "solid",
     position: "top-right",
   });
   return toast;

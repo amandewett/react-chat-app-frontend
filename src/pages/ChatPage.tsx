@@ -1,7 +1,7 @@
 import { useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { ChatContext } from "../store/context/chatContext";
-import ChatHeader from "../components/chat/ChatHeader";
+import ChatHeader from "../components/chat/header/ChatHeader";
 import ChatBody from "../components/chat/ChatBody";
 
 const ChatPage = () => {

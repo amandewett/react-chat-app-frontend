@@ -4,6 +4,9 @@ const axiosInstance = axios.create({
   baseURL: import.meta.env.VITE_SERVER_HOST,
   headers: {
     "Content-Type": "application/json",
+    "Access-Control-Allow-Origin": "*",
+    // "Access-Control-Allow-Methods": "GET, HEAD, POST, PUT, DELETE, OPTIONS",
+    "Access-Control-Allow-Methods": "*",
   },
   timeout: 5000,
 });

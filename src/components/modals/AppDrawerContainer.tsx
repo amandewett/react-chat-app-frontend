@@ -1,7 +1,7 @@
 import { Drawer, DrawerOverlay, DrawerContent } from "@chakra-ui/react";
-import { MyDrawerProps } from "../utils/customTypes";
+import { AppDrawerContainerProps } from "../../utils/customTypes";
 
-const MyDrawer = ({ children, onClose, isOpen }: MyDrawerProps) => {
+const AppDrawerContainer = ({ children, onClose, isOpen }: AppDrawerContainerProps) => {
   return (
     <Drawer placement="left" onClose={onClose} isOpen={isOpen} blockScrollOnMount={false}>
       <DrawerOverlay />
@@ -9,4 +9,4 @@ const MyDrawer = ({ children, onClose, isOpen }: MyDrawerProps) => {
     </Drawer>
   );
 };
-export default MyDrawer;
+export default AppDrawerContainer;

@@ -165,7 +165,7 @@ const Signup = ({ handleTabChange }: SignupComponentType) => {
           </FormControl>
 
           <Button
-            colorScheme="amberScheme"
+            bgColor={"primaryColor"}
             width={"100%"}
             disabled={isLoading || uploadProgress > 0}
             isLoading={isLoading || uploadProgress > 0}

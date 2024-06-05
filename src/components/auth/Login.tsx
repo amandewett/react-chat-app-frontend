@@ -99,7 +99,7 @@ const Login = () => {
           </MyInput>
 
           <Button
-            colorScheme="amberScheme"
+            bgColor={"primaryColor"}
             width={"100%"}
             isLoading={isLoading}
             disabled={isLoading}
@@ -113,9 +113,10 @@ const Login = () => {
           </Button>
 
           <Button
-            colorScheme="red"
             variant={"solid"}
+            textColor={"primaryColor"}
             disabled={isLoading}
+            bgColor={"#424242"}
             width={"100%"}
             style={{ marginTop: 15 }}
             onClick={() => {
