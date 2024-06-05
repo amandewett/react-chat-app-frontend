@@ -5,7 +5,6 @@ const axiosInstance = axios.create({
   headers: {
     "Content-Type": "application/json",
     "Access-Control-Allow-Origin": "*",
-    // "Access-Control-Allow-Methods": "GET, HEAD, POST, PUT, DELETE, OPTIONS",
     "Access-Control-Allow-Methods": "*",
   },
   timeout: 5000,

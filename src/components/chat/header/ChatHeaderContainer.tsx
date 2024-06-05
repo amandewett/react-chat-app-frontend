@@ -1,4 +1,4 @@
-import { Menu, MenuButton, MenuItem, MenuList, Avatar, Button, Box, Tooltip, Text, useDisclosure, MenuDivider, DrawerHeader } from "@chakra-ui/react";
+import { Menu, MenuButton, MenuItem, MenuList, Avatar, Button, Box, Tooltip, Text, useDisclosure, MenuDivider } from "@chakra-ui/react";
 import { ChatContext } from "../../../store/context/chatContext";
 import { useContext, Suspense, lazy } from "react";
 import { BellIcon, ChevronDownIcon } from "@chakra-ui/icons";
