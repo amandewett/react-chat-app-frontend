@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import { CreateGroupChatModalType, UserType } from "../../utils/customTypes";
+import { CreateGroupModalProps, UserProps } from "../../utils/customTypes";
 import { Text, Box, VStack, Button, Wrap, ModalHeader, ModalCloseButton, ModalBody, ModalFooter } from "@chakra-ui/react";
 import MyInput from "../MyInputs/MyInput";
 import { useCustomToast } from "../../hooks/useCustomToast";
@@ -13,16 +13,33 @@ import { LoaderContext } from "../../store/context/loaderContext";
 import { ChatContext } from "../../store/context/chatContext";
 import AppModalContainer from "../modals/AppModalContainer";
 
-const CreateGroupChatModal = ({ isOpen, onClose, chatId, isCreating = false, groupName = "", groupParticipants = [] }: CreateGroupChatModalType) => {
+const CreateGroupChatModal = ({ isOpen, onClose, chatId, isCreating = false, groupName = "", groupParticipants = [], groupAdminId = "" }: CreateGroupModalProps) => {
   const [chatGroupName, setChatGroupName] = useState("");
-  const [selectedUsers, setSelectedUsers] = useState<UserType[]>([]);
-  const [userSearchList, setUserSearchList] = useState<UserType[]>([]);
+  const [selectedUsers, setSelectedUsers] = useState<UserProps[]>([]);
+  const [userSearchList, setUserSearchList] = useState<UserProps[]>([]);
   const [searchInputValue, setSearchInputValue] = useState<string>("");
   const [participantToRemove, setParticipantToRemove] = useState<string>("");
   const debouncedSearch = useDebounce(searchInputValue.trim());
   const toast = useCustomToast();
   const { enableLoader, disableLoader } = useContext(LoaderContext);
   const { setChats, userDetails, setSelectedChat } = useContext(ChatContext);
+
+  const { mutate: mutateAllChats } = useMutation({
+    mutationFn: () => axiosInstance.get(`api/chat/all`),
+    onSettled: () => {
+      disableLoader();
+    },
+    onError(error: any) {
+      toast({
+        title: "Error",
+        description: error.response.data.message,
+        status: "error",
+      });
+    },
+    onSuccess(data: any) {
+      setChats(data.data.result);
+    },
+  });
 
   let { mutate: mutateSearchUsers, isPending } = useMutation({
     mutationFn: (queryParams: any) =>
@@ -61,23 +78,6 @@ const CreateGroupChatModal = ({ isOpen, onClose, chatId, isCreating = false, gro
     },
   });
 
-  const { mutate: mutateAllChats } = useMutation({
-    mutationFn: () => axiosInstance.get(`api/chat/all`),
-    onSettled: () => {
-      disableLoader();
-    },
-    onError(error: any) {
-      toast({
-        title: "Error",
-        description: error.response.data.message,
-        status: "error",
-      });
-    },
-    onSuccess(data: any) {
-      setChats(data.data.result);
-    },
-  });
-
   const { mutate: mutateRemoveParticipant, isPending: isPendingRemoveParticipant } = useMutation({
     mutationFn: (body: any) => axiosInstance.put(`api/chat/group/removeUser`, body),
     onSettled: () => {},
@@ -89,7 +89,7 @@ const CreateGroupChatModal = ({ isOpen, onClose, chatId, isCreating = false, gro
       });
     },
     onSuccess() {
-      setSelectedUsers((prev: UserType[]) => prev.filter((u: UserType) => u.id !== participantToRemove));
+      setSelectedUsers((prev: UserProps[]) => prev.filter((u: UserProps) => u.id !== participantToRemove));
       mutateAllChats();
     },
   });
@@ -125,6 +125,30 @@ const CreateGroupChatModal = ({ isOpen, onClose, chatId, isCreating = false, gro
     onSuccess() {
       onClose();
       setSelectedChat(undefined);
+      mutateAllChats();
+    },
+  });
+
+  const { mutate: mutateLeaveGroup } = useMutation({
+    mutationFn: () => axiosInstance.delete(`api/chat/group/leave/${chatId}`),
+    onSettled: () => {},
+    onMutate() {
+      enableLoader();
+    },
+    onError(error: any) {
+      toast({
+        title: "Error",
+        description: error.response.data.message,
+        status: "error",
+      });
+    },
+    onSuccess() {
+      onClose();
+      setSelectedChat(undefined);
+      toast({
+        status: "success",
+        title: "Successfully left the group",
+      });
       mutateAllChats();
     },
   });
@@ -201,9 +225,9 @@ const CreateGroupChatModal = ({ isOpen, onClose, chatId, isCreating = false, gro
     return;
   };
 
-  const handleUserOnClick = (user: UserType) => {
-    if (selectedUsers.findIndex((userItem: UserType) => userItem.id === user.id) === -1) {
-      setSelectedUsers((prev: UserType[]) => [...prev, user]);
+  const handleUserOnClick = (user: UserProps) => {
+    if (selectedUsers.findIndex((userItem: UserProps) => userItem.id === user.id) === -1) {
+      setSelectedUsers((prev: UserProps[]) => [...prev, user]);
       if (!isCreating) {
         mutateAddParticipant({ groupId: chatId, users: user?.id });
       }
@@ -223,14 +247,20 @@ const CreateGroupChatModal = ({ isOpen, onClose, chatId, isCreating = false, gro
   };
 
   const handleTagDelete = (id: string) => {
-    if (selectedUsers.length > 2) {
-      setParticipantToRemove(id);
-      mutateRemoveParticipant({ groupId: chatId, userId: id });
+    if (isCreating) {
+      setSelectedUsers((prev: UserProps[]) => prev.filter((u: UserProps) => u.id !== id));
     } else {
-      toast({
-        title: "Group must have at least 2 numbers",
-        status: "warning",
-      });
+      if (selectedUsers.length > 2) {
+        setParticipantToRemove(id);
+        if (!isCreating) {
+          mutateRemoveParticipant({ groupId: chatId, userId: id });
+        }
+      } else {
+        toast({
+          title: "Group must have at least 2 numbers",
+          status: "warning",
+        });
+      }
     }
   };
 
@@ -250,12 +280,19 @@ const CreateGroupChatModal = ({ isOpen, onClose, chatId, isCreating = false, gro
         </ModalHeader>
         <ModalBody>
           <VStack spacing={5}>
-            <MyInput value={chatGroupName} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setChatGroupName(e.target.value)} placeHolder="Group name" />
-            <MyInput isRequired={true} value={searchInputValue} onChange={handleSearchInputOnChange} placeHolder="Search users" />
+            <MyInput value={chatGroupName} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setChatGroupName(e.target.value)} placeholder="Group name" />
+            {isCreating ? (
+              <MyInput isRequired={true} value={searchInputValue} onChange={handleSearchInputOnChange} placeholder="Search users" />
+            ) : (
+              userDetails?.id === groupAdminId && <MyInput isRequired={true} value={searchInputValue} onChange={handleSearchInputOnChange} placeholder="Search users" />
+            )}
+
             {/* selected users */}
             <Wrap display={"flex"} w={"100%"}>
               {selectedUsers.length !== 0 &&
-                selectedUsers.map((user: UserType) => <MyTag id={user.id} handleDelete={handleTagDelete} profilePicture={user.profilePicture} userName={user.name} key={user.id} />)}
+                selectedUsers.map((user: UserProps) => (
+                  <MyTag userId={user.id} groupAdminId={groupAdminId} handleDelete={handleTagDelete} profilePicture={user.profilePicture} userName={user.name} key={user.id} isCreating={isCreating} />
+                ))}
             </Wrap>
             {/* render search users list */}
             {isPending && <IosSpinner />}
@@ -264,7 +301,7 @@ const CreateGroupChatModal = ({ isOpen, onClose, chatId, isCreating = false, gro
             {!isPending && userSearchList.length !== 0 && (
               <Box maxH={"200px"} overflowY={"auto"} w={"100%"}>
                 <VStack w={"100%"}>
-                  {userSearchList.map((user: UserType) => (
+                  {userSearchList.map((user: UserProps) => (
                     <UserListItem
                       key={user.id}
                       id={user.id}
@@ -280,7 +317,7 @@ const CreateGroupChatModal = ({ isOpen, onClose, chatId, isCreating = false, gro
               </Box>
             )}
             <ModalFooter display={"flex"} justifyContent={"end"} w={"100%"} p={0} mb={2}>
-              {!isCreating && userDetails?.id === selectedUsers[0]?.id && (
+              {!isCreating && userDetails?.id === groupAdminId ? (
                 <Button
                   borderColor={"#C62828"}
                   variant={"outline"}
@@ -293,6 +330,21 @@ const CreateGroupChatModal = ({ isOpen, onClose, chatId, isCreating = false, gro
                 >
                   Delete group
                 </Button>
+              ) : (
+                !isCreating && (
+                  <Button
+                    borderColor={"#C62828"}
+                    variant={"outline"}
+                    type="button"
+                    _hover={{ bgColor: "#C62828", textColor: "white" }}
+                    onClick={() => {
+                      mutateLeaveGroup();
+                    }}
+                    mr={4}
+                  >
+                    Leave group
+                  </Button>
+                )
               )}
 
               <Button

@@ -51,8 +51,8 @@ const ChatHeaderContainer = () => {
             <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
               {userDetails && (
                 <Avatar
-                  name={userDetails.name}
-                  src={userDetails.profilePicture.includes("http") ? userDetails.profilePicture : `${import.meta.env.VITE_SERVER_HOST}/${userDetails.profilePicture}`}
+                  name={userDetails?.name}
+                  src={userDetails?.profilePicture?.includes("http") ? userDetails?.profilePicture : `${import.meta.env.VITE_SERVER_HOST}/${userDetails?.profilePicture}`}
                   size={"sm"}
                 />
               )}

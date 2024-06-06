@@ -8,6 +8,7 @@ import { ChatContext } from "../../store/context/chatContext";
 import axiosInstance from "../../utils/axiosInstance";
 import MyInput from "../MyInputs/MyInput";
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
+import { LoginProps } from "../../utils/customTypes";
 
 const Login = () => {
   const [email, setEmail] = useState<string>("");
@@ -30,22 +31,18 @@ const Login = () => {
       });
     },
     onSuccess(data: any) {
+      const res: LoginProps = data.data.result;
       resetForm();
       toast({
         title: data.data.message,
         status: "success",
       });
-      //store data in local storage
-      const userDetails = {
-        ...data.data.result,
-        token: data.data.token,
-      };
-      storeDataToLocalStorage(userDetails);
+      storeDataToLocalStorage(res);
       navigate(`/chat`);
     },
   });
 
-  const storeDataToLocalStorage = (data: any) => {
+  const storeDataToLocalStorage = (data: LoginProps) => {
     localStorage.setItem("user", JSON.stringify(data));
     setUserDetails(data);
   };
@@ -84,14 +81,14 @@ const Login = () => {
     <>
       <form onSubmit={handleSubmit} autoComplete="off" noValidate>
         <VStack spacing="5px">
-          <MyInput isRequired={true} formLabelText="Email" isFormLabelVisible={true} value={email} type="email" placeHolder="Enter your email" onChange={(e) => setEmail(e.target.value)} />
+          <MyInput isRequired={true} formLabelText="Email" isFormLabelVisible={true} value={email} type="email" placeholder="Enter your email" onChange={(e) => setEmail(e.target.value)} />
           <MyInput
             isRequired={true}
             formLabelText="Password"
             isFormLabelVisible={true}
             value={password}
             type={isPasswordVisible ? "text" : "password"}
-            placeHolder="Enter your password"
+            placeholder="Enter your password"
             onChange={(e) => setPassword(e.target.value)}
             hasRightElement={true}
           >

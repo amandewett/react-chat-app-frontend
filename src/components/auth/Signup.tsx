@@ -3,13 +3,13 @@ import { useContext, useRef, useState } from "react";
 import { useCustomToast } from "../../hooks/useCustomToast";
 import { LoaderContext } from "../../store/context/loaderContext";
 import { useMutation } from "@tanstack/react-query";
-import { SignupComponentType } from "../../utils/customTypes";
+import { SignupComponentProps } from "../../utils/customTypes";
 import axiosInstance from "../../utils/axiosInstance";
 import MyInput from "../MyInputs/MyInput";
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 import axios, { AxiosProgressEvent } from "axios";
 
-const Signup = ({ handleTabChange }: SignupComponentType) => {
+const Signup = ({ handleTabChange }: SignupComponentProps) => {
   const [email, setEmail] = useState<string>("");
   const [name, setName] = useState<string>("");
   const [password, setPassword] = useState<string>("");
@@ -143,15 +143,15 @@ const Signup = ({ handleTabChange }: SignupComponentType) => {
     <>
       <form onSubmit={handleOnSubmit} autoComplete="off" noValidate>
         <VStack spacing="5px">
-          <MyInput isRequired={true} formLabelText="Name" isFormLabelVisible={true} value={name} type="text" placeHolder="Enter your name" onChange={(e) => setName(e.target.value)} />
-          <MyInput isRequired={true} formLabelText="Email" isFormLabelVisible={true} value={email} type="email" placeHolder="Enter your email" onChange={(e) => setEmail(e.target.value)} />
+          <MyInput isRequired={true} formLabelText="Name" isFormLabelVisible={true} value={name} type="text" placeholder="Enter your name" onChange={(e) => setName(e.target.value)} />
+          <MyInput isRequired={true} formLabelText="Email" isFormLabelVisible={true} value={email} type="email" placeholder="Enter your email" onChange={(e) => setEmail(e.target.value)} />
           <MyInput
             isRequired={true}
             formLabelText="Password"
             isFormLabelVisible={true}
             value={password}
             type={isPasswordVisible ? "text" : "password"}
-            placeHolder="Enter your password"
+            placeholder="Enter your password"
             onChange={(e) => setPassword(e.target.value)}
             hasRightElement={true}
           >

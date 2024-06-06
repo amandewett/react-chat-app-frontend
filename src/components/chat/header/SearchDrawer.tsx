@@ -1,5 +1,5 @@
 import { DrawerHeader, DrawerBody, Box, Button, Stack, Skeleton, Text } from "@chakra-ui/react";
-import { SearchDrawerProps } from "../../../utils/customTypes";
+import { SearchDrawerProps, UserProps } from "../../../utils/customTypes";
 import AppDrawerContainer from "../../modals/AppDrawerContainer";
 import { useContext, useEffect, useState } from "react";
 import { useCustomToast } from "../../../hooks/useCustomToast";
@@ -12,7 +12,7 @@ import MyInput from "../../MyInputs/MyInput";
 
 const SearchDrawer = ({ isOpen, onClose }: SearchDrawerProps) => {
   const [search, setSearch] = useState<string>("");
-  const [users, setUsers] = useState<any[]>([]);
+  const [users, setUsers] = useState<UserProps[]>([]);
   const { userDetails, setSelectedChat, setChats } = useContext(ChatContext);
   const toast = useCustomToast();
 
@@ -49,7 +49,7 @@ const SearchDrawer = ({ isOpen, onClose }: SearchDrawerProps) => {
       axiosInstance.post(`api/chat/create`, body, {
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${userDetails.token}`,
+          Authorization: `Bearer ${userDetails?.token}`,
         },
       }),
     onSettled: () => {
@@ -98,7 +98,7 @@ const SearchDrawer = ({ isOpen, onClose }: SearchDrawerProps) => {
       <DrawerHeader borderBottomWidth="1px">
         <form onSubmit={handleSearchSubmit}>
           <Box display={"flex"} pb={2}>
-            <MyInput placeHolder="Search Users" value={search} onChange={(e) => setSearch(e.target.value)} />
+            <MyInput placeholder="Search Users" value={search} onChange={(e) => setSearch(e.target.value)} />
             <Button
               type="submit"
               onClick={() => {
@@ -130,8 +130,8 @@ const SearchDrawer = ({ isOpen, onClose }: SearchDrawerProps) => {
         {!isPendingUserSearch && (
           <Stack>
             {users.length !== 0 ? (
-              users.map((user: any) => {
-                return <UserListItem key={user.id} id={user.id} name={user.name} email={user.email} profilePicture={user.profilePicture} handleOnClick={handleItemOnClick} />;
+              users.map((user: UserProps) => {
+                return <UserListItem key={user?.id} id={user?.id} name={user?.name} email={user?.email} profilePicture={user?.profilePicture} handleOnClick={handleItemOnClick} />;
               })
             ) : (
               <Text>No users found</Text>

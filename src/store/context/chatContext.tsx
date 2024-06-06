@@ -1,13 +1,13 @@
 import { createContext, useReducer } from "react";
-import { DefaultReactComponentType, SelectedChatType } from "../../utils/customTypes";
+import { ChatProps, DefaultComponentProps, LoginProps } from "../../utils/customTypes";
 
 export type ChatContextType = {
-  userDetails: any | undefined;
-  setUserDetails: (data: any) => void;
-  setSelectedChat: (chat: any) => void;
-  selectedChat: SelectedChatType | undefined;
-  setChats: (chats: any) => void;
-  chats: SelectedChatType[] | [];
+  userDetails: LoginProps | undefined;
+  setUserDetails: (data: LoginProps | undefined) => void;
+  selectedChat: ChatProps | undefined;
+  setSelectedChat: (chat: ChatProps | undefined) => void;
+  chats: ChatProps[] | undefined;
+  setChats: (chats: ChatProps[] | undefined) => void;
 };
 
 export type ReducerActionType = {
@@ -58,24 +58,24 @@ const userReducerInitialArguments = {
   chats: [],
 };
 
-const chatContextProvider = ({ children }: DefaultReactComponentType) => {
+const chatContextProvider = ({ children }: DefaultComponentProps) => {
   const [userState, userDispatch] = useReducer(userReducer, userReducerInitialArguments);
 
-  const setUserDetails = (userData: any) => {
+  const setUserDetails = (userData: LoginProps | undefined) => {
     userDispatch({
       type: "SET_USER_DETAILS",
       payload: userData,
     });
   };
 
-  const handleSetSelectedChat = (chat: SelectedChatType) => {
+  const handleSetSelectedChat = (chat: ChatProps | undefined) => {
     userDispatch({
       type: "SET_SELECTED_CHAT",
       payload: chat,
     });
   };
 
-  const handleSetChats = (chats: SelectedChatType) => {
+  const handleSetChats = (chats: ChatProps[] | undefined) => {
     userDispatch({
       type: "SET_CHATS",
       payload: chats,

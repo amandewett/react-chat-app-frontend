@@ -1,7 +1,7 @@
 import { Modal, ModalContent, ModalOverlay } from "@chakra-ui/react";
-import { AppModalContainerType } from "../../utils/customTypes";
+import { AppModalContainerProps } from "../../utils/customTypes";
 
-const AppModalContainer = ({ isOpen, onClose, children, closeOnOverlayClick = true }: AppModalContainerType) => {
+const AppModalContainer = ({ isOpen, onClose, children, closeOnOverlayClick = true }: AppModalContainerProps) => {
   return (
     <Modal isOpen={isOpen} onClose={onClose} isCentered closeOnOverlayClick={closeOnOverlayClick}>
       <ModalOverlay zIndex={9}>

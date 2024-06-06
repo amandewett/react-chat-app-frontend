@@ -18,15 +18,7 @@ const ChatBody = () => {
           <UserChatList />
         </Suspense>
       </Box>
-      <Box
-        w={"70%"}
-        h={"100%"}
-        bgColor={"white"}
-        background={"linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('../images/chat_bg.webp')"}
-        rounded={"15px"}
-        backgroundSize={"cover"}
-        ml={5}
-      >
+      <Box w={"70%"} h={"100%"} bgColor={"white"} background={"linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('../images/bg.webp')"} rounded={"15px"} backgroundSize={"cover"} ml={5}>
         {!selectedChat && <EmptyChatBox />}
         {selectedChat && (
           <Suspense>

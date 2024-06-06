@@ -1,136 +1,143 @@
 import { ReactNode } from "react";
 
-export type DefaultReactComponentType = {
-  children?: ReactNode;
-};
-
-export type FormType = DefaultReactComponentType & {
-  label: string;
-  isRequired: boolean;
-  placeHolder: string;
-  inputType: string;
-  id: string;
-  value: string;
-  onChange: (value: string) => void;
-};
-
-export type SignupComponentType = {
-  handleTabChange: (index: number) => void;
-};
-
-export type AppDrawerContainerProps = DefaultReactComponentType & {
-  onClose: () => void;
-  isOpen: boolean;
-};
-
-export type SearchDrawerProps = {
-  onClose: () => void;
-  isOpen: boolean;
-};
-
-export type UserListItemProps = {
-  id: string;
-  name: string;
-  email: string;
-  profilePicture: string;
-  handleOnClick: (id: string) => void;
-  chatId?: string;
-};
-
-export type SelectedChatType = {
+/* API response types */
+export type LoginProps = {
   id: string;
   createdAt: Date;
   updatedAt: Date;
-  chatName: null;
-  isGroupChat: boolean;
-  groupAdminID: null;
-  participantIDs: string[];
-  messageIDs: any[];
-  latestMessageId: null;
-  participants: Participant[];
-};
-
-export type Participant = {
   name: string;
   email: string;
-  id: string;
   profilePicture: string;
+  token: string;
 };
 
-export type ChatListItemType = {
+export type UserProps = {
   id: string;
   createdAt: Date;
   updatedAt: Date;
-  chatName: null;
-  isGroupChat: boolean;
-  groupAdminID: null;
-  participantIDs: string[];
-  messageIDs: any[];
-  latestMessageId: null;
-  participants: Participant[];
-};
-
-export type ProfileModalType = {
-  isOpen: boolean;
-  onClose: () => void;
-  isForOtherUser?: boolean;
-  userName?: string;
-  userEmail?: string;
+  name: string;
+  email: string;
   profilePicture?: string;
 };
 
-export type AppModalContainerType = DefaultReactComponentType & {
+export type ChatProps = {
+  id: string;
+  createdAt: Date;
+  updatedAt: Date;
+  chatName?: string;
+  isGroupChat: boolean;
+  groupAdminID?: string;
+  participantIDs?: string[];
+  latestMessageId?: string;
+  messageIDs?: any[];
+  participants: UserProps[];
+  latestMessage?: LatestMessageProps;
+};
+
+export type LatestMessageProps = {
+  id: string;
+  createdAt: Date;
+  updatedAt: Date;
+  senderId: string;
+  chatId: string;
+  message: string;
+  sender: UserProps;
+};
+
+export type MessageResponseProps = {
+  id: string;
+  createdAt: Date;
+  updatedAt: Date;
+  senderId: string;
+  chatId: string;
+  message: string;
+  chat: MessageChatProps;
+  sender: UserProps;
+};
+
+export type MessageChatProps = {
+  id: string;
+  createdAt: Date;
+  updatedAt: Date;
+  chatName?: string;
+  isGroupChat: boolean;
+  groupAdminID?: string;
+  participantIDs: string[];
+  latestMessageId: string;
+  messageIDs: any[];
+};
+/* API response types */
+
+/* components props */
+export type DefaultComponentProps = {
+  children?: ReactNode;
+};
+
+export type MyInputProps = DefaultComponentProps & {
+  value: string;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  type?: string;
+  placeholder?: string;
+  isFormLabelVisible?: boolean;
+  formLabelText?: string;
+  isRequired?: boolean;
+  hasRightElement?: boolean;
+};
+
+export type SignupComponentProps = DefaultComponentProps & {
+  handleTabChange: (index: number) => void;
+};
+
+export type SearchDrawerProps = DefaultComponentProps & {
+  isOpen: boolean;
+  onClose: () => void;
+};
+
+export type UserListItemProps = DefaultComponentProps & {
+  id: string;
+  name: string;
+  email: string;
+  profilePicture?: string;
+  handleOnClick: (id: string) => void;
+  chatId?: string;
+  isForChatList?: boolean;
+  latestMessage?: string;
+  latestMessageSenderName?: string;
+};
+
+export type CreateGroupModalProps = DefaultComponentProps & {
+  isOpen: boolean;
+  onClose: () => void;
+  chatId?: string;
+  isCreating?: boolean;
+  groupName?: string;
+  groupParticipants?: UserProps[];
+  groupAdminId?: string;
+};
+
+export type MyTagProps = DefaultComponentProps & {
+  profilePicture?: string;
+  userName?: string;
+  handleDelete: (id: string) => void;
+  userId: string;
+  groupAdminId?: string;
+  isCreating?: boolean;
+};
+
+export type AppDrawerContainerProps = DefaultComponentProps & {
+  isOpen: boolean;
+  onClose: () => void;
+};
+
+export type AppModalContainerProps = DefaultComponentProps & {
   isOpen: boolean;
   onClose: () => void;
   closeOnOverlayClick?: boolean;
 };
 
-export type CreateGroupChatModalType = {
-  isOpen: boolean;
-  onClose: () => void;
-  isCreating?: boolean;
-  chatId?: string;
-  groupName?: string;
-  groupParticipants?: UserType[];
+export type UserProfileModalProps = DefaultComponentProps & {
+  userName?: string;
+  userEmail?: string;
+  userProfilePicture?: string;
 };
-
-export type MyInputType = DefaultReactComponentType & {
-  value: string;
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  type?: string;
-  placeHolder?: string;
-  isFormLabelVisible?: boolean;
-  formLabelText?: string;
-  isRequired?: boolean;
-  hasRightElement?: boolean;
-  h?: string;
-};
-
-export type UseDebounceHookType = {
-  value: any;
-  delay?: number;
-};
-
-export type UserType = {
-  id: string;
-  createdAt: Date;
-  updatedAt: Date;
-  name: string;
-  email: string;
-  profilePicture: string;
-  chatIDs: any[];
-  participantChats: any[];
-};
-
-export type MyTagType = {
-  profilePicture: string;
-  userName: string;
-  id: string;
-  handleDelete: (id: string) => void;
-};
-
-export type UserProfileModalProps = {
-  userName: string;
-  userEmail: string;
-  userProfilePicture: string;
-};
+/* components props */

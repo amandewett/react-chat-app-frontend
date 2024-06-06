@@ -3,7 +3,7 @@ import { Box, Text, Button, useDisclosure } from "@chakra-ui/react";
 import { Suspense, useContext } from "react";
 import { ChatContext } from "../../store/context/chatContext";
 import CreateGroupChatModal from "./CreateGroupChatModal";
-import { UserType } from "../../utils/customTypes";
+import {} from "../../utils/customTypes";
 import AppModalContainer from "../modals/AppModalContainer";
 import UserProfileModal from "../modals/UserProfileModal";
 
@@ -11,27 +11,27 @@ const MessengerHeader = () => {
   const { isOpen: isOpenUpdateGroupModal, onOpen: onOpenUpdateGroupModal, onClose: onCloseUpdateGroupModal } = useDisclosure();
   const { isOpen: isOpenProfileModal, onOpen: onOpenProfileModal, onClose: onCloseProfileModal } = useDisclosure();
   const { selectedChat, userDetails } = useContext(ChatContext);
-  const title: string = selectedChat
+  const title = selectedChat
     ? selectedChat?.isGroupChat
-      ? selectedChat?.chatName ?? ""
-      : userDetails?.name ?? "" === selectedChat?.participants[0]?.name ?? ""
-      ? selectedChat?.participants[1]?.name ?? ""
-      : selectedChat?.participants[0]?.name ?? ""
+      ? selectedChat?.chatName
+      : userDetails?.name === selectedChat?.participants[0]?.name
+      ? selectedChat?.participants[1]?.name
+      : selectedChat?.participants[0]?.name
     : "";
-  const email: string = selectedChat
+  const email = selectedChat
     ? selectedChat?.isGroupChat
       ? ""
-      : userDetails?.name ?? "" === selectedChat?.participants[0]?.name ?? ""
-      ? selectedChat?.participants[1]?.email ?? ""
-      : selectedChat?.participants[0]?.email ?? ""
+      : userDetails?.name === selectedChat?.participants[0]?.name
+      ? selectedChat?.participants[1]?.email
+      : selectedChat?.participants[0]?.email
     : "";
 
-  const profilePicture: string = selectedChat
+  const profilePicture = selectedChat
     ? selectedChat?.isGroupChat
       ? ""
-      : userDetails?.name ?? "" === selectedChat?.participants[0]?.name ?? ""
-      ? selectedChat?.participants[1]?.profilePicture ?? ""
-      : selectedChat?.participants[0]?.profilePicture ?? ""
+      : userDetails?.name === selectedChat?.participants[0]?.name
+      ? selectedChat?.participants[1]?.profilePicture
+      : selectedChat?.participants[0]?.profilePicture
     : "";
 
   return (
@@ -61,8 +61,9 @@ const MessengerHeader = () => {
           onClose={onCloseUpdateGroupModal}
           chatId={selectedChat.id}
           groupName={title}
-          groupParticipants={selectedChat?.participants as UserType[]}
+          groupParticipants={selectedChat?.participants}
           isCreating={false}
+          groupAdminId={selectedChat?.groupAdminID ?? ""}
         />
       )}
 

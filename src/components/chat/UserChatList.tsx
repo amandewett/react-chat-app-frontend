@@ -4,7 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useEffect, useContext } from "react";
 import { ChatContext } from "../../store/context/chatContext";
 import IosSpinner from "../IosSpinner";
-import { ChatListItemType } from "../../utils/customTypes";
+import { ChatProps } from "../../utils/customTypes";
 import UserListItem from "./UserListItem";
 
 const UserChatList = () => {
@@ -27,7 +27,7 @@ const UserChatList = () => {
     }
   }, [isPendingUserChatList]);
 
-  const handleOnChatClicked = (chat: ChatListItemType) => setSelectedChat(chat);
+  const handleOnChatClicked = (chat: ChatProps) => setSelectedChat(chat);
 
   return (
     <Box mt={5}>
@@ -35,27 +35,31 @@ const UserChatList = () => {
       {isPendingUserChatList && <IosSpinner />}
       {!isPendingUserChatList && !isErrorUserChatList && (
         <VStack overflowY={"auto"} h={"90%"} spacing={3}>
-          {chats.map((chat: ChatListItemType) => {
-            const chatName: string | null = chat?.isGroupChat ? chat?.chatName : chat?.participants[0]?.id === userDetails?.id ? chat?.participants[1]?.name : chat?.participants[0]?.name;
-            const chatEmail: string | null = chat?.participants[0]?.id === userDetails?.id ? chat?.participants[1]?.email : chat?.participants[0]?.email;
-            const chatUserId: string | null = chat?.participants[0]?.id === userDetails?.id ? chat?.participants[1]?.id : chat?.participants[0]?.id;
-            const chatUserProfilePicture: string = chat?.isGroupChat
-              ? chat?.participants[0]?.profilePicture
-              : chat?.participants[0]?.id === userDetails?.id
-              ? chat?.participants[1]?.profilePicture
-              : chat?.participants[0]?.profilePicture;
-            return (
-              <UserListItem
-                key={chat?.id}
-                name={chatName!}
-                email={chatEmail}
-                id={chatUserId}
-                handleOnClick={() => handleOnChatClicked(chat)}
-                profilePicture={chatUserProfilePicture}
-                chatId={chat.id}
-              />
-            );
-          })}
+          {chats &&
+            chats?.map((chat: ChatProps) => {
+              const chatName = chat?.isGroupChat ? chat?.chatName : chat?.participants[0]?.id === userDetails?.id ? chat?.participants[1]?.name : chat?.participants[0]?.name;
+              const chatEmail = chat?.participants[0]?.id === userDetails?.id ? chat?.participants[1]?.email : chat?.participants[0]?.email;
+              const chatUserId = chat?.participants[0]?.id === userDetails?.id ? chat?.participants[1]?.id : chat?.participants[0]?.id;
+              const chatUserProfilePicture = chat?.isGroupChat
+                ? chat?.participants[0]?.profilePicture
+                : chat?.participants[0]?.id === userDetails?.id
+                ? chat?.participants[1]?.profilePicture
+                : chat?.participants[0]?.profilePicture;
+              return (
+                <UserListItem
+                  key={chat?.id}
+                  name={chatName!}
+                  email={chatEmail ?? ""}
+                  id={chatUserId ?? ""}
+                  handleOnClick={() => handleOnChatClicked(chat)}
+                  profilePicture={chatUserProfilePicture}
+                  chatId={chat.id}
+                  isForChatList={true}
+                  latestMessage={chat?.latestMessageId !== null ? chat?.latestMessage?.message : ""}
+                  latestMessageSenderName={chat?.latestMessageId !== null ? chat?.latestMessage?.sender?.name : ""}
+                />
+              );
+            })}
         </VStack>
       )}
     </Box>
