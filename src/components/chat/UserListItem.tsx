@@ -13,14 +13,14 @@ const UserListItem = ({ id, name, email, profilePicture, handleOnClick, chatId, 
         flexDirection={"row"}
         bgColor={chatId ? (selectedChat ? (chatId === selectedChat?.id ? "primaryColor" : "buttonColor") : "buttonColor") : "buttonColor"}
         textColor="textColor"
-        _hover={{ bgColor: selectedChat ? (chatId === selectedChat?.id ? "primaryColor" : "hoverColor") : "hoverColor" }}
+        _hover={{ bgColor: selectedChat ? (chatId === selectedChat?.id ? "primaryColor" : "hoverColor") : "hoverColor", transform: "translateX(-0.5em)" }}
         borderRadius={"16px"}
+        transition={"background-color 0.4s ease, transform 0.4s ease"}
         w={"100%"}
         p={"10px"}
         maxW={"100%"}
         alignItems={"center"}
         cursor={"pointer"}
-        className="transitions"
         onClick={() => handleOnClick(id)}
       >
         <Avatar name={name} src={profilePicture?.includes("http") ? profilePicture : `${import.meta.env.VITE_SERVER_HOST}/${profilePicture}`} size={"sm"} />

@@ -30,11 +30,9 @@ const UserChatList = () => {
   const handleOnChatClicked = (chat: ChatProps) => setSelectedChat(chat);
 
   return (
-    <Box mt={5}>
-      {isErrorUserChatList && <span>Error component</span>}
-      {isPendingUserChatList && <IosSpinner />}
+    <Box mt={5} overflow={"auto"} maxH={"90%"} p={4} pb={10}>
       {!isPendingUserChatList && !isErrorUserChatList && (
-        <VStack overflowY={"auto"} h={"90%"} spacing={3}>
+        <VStack spacing={3}>
           {chats &&
             chats?.map((chat: ChatProps) => {
               const chatName = chat?.isGroupChat ? chat?.chatName : chat?.participants[0]?.id === userDetails?.id ? chat?.participants[1]?.name : chat?.participants[0]?.name;
@@ -62,6 +60,8 @@ const UserChatList = () => {
             })}
         </VStack>
       )}
+      {isErrorUserChatList && <span>Error component</span>}
+      {isPendingUserChatList && <IosSpinner />}
     </Box>
   );
 };

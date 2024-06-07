@@ -7,6 +7,7 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  --primaryColor: #F43F5E;
 }
 
 body {
@@ -17,7 +18,7 @@ body {
 .loader {
   border: 8px solid #f3f3f3;
   border-radius: 50%;
-  border-top: 8px solid #3498db;
+  border-top: 8px solid var(--primaryColor);
   width: 80px;
   height: 80px;
   -webkit-animation: spin 0.5s linear infinite;
@@ -84,8 +85,8 @@ body {
   z-index: 10;
   height: 100%;
   width: 50%;
-  background-color: #FFCA28;
-  color: #FFCA28;
+  background-color: var(--primaryColor);
+  color: var(--primaryColor);
   animation: side2side 2s ease-in-out infinite;
 }
 
@@ -134,7 +135,7 @@ div.spinner {
 div.spinner div {
   width: 15%;
   height: 16%;
-  background: #FFCA28;
+  background: var(--primaryColor);
   position: absolute;
   left: 50%;
   top: 50%;
@@ -217,7 +218,7 @@ div.spinner div.bar12 {
 /* ios spinner */
 
 .transitions:hover {
-  transition: background-color 0.5s linear !important;
+  transition: background-color 0.4s ease, all 1s ease;
 }
 
 input[type=password]::-ms-reveal,

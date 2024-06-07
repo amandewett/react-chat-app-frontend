@@ -161,7 +161,7 @@ const Signup = ({ handleTabChange }: SignupComponentProps) => {
           <FormControl isRequired={false} id="pic">
             <FormLabel>Profile picture</FormLabel>
             <Input type="file" p={1.5} ref={profilePictureRef} accept="image/*" onChange={(e: React.ChangeEvent<HTMLInputElement>) => profilePickerDetails(e.target.files)} />
-            {uploadProgress > 0 && <Progress mt={"10px"} borderRadius={"15px"} hasStripe value={uploadProgress} colorScheme="amberScheme" isAnimated />}
+            {uploadProgress > 0 && <Progress mt={"10px"} borderRadius={"15px"} hasStripe value={uploadProgress} colorScheme="appColorScheme" isAnimated />}
           </FormControl>
 
           <Button

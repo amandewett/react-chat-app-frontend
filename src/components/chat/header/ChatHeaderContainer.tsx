@@ -47,7 +47,7 @@ const ChatHeaderContainer = () => {
             </MenuButton>
           </Menu>
           <span className="px-2" />
-          <Menu>
+          <Menu colorScheme="appColorScheme">
             <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
               {userDetails && (
                 <Avatar
@@ -58,14 +58,18 @@ const ChatHeaderContainer = () => {
               )}
             </MenuButton>
             <MenuList>
-              <MenuItem onClick={onOpenProfileModal}>My Profile</MenuItem>
+              <MenuItem onClick={onOpenProfileModal} _hover={{ bgColor: "hoverColor" }} transition="all 0.3s ease">
+                My Profile
+              </MenuItem>
               <Suspense>
                 <AppModalContainer isOpen={isOpenProfileModal} onClose={onCloseProfileModal}>
                   <UserProfileModal userName={userDetails?.name} userEmail={userDetails?.email} userProfilePicture={userDetails?.profilePicture} />
                 </AppModalContainer>
               </Suspense>
               <MenuDivider />
-              <MenuItem onClick={logout}>Logout</MenuItem>
+              <MenuItem onClick={logout} _hover={{ bgColor: "hoverColor" }} transition="all 0.3s ease">
+                Logout
+              </MenuItem>
             </MenuList>
           </Menu>
         </div>

@@ -17,21 +17,22 @@ const { definePartsStyle, defineMultiStyleConfig } = createMultiStyleConfigHelpe
 
 const chakraTheme = extendTheme({
   colors: {
-    amberScheme: {
-      50: "#FFF8E1",
-      100: "#FFECB3",
-      200: "#FFE082",
-      300: "#FFD54F",
-      400: "#FFCA28",
-      500: "#FFC107",
-      600: "#FFB300",
-      700: "#FFA000",
-      800: "#FF8F00",
-      900: "#FF6F00",
+    appColorScheme: {
+      50: "#FFF1F2",
+      100: "#FFE4E6",
+      200: "#FECDD3",
+      300: "#FDA4AF",
+      400: "#FB7185",
+      500: "#F43F5E",
+      600: "#E11D48",
+      700: "#BE123C",
+      800: "#9F1239",
+      900: "#881337",
+      950: "#4C0519",
     },
-    primaryColor: "#FFD54F",
+    primaryColor: "#F43F5E",
     buttonColor: "#ECEFF1",
-    hoverColor: "#FFECB3",
+    hoverColor: "#FFE4E6",
     textColor: "#424242",
   },
   components: {

@@ -8,7 +8,7 @@ const ChatListHeader = () => {
   const { isOpen: isOpenCreateGroupModal, onOpen: onOpenCreateGroupModal, onClose: onCloseCreateGroupModal } = useDisclosure();
 
   return (
-    <Box display={"flex"} justifyContent={"space-between"} alignItems={"center"}>
+    <Box display={"flex"} justifyContent={"space-between"} alignItems={"center"} p={4}>
       <Text fontSize={"2xl"} fontWeight={"600"}>
         My Chats
       </Text>

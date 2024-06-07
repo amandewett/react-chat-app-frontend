@@ -11,8 +11,8 @@ const Messenger = lazy(() => import("././Messenger"));
 const ChatBody = () => {
   const { selectedChat } = useContext(ChatContext);
   return (
-    <Box display={"flex"} justifyContent={"space-between"} w={"100%"} h={"90vh"} px={"100px"} py={"50px"}>
-      <Box w={"30%"} h={"100%"} bgColor={"white"} rounded={"15px"} overflow={"hidden"} p={4}>
+    <Box display={"flex"} justifyContent={"space-between"} w={"100%"} h={"85vh"} px={"100px"} py={"50px"}>
+      <Box w={"30%"} bgColor={"white"} rounded={"15px"} overflow={"hidden"}>
         <ChatListHeader />
         <Suspense fallback={<IosSpinner />}>
           <UserChatList />

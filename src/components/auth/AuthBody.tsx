@@ -12,7 +12,7 @@ const AuthBody = () => {
 
   return (
     <Box display="flex" justifyContent="center" p={3} bg="white" w="100%" m="15px 0 15px 0" borderRadius={"lg"} borderWidth={"1px"}>
-      <Tabs variant="soft-rounded" colorScheme="amberScheme" width="100%" index={selectedTab}>
+      <Tabs variant="soft-rounded" colorScheme="appColorScheme" width="100%" index={selectedTab}>
         <TabList mb={"1em"} width="100%">
           <Tab width="50%" onClick={() => handleTabChange(0)}>
             Login
