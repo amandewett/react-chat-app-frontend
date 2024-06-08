@@ -5,9 +5,10 @@ import axiosInstance from "../../utils/axiosInstance";
 import { ChatContext } from "../../store/context/chatContext";
 import { useCustomToast } from "../../hooks/useCustomToast";
 import { ArrowUpIcon } from "@chakra-ui/icons";
+import { MessageResponseProps } from "../../utils/customTypes";
 
 const MessengerFooter = () => {
-  const { selectedChat, setChats } = useContext(ChatContext);
+  const { selectedChat, setChats, messages, setMessages } = useContext(ChatContext);
   const toast = useCustomToast();
   const [messageValue, setMessageValue] = useState<string>("");
   const [messageValueBackup, setMessageValueBackup] = useState<string>("");
@@ -53,8 +54,24 @@ const MessengerFooter = () => {
     onSuccess(data: any) {
       setMessageValueBackup("");
       //mutate all messages
+      setMessages(Array(data.data.result as MessageResponseProps), true);
       mutateAllChats();
     },
+  });
+
+  const { mutate: mutateMessageList } = useMutation({
+    mutationFn: () => axiosInstance.get(`api/message/all/${selectedChat?.id}`, { params: { skip: messages.length } }),
+    onError(error: any) {
+      toast({
+        title: error.response.data.message,
+        status: "error",
+      });
+    },
+    onSuccess: (data: any) => {
+      const response: MessageResponseProps[] = data.data.result;
+      setMessages(response.reverse());
+    },
+    onSettled: () => {},
   });
 
   const handleOnKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {

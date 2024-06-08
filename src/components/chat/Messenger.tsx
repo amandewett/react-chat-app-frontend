@@ -1,4 +1,5 @@
 import { Box } from "@chakra-ui/react";
+import { motion } from "framer-motion";
 import MessengerBody from "./MessengerBody";
 import MessengerFooter from "./MessengerFooter";
 import MessengerHeader from "./MessengerHeader";

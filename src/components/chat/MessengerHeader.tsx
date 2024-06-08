@@ -10,7 +10,7 @@ import UserProfileModal from "../modals/UserProfileModal";
 const MessengerHeader = () => {
   const { isOpen: isOpenUpdateGroupModal, onOpen: onOpenUpdateGroupModal, onClose: onCloseUpdateGroupModal } = useDisclosure();
   const { isOpen: isOpenProfileModal, onOpen: onOpenProfileModal, onClose: onCloseProfileModal } = useDisclosure();
-  const { selectedChat, userDetails } = useContext(ChatContext);
+  const { selectedChat, userDetails, messages } = useContext(ChatContext);
   const title = selectedChat
     ? selectedChat?.isGroupChat
       ? selectedChat?.chatName

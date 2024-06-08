@@ -1,5 +1,5 @@
-import { createContext, useReducer } from "react";
-import { ChatProps, DefaultComponentProps, LoginProps } from "../../utils/customTypes";
+import { createContext, useReducer, useRef } from "react";
+import { ChatProps, DefaultComponentProps, LoginProps, MessageResponseProps } from "../../utils/customTypes";
 
 export type ChatContextType = {
   userDetails: LoginProps | undefined;
@@ -8,6 +8,9 @@ export type ChatContextType = {
   setSelectedChat: (chat: ChatProps | undefined) => void;
   chats: ChatProps[] | undefined;
   setChats: (chats: ChatProps[] | undefined) => void;
+  messages: MessageResponseProps[];
+  setMessages: (messages: MessageResponseProps[], isNewMessage?: boolean, isFetchingMore?: boolean) => void;
+  newMessagesCount: number;
 };
 
 export type ReducerActionType = {
@@ -18,10 +21,13 @@ export type ReducerActionType = {
 export const ChatContext = createContext<ChatContextType>({
   userDetails: undefined,
   setUserDetails: () => {},
-  setSelectedChat: () => {},
   selectedChat: undefined,
-  setChats: () => {},
+  setSelectedChat: () => {},
   chats: [],
+  setChats: () => {},
+  messages: [],
+  setMessages: () => {},
+  newMessagesCount: 0,
 });
 
 const userReducer = (state: ChatContextType, action: ReducerActionType) => {
@@ -46,16 +52,50 @@ const userReducer = (state: ChatContextType, action: ReducerActionType) => {
     };
   }
 
+  if (action.type === "SET_MESSAGES") {
+    if (action.payload.messages.length === 0) {
+      if (action.payload.isFetchingMore) {
+        return {
+          ...state,
+          newMessagesCount: 0,
+        };
+      } else {
+        return {
+          ...state,
+          messages: [],
+          newMessagesCount: 0,
+        };
+      }
+    } else {
+      if (action.payload.isNewMessage) {
+        return {
+          ...state,
+          messages: [...state.messages, ...action.payload.messages],
+          newMessagesCount: 0,
+        };
+      } else {
+        return {
+          ...state,
+          messages: [...action.payload.messages, ...state.messages],
+          newMessagesCount: action.payload.messages.length,
+        };
+      }
+    }
+  }
+
   return state;
 };
 
 const userReducerInitialArguments = {
   userDetails: undefined,
   setUserDetails: () => {},
-  setSelectedChat: () => {},
   selectedChat: undefined,
-  setChats: () => {},
+  setSelectedChat: () => {},
   chats: [],
+  setChats: () => {},
+  messages: [],
+  setMessages: () => {},
+  newMessagesCount: 0,
 };
 
 const chatContextProvider = ({ children }: DefaultComponentProps) => {
@@ -82,13 +122,27 @@ const chatContextProvider = ({ children }: DefaultComponentProps) => {
     });
   };
 
+  const handleSetMessages = (messages: MessageResponseProps[], isNewMessage = false, isFetchingMore = false) => {
+    userDispatch({
+      type: "SET_MESSAGES",
+      payload: {
+        messages: messages,
+        isNewMessage: isNewMessage,
+        isFetchingMore: isFetchingMore,
+      },
+    });
+  };
+
   const defaultValue = {
     userDetails: userState.userDetails,
     setUserDetails: setUserDetails,
-    setSelectedChat: handleSetSelectedChat,
     selectedChat: userState.selectedChat,
-    setChats: handleSetChats,
+    setSelectedChat: handleSetSelectedChat,
     chats: userState.chats,
+    setChats: handleSetChats,
+    messages: userState.messages,
+    setMessages: handleSetMessages,
+    newMessagesCount: userState.newMessagesCount,
   };
   return <ChatContext.Provider value={defaultValue}>{children}</ChatContext.Provider>;
 };
