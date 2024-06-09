@@ -57,6 +57,7 @@ const Signup = ({ handleTabChange }: SignupComponentProps) => {
             headers: {
               "Content-Type": "multipart/form-data",
             },
+            baseURL: import.meta.env.VITE_SERVER_HOST,
             onUploadProgress(progressEvent: AxiosProgressEvent) {
               setUploadProgress(Math.round(100 * progressEvent.loaded) / progressEvent.total!);
             },
