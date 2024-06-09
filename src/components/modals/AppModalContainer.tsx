@@ -5,7 +5,7 @@ const AppModalContainer = ({ isOpen, onClose, children, closeOnOverlayClick = tr
   return (
     <Modal isOpen={isOpen} onClose={onClose} isCentered closeOnOverlayClick={closeOnOverlayClick}>
       <ModalOverlay zIndex={9}>
-        <ModalContent>{children}</ModalContent>
+        <ModalContent bgColor="#262626">{children}</ModalContent>
       </ModalOverlay>
     </Modal>
   );

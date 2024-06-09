@@ -3,11 +3,11 @@ import AuthHeader from "../components/auth/AuthHeader";
 import AuthBody from "../components/auth/AuthBody";
 import { useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { ChatContext } from "../store/context/chatContext";
+import { AppContext } from "../store/context/appContext";
 
 const AuthPage = () => {
   const navigate = useNavigate();
-  const { userDetails } = useContext(ChatContext);
+  const { userDetails } = useContext(AppContext);
 
   useEffect(() => {
     if (userDetails) {

@@ -4,7 +4,7 @@ import AppDrawerContainer from "../../modals/AppDrawerContainer";
 import { useContext, useEffect, useState } from "react";
 import { useCustomToast } from "../../../hooks/useCustomToast";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { ChatContext } from "../../../store/context/chatContext";
+import { AppContext } from "../../../store/context/appContext";
 import UserListItem from "../UserListItem";
 import IosSpinner from "../../IosSpinner";
 import axiosInstance from "../../../utils/axiosInstance";
@@ -13,7 +13,7 @@ import MyInput from "../../MyInputs/MyInput";
 const SearchDrawer = ({ isOpen, onClose }: SearchDrawerProps) => {
   const [search, setSearch] = useState<string>("");
   const [users, setUsers] = useState<UserProps[]>([]);
-  const { userDetails, setSelectedChat, setChats } = useContext(ChatContext);
+  const { userDetails, setSelectedChat, setChats } = useContext(AppContext);
   const toast = useCustomToast();
 
   const { data: usersList } = useQuery({
@@ -95,16 +95,17 @@ const SearchDrawer = ({ isOpen, onClose }: SearchDrawerProps) => {
 
   return (
     <AppDrawerContainer isOpen={isOpen} onClose={onClose}>
-      <DrawerHeader borderBottomWidth="1px">
+      <DrawerHeader borderBottomWidth={2} borderColor={"appPrimaryColor"}>
         <form onSubmit={handleSearchSubmit}>
           <Box display={"flex"} pb={2}>
             <MyInput placeholder="Search Users" value={search} onChange={(e) => setSearch(e.target.value)} />
             <Button
               type="submit"
+              bgColor="appPrimaryColor"
+              textColor="appBgColor"
               onClick={() => {
                 handleSearchSubmit;
               }}
-              bgColor={"primaryColor"}
               ml={2}
             >
               Go
@@ -115,16 +116,20 @@ const SearchDrawer = ({ isOpen, onClose }: SearchDrawerProps) => {
       <DrawerBody>
         {isPendingUserSearch && (
           <Stack>
-            <Skeleton height="30px" />
-            <Skeleton height="20px" width={"70%"} />
-            <Skeleton height="30px" />
-            <Skeleton height="20px" width={"70%"} />
-            <Skeleton height="30px" />
-            <Skeleton height="20px" width={"70%"} />
-            <Skeleton height="30px" />
-            <Skeleton height="20px" width={"70%"} />
-            <Skeleton height="30px" />
-            <Skeleton height="20px" width={"70%"} />
+            <Skeleton height="30px" bgColor={"appGrayColor"} />
+            <Skeleton height="20px" width={"70%"} bgColor={"appGrayColor"} />
+            <Skeleton height="30px" bgColor={"appGrayColor"} />
+            <Skeleton height="20px" width={"70%"} bgColor={"appGrayColor"} />
+            <Skeleton height="30px" bgColor={"appGrayColor"} />
+            <Skeleton height="20px" width={"70%"} bgColor={"appGrayColor"} />
+            <Skeleton height="30px" bgColor={"appGrayColor"} />
+            <Skeleton height="20px" width={"70%"} bgColor={"appGrayColor"} />
+            <Skeleton height="30px" bgColor={"appGrayColor"} />
+            <Skeleton height="20px" width={"70%"} bgColor={"appGrayColor"} />
+            <Skeleton height="30px" bgColor={"appGrayColor"} />
+            <Skeleton height="20px" width={"70%"} bgColor={"appGrayColor"} />
+            <Skeleton height="30px" bgColor={"appGrayColor"} />
+            <Skeleton height="20px" width={"70%"} bgColor={"appGrayColor"} />
           </Stack>
         )}
         {!isPendingUserSearch && (
@@ -134,7 +139,9 @@ const SearchDrawer = ({ isOpen, onClose }: SearchDrawerProps) => {
                 return <UserListItem key={user?.id} id={user?.id} name={user?.name} email={user?.email} profilePicture={user?.profilePicture} handleOnClick={handleItemOnClick} />;
               })
             ) : (
-              <Text>No users found</Text>
+              <Text textColor={"appGrayColor"} textAlign={"center"}>
+                No users found
+              </Text>
             )}
           </Stack>
         )}

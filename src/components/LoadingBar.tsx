@@ -3,7 +3,7 @@ import IosSpinner from "./IosSpinner";
 
 const LoadingBar = ({ asPageLoader = false }: { asPageLoader?: boolean }) => {
   return (
-    <Box className="linear-loading-container" id="loader-container">
+    <Box className="linear-loading-container" id="loader-container" textColor="appTextColor">
       <section>
         <h2>Chit Chat</h2>
         {asPageLoader ? (

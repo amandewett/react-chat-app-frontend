@@ -10,7 +10,7 @@ import IosSpinner from "../IosSpinner";
 import UserListItem from "./UserListItem";
 import MyTag from "./MyTag";
 import { LoaderContext } from "../../store/context/loaderContext";
-import { ChatContext } from "../../store/context/chatContext";
+import { AppContext } from "../../store/context/appContext";
 import AppModalContainer from "../modals/AppModalContainer";
 
 const CreateGroupChatModal = ({ isOpen, onClose, chatId, isCreating = false, groupName = "", groupParticipants = [], groupAdminId = "" }: CreateGroupModalProps) => {
@@ -22,7 +22,7 @@ const CreateGroupChatModal = ({ isOpen, onClose, chatId, isCreating = false, gro
   const debouncedSearch = useDebounce(searchInputValue.trim());
   const toast = useCustomToast();
   const { enableLoader, disableLoader } = useContext(LoaderContext);
-  const { setChats, userDetails, setSelectedChat } = useContext(ChatContext);
+  const { setChats, userDetails, setSelectedChat } = useContext(AppContext);
 
   const { mutate: mutateAllChats } = useMutation({
     mutationFn: () => axiosInstance.get(`api/chat/all`),
@@ -275,20 +275,22 @@ const CreateGroupChatModal = ({ isOpen, onClose, chatId, isCreating = false, gro
     <AppModalContainer isOpen={isOpen} onClose={onClose} closeOnOverlayClick={false}>
       <form onSubmit={handleOnFormSubmit} autoComplete="off" noValidate>
         <ModalHeader>
-          <Text>{isCreating ? "Create new group" : "Update group"}</Text>
-          <ModalCloseButton onClick={onGroupModalCanceled} />
+          <Text textColor="appTextColor">{isCreating ? "Create new group" : "Update group"}</Text>
+          <ModalCloseButton onClick={onGroupModalCanceled} color="appPrimaryColor" />
         </ModalHeader>
-        <ModalBody>
+        <ModalBody p={0}>
           <VStack spacing={5}>
-            <MyInput value={chatGroupName} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setChatGroupName(e.target.value)} placeholder="Group name" />
-            {isCreating ? (
-              <MyInput isRequired={true} value={searchInputValue} onChange={handleSearchInputOnChange} placeholder="Search users" />
-            ) : (
-              userDetails?.id === groupAdminId && <MyInput isRequired={true} value={searchInputValue} onChange={handleSearchInputOnChange} placeholder="Search users" />
-            )}
+            <Wrap p={5}>
+              <MyInput value={chatGroupName} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setChatGroupName(e.target.value)} placeholder="Group name" />
+              {isCreating ? (
+                <MyInput isRequired={true} value={searchInputValue} onChange={handleSearchInputOnChange} placeholder="Search users" />
+              ) : (
+                userDetails?.id === groupAdminId && <MyInput isRequired={true} value={searchInputValue} onChange={handleSearchInputOnChange} placeholder="Search users" />
+              )}
+            </Wrap>
 
             {/* selected users */}
-            <Wrap display={"flex"} w={"100%"}>
+            <Wrap display={"flex"} w={"100%"} px={`${selectedUsers.length !== 0 ? 5 : 0}`}>
               {selectedUsers.length !== 0 &&
                 selectedUsers.map((user: UserProps) => (
                   <MyTag userId={user.id} groupAdminId={groupAdminId} handleDelete={handleTagDelete} profilePicture={user.profilePicture} userName={user.name} key={user.id} isCreating={isCreating} />
@@ -299,7 +301,7 @@ const CreateGroupChatModal = ({ isOpen, onClose, chatId, isCreating = false, gro
             {isPendingRemoveParticipant && <IosSpinner />}
             {isPendingAddParticipant && <IosSpinner />}
             {!isPending && userSearchList.length !== 0 && (
-              <Box maxH={"200px"} overflowY={"auto"} w={"100%"}>
+              <Box maxH={"200px"} overflowY={"auto"} w={"100%"} p={5}>
                 <VStack w={"100%"}>
                   {userSearchList.map((user: UserProps) => (
                     <UserListItem
@@ -316,13 +318,14 @@ const CreateGroupChatModal = ({ isOpen, onClose, chatId, isCreating = false, gro
                 </VStack>
               </Box>
             )}
-            <ModalFooter display={"flex"} justifyContent={"end"} w={"100%"} p={0} mb={2}>
+            <ModalFooter display={"flex"} justifyContent={"end"} w={"100%"} mb={2} p={5}>
               {!isCreating && userDetails?.id === groupAdminId ? (
                 <Button
-                  borderColor={"#C62828"}
+                  borderColor="#ef233c"
+                  textColor="#ef233c"
                   variant={"outline"}
                   type="button"
-                  _hover={{ bgColor: "#C62828", textColor: "white" }}
+                  _hover={{ bgColor: "#ef233c", textColor: "appBgColor" }}
                   onClick={() => {
                     mutateDeleteGroup();
                   }}
@@ -333,10 +336,11 @@ const CreateGroupChatModal = ({ isOpen, onClose, chatId, isCreating = false, gro
               ) : (
                 !isCreating && (
                   <Button
-                    borderColor={"#C62828"}
+                    borderColor="#ef233c"
+                    textColor="#ef233c"
                     variant={"outline"}
                     type="button"
-                    _hover={{ bgColor: "#C62828", textColor: "white" }}
+                    _hover={{ bgColor: "#ef233c", textColor: "appBgColor" }}
                     onClick={() => {
                       mutateLeaveGroup();
                     }}
@@ -348,7 +352,9 @@ const CreateGroupChatModal = ({ isOpen, onClose, chatId, isCreating = false, gro
               )}
 
               <Button
-                bgColor={"primaryColor"}
+                bgColor={"appPrimaryColor"}
+                textColor={"appBgColor"}
+                _hover={{ bgColor: "appHoverColor" }}
                 type="submit"
                 onClick={() => {
                   handleOnFormSubmit;

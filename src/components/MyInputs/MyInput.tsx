@@ -18,7 +18,19 @@ const MyInput = ({
     <FormControl isRequired={isRequired}>
       {isFormLabelVisible && <FormLabel>{formLabelText}</FormLabel>}
       <InputGroup>
-        <Input autoComplete="off" value={value} onChange={onChange} type={type} placeholder={placeholder} _focusVisible={{ borderColor: "primaryColor", borderWidth: 2 }} {...restProps} />
+        <Input
+          autoComplete="off"
+          value={value}
+          onChange={onChange}
+          type={type}
+          placeholder={placeholder}
+          borderColor="appPrimaryColor"
+          borderWidth={2}
+          textColor={"appTextColor"}
+          _focusVisible={{ borderColor: "appPrimaryColor", borderWidth: 2 }}
+          _hover={{ borderColor: "appPrimaryColor", borderWidth: 2 }}
+          {...restProps}
+        />
         {hasRightElement && <InputRightElement>{children}</InputRightElement>}
       </InputGroup>
     </FormControl>

@@ -5,7 +5,7 @@ const AppDrawerContainer = ({ children, onClose, isOpen }: AppDrawerContainerPro
   return (
     <Drawer placement="left" onClose={onClose} isOpen={isOpen} blockScrollOnMount={false}>
       <DrawerOverlay />
-      <DrawerContent>{children}</DrawerContent>
+      <DrawerContent bgColor={"appBgColor"}>{children}</DrawerContent>
     </Drawer>
   );
 };

@@ -4,7 +4,7 @@ import ErrorLayout from "./layouts/ErrorLayout";
 import { useContext, useEffect, useState, Suspense, lazy } from "react";
 import { LoaderContext } from "./store/context/loaderContext";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { ChatContext } from "./store/context/chatContext";
+import { AppContext } from "./store/context/appContext";
 import LoadingBar from "./components/LoadingBar";
 import IosSpinner from "./components/IosSpinner";
 
@@ -40,7 +40,7 @@ const routerConfig = createBrowserRouter([
 const App = () => {
   const { isLoading } = useContext(LoaderContext);
   const queryClient = new QueryClient();
-  const { setUserDetails } = useContext(ChatContext);
+  const { setUserDetails } = useContext(AppContext);
   const [isPageLoading, setIsPageLoading] = useState(true);
 
   useEffect(() => {

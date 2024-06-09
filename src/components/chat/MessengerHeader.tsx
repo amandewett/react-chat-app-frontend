@@ -1,7 +1,7 @@
 import { ViewIcon } from "@chakra-ui/icons";
 import { Box, Text, Button, useDisclosure } from "@chakra-ui/react";
 import { Suspense, useContext } from "react";
-import { ChatContext } from "../../store/context/chatContext";
+import { AppContext } from "../../store/context/appContext";
 import CreateGroupChatModal from "./CreateGroupChatModal";
 import {} from "../../utils/customTypes";
 import AppModalContainer from "../modals/AppModalContainer";
@@ -10,7 +10,7 @@ import UserProfileModal from "../modals/UserProfileModal";
 const MessengerHeader = () => {
   const { isOpen: isOpenUpdateGroupModal, onOpen: onOpenUpdateGroupModal, onClose: onCloseUpdateGroupModal } = useDisclosure();
   const { isOpen: isOpenProfileModal, onOpen: onOpenProfileModal, onClose: onCloseProfileModal } = useDisclosure();
-  const { selectedChat, userDetails, messages } = useContext(ChatContext);
+  const { selectedChat, userDetails } = useContext(AppContext);
   const title = selectedChat
     ? selectedChat?.isGroupChat
       ? selectedChat?.chatName
@@ -35,15 +35,29 @@ const MessengerHeader = () => {
     : "";
 
   return (
-    <Box display={"flex"} justifyContent={"space-between"} p={4} bgColor={"white"} h={"100%"} w={"100%"} roundedTopLeft={"15px"} roundedTopRight={"15px"}>
+    <Box
+      display={"flex"}
+      justifyContent={"space-between"}
+      p={4}
+      bgColor={"appBgColor"}
+      textColor={"appTextColor"}
+      h={"100%"}
+      w={"100%"}
+      roundedTopLeft={"15px"}
+      roundedTopRight={"15px"}
+      borderBottomWidth={2}
+      borderBottomColor="appPrimaryColor"
+    >
       <Text fontSize={"x-large"} fontWeight={"500"}>
         {title}
       </Text>
       {selectedChat && (
         <Button
           display={"flex"}
+          bgColor={"appPrimaryColor"}
           justifyContent={"space-between"}
           alignItems={"center"}
+          _hover={{ bgColor: "appHoverColor" }}
           onClick={() => {
             if (selectedChat.isGroupChat) {
               onOpenUpdateGroupModal();
@@ -52,7 +66,7 @@ const MessengerHeader = () => {
             }
           }}
         >
-          <ViewIcon />
+          <ViewIcon color={"appBgColor"} />
         </Button>
       )}
       {selectedChat && selectedChat.isGroupChat && (

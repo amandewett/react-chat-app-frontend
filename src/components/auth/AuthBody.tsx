@@ -11,13 +11,13 @@ const AuthBody = () => {
   };
 
   return (
-    <Box display="flex" justifyContent="center" p={3} bg="white" w="100%" m="15px 0 15px 0" borderRadius={"lg"} borderWidth={"1px"}>
-      <Tabs variant="soft-rounded" colorScheme="appColorScheme" width="100%" index={selectedTab}>
+    <Box display="flex" justifyContent="center" p={3} bg="appBgColor" textColor={"appTextColor"} w="100%" m="15px 0 15px 0" borderRadius={"lg"}>
+      <Tabs variant="soft-rounded" width="100%" index={selectedTab}>
         <TabList mb={"1em"} width="100%">
-          <Tab width="50%" onClick={() => handleTabChange(0)}>
+          <Tab width="50%" mr={2} onClick={() => handleTabChange(0)} bgColor="appListItemBgColor" textColor="appTextColor" _selected={{ bgColor: "appPrimaryColor", textColor: "appBgColor" }}>
             Login
           </Tab>
-          <Tab width="50%" onClick={() => handleTabChange(1)}>
+          <Tab width="50%" onClick={() => handleTabChange(1)} bgColor="appListItemBgColor" textColor="appTextColor" _selected={{ bgColor: "appPrimaryColor", textColor: "appBgColor" }}>
             Sign up
           </Tab>
         </TabList>

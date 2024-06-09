@@ -2,13 +2,13 @@ import { Box, VStack } from "@chakra-ui/react";
 import axiosInstance from "../../utils/axiosInstance";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect, useContext } from "react";
-import { ChatContext } from "../../store/context/chatContext";
+import { AppContext } from "../../store/context/appContext";
 import IosSpinner from "../IosSpinner";
-import { ChatProps } from "../../utils/customTypes";
+import { ChatProps, UserChatListProps } from "../../utils/customTypes";
 import UserListItem from "./UserListItem";
 
-const UserChatList = () => {
-  const { userDetails, setSelectedChat, setChats, chats } = useContext(ChatContext);
+const UserChatList = ({ socket }: UserChatListProps) => {
+  const { userDetails, setSelectedChat, setChats, chats, selectedChat } = useContext(AppContext);
 
   const {
     data: dataUserChatList,
@@ -27,7 +27,9 @@ const UserChatList = () => {
     }
   }, [isPendingUserChatList]);
 
-  const handleOnChatClicked = (chat: ChatProps) => setSelectedChat(chat);
+  const handleOnChatClicked = (chat: ChatProps) => {
+    if (chat !== selectedChat) setSelectedChat(chat);
+  };
 
   return (
     <Box mt={5} overflow={"auto"} maxH={"90%"} p={4} pb={10}>

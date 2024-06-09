@@ -8,11 +8,19 @@ const ChatListHeader = () => {
   const { isOpen: isOpenCreateGroupModal, onOpen: onOpenCreateGroupModal, onClose: onCloseCreateGroupModal } = useDisclosure();
 
   return (
-    <Box display={"flex"} justifyContent={"space-between"} alignItems={"center"} p={4}>
+    <Box display={"flex"} justifyContent={"space-between"} alignItems={"center"} p={4} borderBottomWidth={2} borderBottomColor="appPrimaryColor">
       <Text fontSize={"2xl"} fontWeight={"600"}>
         My Chats
       </Text>
-      <Button display={"flex"} justifyContent={"space-between"} alignItems={"center"} _hover={{ bgColor: "hoverColor" }} onClick={onOpenCreateGroupModal}>
+      <Button
+        display={"flex"}
+        justifyContent={"space-between"}
+        alignItems={"center"}
+        _hover={{ bgColor: "appHoverColor" }}
+        bgColor={"appPrimaryColor"}
+        textColor={"appBgColor"}
+        onClick={onOpenCreateGroupModal}
+      >
         <Text mr={2}>New Group Chats</Text>
         <AddIcon />
       </Button>

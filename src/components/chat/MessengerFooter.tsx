@@ -2,13 +2,13 @@ import { Box, Button, FormControl, HStack, InputGroup, InputRightAddon, InputRig
 import { useMutation } from "@tanstack/react-query";
 import React, { LegacyRef, useContext, useEffect, useRef, useState } from "react";
 import axiosInstance from "../../utils/axiosInstance";
-import { ChatContext } from "../../store/context/chatContext";
+import { AppContext } from "../../store/context/appContext";
 import { useCustomToast } from "../../hooks/useCustomToast";
 import { ArrowUpIcon } from "@chakra-ui/icons";
-import { MessageResponseProps } from "../../utils/customTypes";
+import { MessageResponseProps, MessengerFooterProps } from "../../utils/customTypes";
 
-const MessengerFooter = () => {
-  const { selectedChat, setChats, messages, setMessages } = useContext(ChatContext);
+const MessengerFooter = ({ socket }: MessengerFooterProps) => {
+  const { selectedChat, setChats, messages, setMessages } = useContext(AppContext);
   const toast = useCustomToast();
   const [messageValue, setMessageValue] = useState<string>("");
   const [messageValueBackup, setMessageValueBackup] = useState<string>("");
@@ -52,26 +52,17 @@ const MessengerFooter = () => {
       });
     },
     onSuccess(data: any) {
+      if (data.data.result)
+        socket.emit(
+          "newMessage",
+          data.data.result,
+          data.data.result.chat.participantIDs.filter((id: string) => id !== data.data.result.senderId)
+        );
       setMessageValueBackup("");
       //mutate all messages
       setMessages(Array(data.data.result as MessageResponseProps), true);
       mutateAllChats();
     },
-  });
-
-  const { mutate: mutateMessageList } = useMutation({
-    mutationFn: () => axiosInstance.get(`api/message/all/${selectedChat?.id}`, { params: { skip: messages.length } }),
-    onError(error: any) {
-      toast({
-        title: error.response.data.message,
-        status: "error",
-      });
-    },
-    onSuccess: (data: any) => {
-      const response: MessageResponseProps[] = data.data.result;
-      setMessages(response.reverse());
-    },
-    onSettled: () => {},
   });
 
   const handleOnKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
@@ -91,12 +82,12 @@ const MessengerFooter = () => {
 
   return (
     <form onSubmit={handleMessageSubmit} autoComplete="off" noValidate className="h-full">
-      <HStack spacing={2} bgColor={"white"} h={"100%"} w={"100%"} roundedBottomLeft={"15px"} roundedBottomRight={"15px"} display={"flex"} alignItems={"end"}>
+      <HStack spacing={2} bgColor={"appBgColor"} h={"100%"} w={"100%"} display={"flex"} alignItems={"end"} rounded={"lg"}>
         <FormControl isRequired>
-          <InputGroup display={"flex"} bgColor={"white"} roundedBottomLeft={"15px"} roundedBottomRight={"15px"}>
+          <InputGroup display={"flex"} bgColor={"appBgColor"} rounded={"lg"}>
             <Textarea
               ref={textAreaRef}
-              bgColor={"white"}
+              bgColor={"appBgColor"}
               rows={1}
               value={messageValue}
               flex="0.97"
@@ -113,11 +104,11 @@ const MessengerFooter = () => {
             <InputRightElement
               alignSelf={"end"}
               mr={1}
-              mb={1}
+              mb={2}
               justifySelf={"center"}
               bottom={0}
               rounded={"50%"}
-              bgColor={"primaryColor"}
+              bgColor={"appPrimaryColor"}
               onClick={() => {
                 handleMessageSubmit;
               }}
@@ -126,7 +117,7 @@ const MessengerFooter = () => {
               transition={"transform 0.3s ease"}
               _hover={{ transform: "translateY(-0.1em)" }}
             >
-              <ArrowUpIcon color={"textColor"} boxSize={"2rem"} />
+              <ArrowUpIcon color={"appBgColor"} boxSize={"2rem"} />
             </InputRightElement>
           </InputGroup>
         </FormControl>

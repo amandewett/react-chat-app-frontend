@@ -6,9 +6,12 @@ export default {
   theme: {
     extend: {
       colors: {
-        appColorWhiteSmoke: "#F5F5F5",
-        appColorDimBlack: "#252525",
-        appColorPrimary: "#0A66C2",
+        appBgColor: "#111111",
+        appPrimaryColor: "#2ec4b6",
+        appHoverColor: "#1f8f8a",
+        appLightHoverColor: "#49d3c4",
+        appTextColor: "#F5FFFA",
+        appGrayColor: "#e5e5e5",
       },
       fontFamily: {},
       screens: {

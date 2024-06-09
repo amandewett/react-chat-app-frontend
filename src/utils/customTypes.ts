@@ -1,4 +1,5 @@
 import { ReactNode } from "react";
+import { Socket } from "socket.io-client";
 
 /* API response types */
 export type LoginProps = {
@@ -139,5 +140,27 @@ export type UserProfileModalProps = DefaultComponentProps & {
   userName?: string;
   userEmail?: string;
   userProfilePicture?: string;
+};
+
+export type MessageBubbleProps = DefaultComponentProps & {
+  messages: MessageResponseProps[];
+  index: number;
+  currentMessage: MessageResponseProps;
+  myRef: (el: HTMLDivElement) => HTMLDivElement;
+};
+
+type SocketProps = {
+  socket: Socket;
+};
+
+export type MessengerBodyProps = SocketProps;
+
+export type MessengerFooterProps = SocketProps;
+
+export type UserChatListProps = SocketProps;
+
+export type AppMenuListItemProps = DefaultComponentProps & {
+  onClick: () => void;
+  title?: string;
 };
 /* components props */

@@ -1,21 +1,22 @@
 import { Avatar, Box, Text } from "@chakra-ui/react";
 import { UserListItemProps } from "../../utils/customTypes";
-import { ChatContext } from "../../store/context/chatContext";
+import { AppContext } from "../../store/context/appContext";
 import { useContext } from "react";
 
 const UserListItem = ({ id, name, email, profilePicture, handleOnClick, chatId, isForChatList = false, latestMessage, latestMessageSenderName }: UserListItemProps) => {
-  const { selectedChat } = useContext(ChatContext);
+  const { selectedChat } = useContext(AppContext);
+  const isChatSelected = chatId && selectedChat && chatId === selectedChat?.id;
 
   return (
     <>
       <Box
         display="flex"
         flexDirection={"row"}
-        bgColor={chatId ? (selectedChat ? (chatId === selectedChat?.id ? "primaryColor" : "buttonColor") : "buttonColor") : "buttonColor"}
-        textColor="textColor"
-        _hover={{ bgColor: selectedChat ? (chatId === selectedChat?.id ? "primaryColor" : "hoverColor") : "hoverColor", transform: "translateX(-0.5em)" }}
-        borderRadius={"16px"}
-        transition={"background-color 0.4s ease, transform 0.4s ease"}
+        bgColor={isChatSelected ? "appPrimaryColor" : "appListItemBgColor"}
+        textColor={isChatSelected ? "appBgColor" : "appTextColor"}
+        _hover={{ transform: "translateX(-0.5em)" }}
+        borderRadius={"lg"}
+        transition={"transform 0.4s ease"}
         w={"100%"}
         p={"10px"}
         maxW={"100%"}
@@ -26,11 +27,11 @@ const UserListItem = ({ id, name, email, profilePicture, handleOnClick, chatId, 
         <Avatar name={name} src={profilePicture?.includes("http") ? profilePicture : `${import.meta.env.VITE_SERVER_HOST}/${profilePicture}`} size={"sm"} />
         <Box display="flex" flexDirection={"column"} ml={"10px"} w={"100%"} overflow={"hidden"} textOverflow={"ellipsis"} whiteSpace={"nowrap"}>
           <Text as={"b"}>{name}</Text>
-          {!isForChatList && <Text textColor={"#616161"}>{email}</Text>}
+          {!isForChatList && <Text textColor={"appHoverColor"}>{email}</Text>}
           {isForChatList && (
             <Box display={"flex"} w={"100%"}>
-              {latestMessage && <Text mr={1} fontWeight={"500"}>{`${latestMessageSenderName}:`}</Text>}
-              <Text w={"100%"} overflow={"hidden"} textOverflow={"ellipsis"}>
+              {latestMessage && <Text mr={1} fontWeight={"500"} fontSize={"small"} textColor={isChatSelected ? "appBgColor" : "appHoverColor"}>{`${latestMessageSenderName}:`}</Text>}
+              <Text w={"100%"} overflow={"hidden"} fontWeight={"400"} textOverflow={"ellipsis"} fontSize={"small"} textColor={isChatSelected ? "appBgColor" : "appGrayColor"}>
                 {latestMessage ? latestMessage : "Send your first message..."}
               </Text>
             </Box>

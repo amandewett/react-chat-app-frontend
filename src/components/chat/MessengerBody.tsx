@@ -1,14 +1,15 @@
 import { Box } from "@chakra-ui/react";
 import { useContext, useEffect, useRef, useState } from "react";
-import { ChatContext } from "../../store/context/chatContext";
-import { MessageResponseProps } from "../../utils/customTypes";
+import { AppContext } from "../../store/context/appContext";
+import { MessageResponseProps, MessengerBodyProps } from "../../utils/customTypes";
 import { useMutation } from "@tanstack/react-query";
 import axiosInstance from "../../utils/axiosInstance";
 import { useCustomToast } from "../../hooks/useCustomToast";
 import IosSpinner from "../IosSpinner";
+import MessageBubble from "./MessageBubble";
 
-const MessengerBody = () => {
-  const { selectedChat, messages, setMessages, newMessagesCount } = useContext(ChatContext);
+const MessengerBody = ({ socket }: MessengerBodyProps) => {
+  const { selectedChat, messages, setMessages, newMessagesCount } = useContext(AppContext);
   const toast = useCustomToast();
   const bottomRef: React.MutableRefObject<HTMLSpanElement | undefined> = useRef<HTMLSpanElement>();
   const boxRef: React.MutableRefObject<HTMLDivElement | undefined> = useRef<HTMLDivElement>();
@@ -24,6 +25,9 @@ const MessengerBody = () => {
       });
     },
     onSuccess: (data: any) => {
+      //join chat room using socket
+      if (!isFetchingMore && selectedChat) socket?.emit("joinChatRoom", selectedChat?.id);
+
       const response: MessageResponseProps[] = data.data.result;
       if (response.length === 0) setIsFetchingMore(false);
       setMessages(response.reverse(), false, isFetchingMore);
@@ -32,11 +36,21 @@ const MessengerBody = () => {
   });
 
   useEffect(() => {
-    setMessages([]);
+    setMessages([], false, false);
     mutateMessageList();
   }, [selectedChat?.id]);
 
   useEffect(() => {
+    if (isFetchingMore) {
+      mutateMessageList();
+    }
+  }, [isFetchingMore]);
+
+  useEffect(() => {
+    if (boxRef.current) {
+      boxRef.current.addEventListener("scroll", handleScroll);
+    }
+
     if (!isFetchingMore) {
       bottomRef.current?.scrollIntoView({ behavior: "smooth" });
     } else {
@@ -45,9 +59,6 @@ const MessengerBody = () => {
 
     setIsFetchingMore(false);
 
-    if (boxRef.current) {
-      boxRef.current.addEventListener("scroll", handleScroll);
-    }
     return () => {
       if (boxRef.current) {
         boxRef.current.removeEventListener("scroll", handleScroll);
@@ -57,9 +68,8 @@ const MessengerBody = () => {
 
   const handleScroll = () => {
     if (boxRef.current) {
-      if (boxRef.current.scrollTop === 0) {
+      if (boxRef.current.scrollTop === 0 && boxRef.current.scrollHeight > boxRef.current.clientHeight) {
         setIsFetchingMore(true);
-        mutateMessageList();
       }
     }
   };
@@ -71,14 +81,10 @@ const MessengerBody = () => {
   };
 
   return (
-    <Box overflowY={"auto"} h={"100%"} p={5} textColor={"white"} ref={boxRef as React.RefObject<HTMLDivElement>}>
+    <Box overflowY={"auto"} h={"100%"} p={5} ref={boxRef as React.RefObject<HTMLDivElement>}>
       {isPendingMessageList && <IosSpinner />}
       {messages?.map((message: MessageResponseProps, index: number) => {
-        return (
-          <div key={message.id} className="text-7xl" ref={(el) => (arrMessagesRef.current[index] = el)}>
-            {message.message}
-          </div>
-        );
+        return <MessageBubble key={message.id} messages={messages} index={index} currentMessage={message} myRef={(el: HTMLDivElement) => (arrMessagesRef.current[index] = el)} />;
       })}
       <span ref={bottomRef as React.RefObject<HTMLSpanElement>} />
     </Box>

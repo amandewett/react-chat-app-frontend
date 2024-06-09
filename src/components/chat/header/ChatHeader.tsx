@@ -12,11 +12,11 @@ const ChatHeader = () => {
 
   return (
     <>
-      <header className="h-16 bg-white drop-shadow-lg flex items-center justify-center relative z-10">
+      <header className="h-16 drop-shadow-lg flex items-center justify-center relative z-10 bg-appBgColor text-appTextColor">
         <ChatHeaderContainer />
       </header>
       <motion.header
-        className={`h-14 bg-white drop-shadow-lg flex items-center justify-center relative ${isSticky ? "sticky top-0" : "hidden"}`}
+        className={`h-14 bg-appBgColor text-appTextColor drop-shadow-lg flex items-center justify-center relative ${isSticky ? "sticky top-0" : "hidden"}`}
         initial={{ opacity: 0, y: -10 }}
         animate={{ opacity: isSticky ? 1 : 0, y: isSticky ? 0 : -10 }}
         transition={{ type: "spring", stiffness: 50, duration: 1 }}

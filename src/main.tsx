@@ -4,7 +4,7 @@ import "./index.css";
 import { ChakraProvider, StyleFunctionProps, createMultiStyleConfigHelpers, extendTheme } from "@chakra-ui/react";
 import { inputAnatomy } from "@chakra-ui/anatomy";
 import LoaderContextProvider from "./store/context/loaderContextProvider.tsx";
-import ChatContextProvider from "./store/context/chatContext.tsx";
+import AppContextProvider from "./store/context/appContext.tsx";
 import { useEffect } from "react";
 
 const hideLoadingScreen = () => {
@@ -17,23 +17,13 @@ const { definePartsStyle, defineMultiStyleConfig } = createMultiStyleConfigHelpe
 
 const chakraTheme = extendTheme({
   colors: {
-    appColorScheme: {
-      50: "#FFF1F2",
-      100: "#FFE4E6",
-      200: "#FECDD3",
-      300: "#FDA4AF",
-      400: "#FB7185",
-      500: "#F43F5E",
-      600: "#E11D48",
-      700: "#BE123C",
-      800: "#9F1239",
-      900: "#881337",
-      950: "#4C0519",
-    },
-    primaryColor: "#F43F5E",
-    buttonColor: "#ECEFF1",
-    hoverColor: "#FFE4E6",
-    textColor: "#424242",
+    appBgColor: "#111111",
+    appListItemBgColor: "#1a1a1a",
+    appPrimaryColor: "#2ec4b6",
+    appHoverColor: "#1f8f8a",
+    appLightHoverColor: "#49d3c4",
+    appTextColor: "#F5FFFA",
+    appGrayColor: "#78909C",
   },
   components: {
     Input: defineMultiStyleConfig({
@@ -58,13 +48,13 @@ const Main = () => {
   }, []);
 
   return (
-    <ChatContextProvider>
+    <AppContextProvider>
       <LoaderContextProvider>
         <ChakraProvider theme={chakraTheme}>
           <App />
         </ChakraProvider>
       </LoaderContextProvider>
-    </ChatContextProvider>
+    </AppContextProvider>
   );
 };
 

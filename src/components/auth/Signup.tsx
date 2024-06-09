@@ -158,14 +158,28 @@ const Signup = ({ handleTabChange }: SignupComponentProps) => {
             <Box onClick={() => setIsPasswordVisible(!isPasswordVisible)}>{isPasswordVisible ? <ViewIcon /> : <ViewOffIcon />}</Box>
           </MyInput>
 
-          <FormControl isRequired={false} id="pic">
+          <FormControl isRequired={false} id="pic" textAlign="center">
             <FormLabel>Profile picture</FormLabel>
-            <Input type="file" p={1.5} ref={profilePictureRef} accept="image/*" onChange={(e: React.ChangeEvent<HTMLInputElement>) => profilePickerDetails(e.target.files)} />
-            {uploadProgress > 0 && <Progress mt={"10px"} borderRadius={"15px"} hasStripe value={uploadProgress} colorScheme="appColorScheme" isAnimated />}
+            <Input
+              type="file"
+              ref={profilePictureRef}
+              accept="image/*"
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => profilePickerDetails(e.target.files)}
+              borderColor="appPrimaryColor"
+              borderWidth={2}
+              h="auto"
+              py={3}
+              textColor={"appTextColor"}
+              _focusVisible={{ borderColor: "appPrimaryColor", borderWidth: 2 }}
+              _hover={{ borderColor: "appPrimaryColor", borderWidth: 2 }}
+            />
+            {uploadProgress > 0 && <Progress mt={"10px"} borderRadius={"15px"} hasStripe value={uploadProgress} isAnimated colorScheme="teal" />}
           </FormControl>
 
           <Button
-            bgColor={"primaryColor"}
+            bgColor={"appPrimaryColor"}
+            textColor="appBgColor"
+            _hover={{ bgColor: "appHoverColor" }}
             width={"100%"}
             disabled={isLoading || uploadProgress > 0}
             isLoading={isLoading || uploadProgress > 0}

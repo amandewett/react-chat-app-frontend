@@ -4,7 +4,7 @@ import { LoaderContext } from "../../store/context/loaderContext";
 import { useMutation } from "@tanstack/react-query";
 import { useCustomToast } from "../../hooks/useCustomToast";
 import { useNavigate } from "react-router-dom";
-import { ChatContext } from "../../store/context/chatContext";
+import { AppContext } from "../../store/context/appContext";
 import axiosInstance from "../../utils/axiosInstance";
 import MyInput from "../MyInputs/MyInput";
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
@@ -17,7 +17,7 @@ const Login = () => {
   const { enableLoader, disableLoader, isLoading } = useContext(LoaderContext);
   const toast = useCustomToast();
   const navigate = useNavigate();
-  const { setUserDetails } = useContext(ChatContext);
+  const { setUserDetails } = useContext(AppContext);
 
   const { mutate: mutateLoginApi } = useMutation({
     mutationFn: (postData: any) => axiosInstance.post(`/api/user/login`, postData),
@@ -96,7 +96,9 @@ const Login = () => {
           </MyInput>
 
           <Button
-            bgColor={"primaryColor"}
+            bgColor={"appPrimaryColor"}
+            textColor="appBgColor"
+            _hover={{ bgColor: "appHoverColor" }}
             width={"100%"}
             isLoading={isLoading}
             disabled={isLoading}
@@ -111,9 +113,10 @@ const Login = () => {
 
           <Button
             variant={"solid"}
-            textColor={"primaryColor"}
             disabled={isLoading}
-            bgColor={"#424242"}
+            _hover={{ bgColor: "appListItemBgColor", textColor: "appPrimaryColor" }}
+            bgColor={"appGrayColor"}
+            textColor="appBgColor"
             width={"100%"}
             style={{ marginTop: 15 }}
             onClick={() => {

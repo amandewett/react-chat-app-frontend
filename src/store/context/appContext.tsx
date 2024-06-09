@@ -1,7 +1,7 @@
-import { createContext, useReducer, useRef } from "react";
+import { createContext, useReducer } from "react";
 import { ChatProps, DefaultComponentProps, LoginProps, MessageResponseProps } from "../../utils/customTypes";
 
-export type ChatContextType = {
+export type AppContextType = {
   userDetails: LoginProps | undefined;
   setUserDetails: (data: LoginProps | undefined) => void;
   selectedChat: ChatProps | undefined;
@@ -11,6 +11,10 @@ export type ChatContextType = {
   messages: MessageResponseProps[];
   setMessages: (messages: MessageResponseProps[], isNewMessage?: boolean, isFetchingMore?: boolean) => void;
   newMessagesCount: number;
+  notifications: MessageResponseProps[];
+  setNotification: (message: MessageResponseProps[]) => void;
+  isSocketConnected: boolean;
+  setIsSocketConnected: (v: boolean) => void;
 };
 
 export type ReducerActionType = {
@@ -18,7 +22,7 @@ export type ReducerActionType = {
   payload?: any;
 };
 
-export const ChatContext = createContext<ChatContextType>({
+export const AppContext = createContext<AppContextType>({
   userDetails: undefined,
   setUserDetails: () => {},
   selectedChat: undefined,
@@ -28,9 +32,13 @@ export const ChatContext = createContext<ChatContextType>({
   messages: [],
   setMessages: () => {},
   newMessagesCount: 0,
+  notifications: [],
+  setNotification: () => {},
+  isSocketConnected: false,
+  setIsSocketConnected: () => {},
 });
 
-const userReducer = (state: ChatContextType, action: ReducerActionType) => {
+const appReducer = (state: AppContextType, action: ReducerActionType) => {
   if (action.type === "SET_USER_DETAILS") {
     return {
       ...state,
@@ -42,6 +50,7 @@ const userReducer = (state: ChatContextType, action: ReducerActionType) => {
     return {
       ...state,
       selectedChat: action.payload,
+      messages: [],
     };
   }
 
@@ -71,7 +80,6 @@ const userReducer = (state: ChatContextType, action: ReducerActionType) => {
         return {
           ...state,
           messages: [...state.messages, ...action.payload.messages],
-          newMessagesCount: 0,
         };
       } else {
         return {
@@ -83,10 +91,24 @@ const userReducer = (state: ChatContextType, action: ReducerActionType) => {
     }
   }
 
+  if (action.type === "SET_NOTIFICATION") {
+    return {
+      ...state,
+      notifications: action.payload,
+    };
+  }
+
+  if (action.type === "SOCKET") {
+    return {
+      ...state,
+      isSocketConnected: action.payload,
+    };
+  }
+
   return state;
 };
 
-const userReducerInitialArguments = {
+const appReducerInitialArguments = {
   userDetails: undefined,
   setUserDetails: () => {},
   selectedChat: undefined,
@@ -96,34 +118,38 @@ const userReducerInitialArguments = {
   messages: [],
   setMessages: () => {},
   newMessagesCount: 0,
+  notifications: [],
+  setNotification: () => {},
+  isSocketConnected: false,
+  setIsSocketConnected: () => {},
 };
 
-const chatContextProvider = ({ children }: DefaultComponentProps) => {
-  const [userState, userDispatch] = useReducer(userReducer, userReducerInitialArguments);
+const appContextProvider = ({ children }: DefaultComponentProps) => {
+  const [appState, appDispatch] = useReducer(appReducer, appReducerInitialArguments);
 
   const setUserDetails = (userData: LoginProps | undefined) => {
-    userDispatch({
+    appDispatch({
       type: "SET_USER_DETAILS",
       payload: userData,
     });
   };
 
   const handleSetSelectedChat = (chat: ChatProps | undefined) => {
-    userDispatch({
+    appDispatch({
       type: "SET_SELECTED_CHAT",
       payload: chat,
     });
   };
 
   const handleSetChats = (chats: ChatProps[] | undefined) => {
-    userDispatch({
+    appDispatch({
       type: "SET_CHATS",
       payload: chats,
     });
   };
 
   const handleSetMessages = (messages: MessageResponseProps[], isNewMessage = false, isFetchingMore = false) => {
-    userDispatch({
+    appDispatch({
       type: "SET_MESSAGES",
       payload: {
         messages: messages,
@@ -133,17 +159,35 @@ const chatContextProvider = ({ children }: DefaultComponentProps) => {
     });
   };
 
-  const defaultValue = {
-    userDetails: userState.userDetails,
-    setUserDetails: setUserDetails,
-    selectedChat: userState.selectedChat,
-    setSelectedChat: handleSetSelectedChat,
-    chats: userState.chats,
-    setChats: handleSetChats,
-    messages: userState.messages,
-    setMessages: handleSetMessages,
-    newMessagesCount: userState.newMessagesCount,
+  const handleNotifications = (message: MessageResponseProps[]) => {
+    appDispatch({
+      type: "SET_NOTIFICATION",
+      payload: message,
+    });
   };
-  return <ChatContext.Provider value={defaultValue}>{children}</ChatContext.Provider>;
+
+  const handleSocket = (v: boolean) => {
+    appDispatch({
+      type: "SOCKET",
+      payload: v,
+    });
+  };
+
+  const defaultValue = {
+    userDetails: appState.userDetails,
+    setUserDetails: setUserDetails,
+    selectedChat: appState.selectedChat,
+    setSelectedChat: handleSetSelectedChat,
+    chats: appState.chats,
+    setChats: handleSetChats,
+    messages: appState.messages,
+    setMessages: handleSetMessages,
+    newMessagesCount: appState.newMessagesCount,
+    notifications: appState.notifications,
+    setNotification: handleNotifications,
+    isSocketConnected: appState.isSocketConnected,
+    setIsSocketConnected: handleSocket,
+  };
+  return <AppContext.Provider value={defaultValue}>{children}</AppContext.Provider>;
 };
-export default chatContextProvider;
+export default appContextProvider;
