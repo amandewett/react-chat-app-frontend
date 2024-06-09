@@ -32,9 +32,9 @@ const UserChatList = ({}: UserChatListProps) => {
   };
 
   return (
-    <Box mt={5} overflow={"auto"} maxH={"90%"} p={4} pb={10}>
+    <Box mt={5} overflow={"auto"} maxH={"90%"} p={4}>
       {!isPendingUserChatList && !isErrorUserChatList && (
-        <VStack spacing={3}>
+        <VStack spacing={3} pb={[10, 10, 10, 10, 10, 5]}>
           {chats &&
             chats?.map((chat: ChatProps) => {
               const chatName = chat?.isGroupChat ? chat?.chatName : chat?.participants[0]?.id === userDetails?.id ? chat?.participants[1]?.name : chat?.participants[0]?.name;

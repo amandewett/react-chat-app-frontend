@@ -10,20 +10,20 @@ const MessageBubble = ({ messages, index, currentMessage, myRef }: MessageBubble
   const isLastMessageValue: boolean = isLastMessage(messages, index);
 
   return (
-    <Box as={"div"} ref={myRef} w={"100%"} display={"flex"} justifyContent={`${userDetails?.id === currentMessage.senderId ? "end" : "start"}`} mb={2}>
+    <Box as={"div"} ref={myRef} w={"100%"} display={"flex"} justifyContent={`${userDetails?.id === currentMessage.senderId ? "end" : "start"}`} mb={[5, 5, 2]}>
       {userDetails?.id === currentMessage.senderId && (
         <Box display={"flex"} maxW={"80%"}>
           <Wrap
             p={2}
             marginRight={`${isLastMessageValue ? "1rem" : !isLastMessageValue && isSameSenderValue ? "1rem" : "3rem"}`}
-            rounded={"8px"}
+            rounded={"lg"}
             h={"auto"}
             bgColor="appPrimaryColor"
             textColor="appBgColor"
             display={"flex"}
             flexDirection={"column"}
           >
-            <Text textAlign={"end"} w={"100%"}>
+            <Text textAlign={"end"} w={"100%"} fontSize={[12, 14, 16]}>
               {currentMessage.message}
             </Text>
           </Wrap>
@@ -82,17 +82,17 @@ const MessageBubble = ({ messages, index, currentMessage, myRef }: MessageBubble
           <Wrap
             p={2}
             marginLeft={`${isLastMessageValue ? "1rem" : !isLastMessageValue && isSameSenderValue ? "1rem" : "3rem"}`}
-            rounded={"10px"}
+            rounded={"lg"}
             h={"auto"}
             bgColor="appListItemBgColor"
             textColor="appPrimaryColor"
             display={"flex"}
             flexDirection={"column"}
           >
-            <Text textAlign={"start"} w={"100%"} as={"b"} textColor={"appHoverColor"}>
+            <Text textAlign={"start"} w={"100%"} as={"b"} textColor={"appHoverColor"} fontSize={[12, 14, 16]}>
               {currentMessage.sender.name}
             </Text>
-            <Text textAlign={"start"} w={"100%"} textColor={"appPrimaryColor"}>
+            <Text textAlign={"start"} w={"100%"} textColor={"appPrimaryColor"} fontSize={[12, 14, 16]}>
               {currentMessage.message}
             </Text>
           </Wrap>

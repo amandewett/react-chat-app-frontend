@@ -280,14 +280,14 @@ const CreateGroupChatModal = ({ isOpen, onClose, chatId, isCreating = false, gro
         </ModalHeader>
         <ModalBody p={0}>
           <VStack spacing={5}>
-            <Wrap p={5}>
+            <Box p={5} w={"100%"}>
               <MyInput value={chatGroupName} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setChatGroupName(e.target.value)} placeholder="Group name" />
               {isCreating ? (
-                <MyInput isRequired={true} value={searchInputValue} onChange={handleSearchInputOnChange} placeholder="Search users" />
+                <MyInput mt={3} isRequired={true} value={searchInputValue} onChange={handleSearchInputOnChange} placeholder="Search users" />
               ) : (
-                userDetails?.id === groupAdminId && <MyInput isRequired={true} value={searchInputValue} onChange={handleSearchInputOnChange} placeholder="Search users" />
+                userDetails?.id === groupAdminId && <MyInput mt={3} isRequired={true} value={searchInputValue} onChange={handleSearchInputOnChange} placeholder="Search users" />
               )}
-            </Wrap>
+            </Box>
 
             {/* selected users */}
             <Wrap display={"flex"} w={"100%"} px={`${selectedUsers.length !== 0 ? 5 : 0}`}>

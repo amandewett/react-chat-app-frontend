@@ -1,7 +1,7 @@
 import { Menu, MenuButton, MenuList, Avatar, Button, Box, Tooltip, Text, useDisclosure, HStack, VStack } from "@chakra-ui/react";
 import { AppContext } from "../../../store/context/appContext";
 import { useContext, Suspense, lazy, useEffect } from "react";
-import { ChevronDownIcon } from "@chakra-ui/icons";
+import { BellIcon, ChevronDownIcon, SearchIcon } from "@chakra-ui/icons";
 import { motion, useTransform, useMotionValue, animate } from "framer-motion";
 import { MessageResponseProps } from "../../../utils/customTypes";
 import { useMutation } from "@tanstack/react-query";
@@ -56,14 +56,16 @@ const ChatHeaderContainer = () => {
   return (
     <>
       <section className="absolute z-0">
-        <h1 className="capitalize font-bold w-full text-4xl">Chit chat</h1>
+        <Text textTransform={"uppercase"} display={["none", "none", "inline"]} fontWeight={"800"} w={"100%"} fontSize={["x-large", "xx-large"]}>
+          Chit chat
+        </Text>
       </section>
       <section className="absolute z-10 flex justify-between w-full px-5">
         <nav>
           <Box onClick={onOpenSearchDrawer}>
             <Tooltip label="Search users to chat" hasArrow placement="bottom-end" defaultIsOpen={false}>
-              <Button bgColor={"appPrimaryColor"} textColor={"appBgColor"} _hover={{ bgColor: "appHoverColor" }}>
-                <i className="fa-solid fa-magnifying-glass"></i>
+              <Button bgColor={"appPrimaryColor"} textColor={"appBgColor"} _hover={{ bgColor: "appHoverColor" }} p={[0, 1, 2]}>
+                <SearchIcon boxSize={["0.90em", "0.95em", "1em"]} />
                 <Text casing="capitalize" pl={"5px"} display={{ base: "none", md: "inline" }}>
                   Search users
                 </Text>
@@ -78,13 +80,17 @@ const ChatHeaderContainer = () => {
           <Menu>
             <MenuButton
               as={Button}
-              rightIcon={<motion.div>{rounded}</motion.div>}
               bgColor={`${notifications.length === 0 ? "appListItemBgColor" : "appPrimaryColor"}`}
               textColor={`${notifications.length === 0 ? "appHoverColor" : "appBgColor"}`}
               _hover={{ bgColor: `${notifications.length === 0 ? "appListItemBgColor" : "appHoverColor"}` }}
             >
-              Notifications
+              <HStack>
+                <Text display={["none", "none", "inline"]}>Notifications</Text>
+                <BellIcon display={["inline", "inline", "none"]} />
+                <motion.div>{rounded}</motion.div>
+              </HStack>
             </MenuButton>
+
             <MenuList border={0} bgColor={"transparent"}>
               {notifications.length > 0 &&
                 notifications.reverse().map((notification: MessageResponseProps) => (
@@ -92,7 +98,7 @@ const ChatHeaderContainer = () => {
                     <HStack>
                       <Avatar
                         name={notification.sender.name}
-                        size={"sm"}
+                        size={["2xs", "xs", "sm"]}
                         src={notification.sender?.profilePicture?.includes("http") ? notification.sender?.profilePicture : `${import.meta.env.VITE_SERVER_HOST}/${notification.sender?.profilePicture}`}
                       />
                       <VStack alignItems={"start"} spacing={1} minW={"15rem"} maxW={"25rem"}>
@@ -114,7 +120,7 @@ const ChatHeaderContainer = () => {
                 <Avatar
                   name={userDetails?.name}
                   src={userDetails?.profilePicture?.includes("http") ? userDetails?.profilePicture : `${import.meta.env.VITE_SERVER_HOST}/${userDetails?.profilePicture}`}
-                  size={"sm"}
+                  size={["xs", "sm"]}
                 />
               )}
             </MenuButton>

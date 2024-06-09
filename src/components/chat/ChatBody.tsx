@@ -66,14 +66,31 @@ const ChatBody = () => {
 
   return (
     <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 20 }} transition={{ duration: 0.5, type: "tween", ease: "linear", delay: 1 }}>
-      <Box display={"flex"} justifyContent={"space-between"} w={"100%"} h={"85vh"} px={"100px"} py={"50px"} textColor={"appTextColor"}>
-        <Box w={"30%"} overflow={"hidden"} rounded="lg" borderWidth={2} borderColor={"appHoverColor"} bgColor="appBgColor">
+      <Box display={"flex"} justifyContent={"space-between"} w={"100%"} h={["90vh", "89vh", "88vh", "86vh"]} px={["1em", "2em", "3em", "4em"]} py={["1em", "2em", "3em"]} textColor={"appTextColor"}>
+        <Box
+          w={["100%", "100%", "100%", "100%", "30%"]}
+          overflow={"hidden"}
+          rounded="lg"
+          borderWidth={2}
+          borderColor={"appHoverColor"}
+          bgColor="appBgColor"
+          display={selectedChat ? ["none", "none", "none", "none", "inline"] : ["inline", "inline", "inline", "inline", "inline"]}
+        >
           <ChatListHeader />
           <Suspense fallback={<IosSpinner />}>
             <UserChatList socket={socket} />
           </Suspense>
         </Box>
-        <Box w={"70%"} h={"100%"} background={"linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('../images/bg.webp')"} rounded={"lg"} bgColor="appBgColor" backgroundSize={"cover"} ml={5}>
+        <Box
+          w={["100%", "100%", "100%", "100%", "70%"]}
+          h={"100%"}
+          background={"linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('../images/bg.webp')"}
+          rounded={"lg"}
+          bgColor="appBgColor"
+          display={selectedChat ? ["inline", "inline", "inline", "inline", "inline"] : ["none", "none", "none", "none", "inline"]}
+          backgroundSize={"cover"}
+          ml={5}
+        >
           {!selectedChat && <EmptyChatBox />}
           {selectedChat && (
             <Suspense>

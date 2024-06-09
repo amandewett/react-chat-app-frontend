@@ -1,4 +1,4 @@
-import { ViewIcon } from "@chakra-ui/icons";
+import { ArrowBackIcon, ViewIcon } from "@chakra-ui/icons";
 import { Box, Text, Button, useDisclosure } from "@chakra-ui/react";
 import { Suspense, useContext } from "react";
 import { AppContext } from "../../store/context/appContext";
@@ -10,7 +10,7 @@ import UserProfileModal from "../modals/UserProfileModal";
 const MessengerHeader = () => {
   const { isOpen: isOpenUpdateGroupModal, onOpen: onOpenUpdateGroupModal, onClose: onCloseUpdateGroupModal } = useDisclosure();
   const { isOpen: isOpenProfileModal, onOpen: onOpenProfileModal, onClose: onCloseProfileModal } = useDisclosure();
-  const { selectedChat, userDetails } = useContext(AppContext);
+  const { selectedChat, userDetails, setSelectedChat } = useContext(AppContext);
   const title = selectedChat
     ? selectedChat?.isGroupChat
       ? selectedChat?.chatName
@@ -34,10 +34,15 @@ const MessengerHeader = () => {
       : selectedChat?.participants[0]?.profilePicture
     : "";
 
+  const handleBackButton = () => {
+    setSelectedChat(undefined);
+  };
+
   return (
     <Box
       display={"flex"}
       justifyContent={"space-between"}
+      alignItems={"center"}
       p={4}
       bgColor={"appBgColor"}
       textColor={"appTextColor"}
@@ -48,9 +53,14 @@ const MessengerHeader = () => {
       borderBottomWidth={2}
       borderBottomColor="appPrimaryColor"
     >
-      <Text fontSize={"x-large"} fontWeight={"500"}>
-        {title}
-      </Text>
+      <Box display={"flex"} alignItems={"center"}>
+        <Button bgColor={"appPrimaryColor"} mr={2} display={["inline", "inline", "inline", "inline", "none"]} onClick={handleBackButton}>
+          <ArrowBackIcon />
+        </Button>
+        <Text fontSize={["large", "larger", "x-large"]} fontWeight={"500"}>
+          {title}
+        </Text>
+      </Box>
       {selectedChat && (
         <Button
           display={"flex"}

@@ -81,7 +81,7 @@ const MessengerBody = ({ socket }: MessengerBodyProps) => {
   };
 
   return (
-    <Box overflowY={"auto"} h={"100%"} p={5} ref={boxRef as React.RefObject<HTMLDivElement>}>
+    <Box overflowY={"auto"} overflowX={"hidden"} h={"100%"} p={5} ref={boxRef as React.RefObject<HTMLDivElement>}>
       {isPendingMessageList && <IosSpinner />}
       {messages?.map((message: MessageResponseProps, index: number) => {
         return <MessageBubble key={message.id} messages={messages} index={index} currentMessage={message} myRef={(el: HTMLDivElement) => (arrMessagesRef.current[index] = el)} />;

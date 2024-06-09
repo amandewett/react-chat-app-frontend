@@ -83,6 +83,7 @@ export type MyInputProps = DefaultComponentProps & {
   formLabelText?: string;
   isRequired?: boolean;
   hasRightElement?: boolean;
+  mt?: number;
 };
 
 export type SignupComponentProps = DefaultComponentProps & {

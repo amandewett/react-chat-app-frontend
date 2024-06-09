@@ -7,13 +7,13 @@ import { Socket } from "socket.io-client";
 const Messenger = ({ socket }: { socket: Socket }) => {
   return (
     <Box h={"100%"} display={"flex"} flexDirection={"column"} justifyContent={"space-between"} rounded="lg" borderWidth={2} borderColor={"appHoverColor"}>
-      <Box h={{ sm: "15%", "2xl": "10%" }}>
+      <Box h={["10%", "10%", "10%", "10%", "15%", "10%"]}>
         <MessengerHeader />
       </Box>
-      <Box h={{ sm: "75%", "2xl": "80%" }} bgColor={"buttonColor"} backgroundColor={"transparent"}>
+      <Box h={["80%", "80%", "80%", "80%", "70%", "80%"]} bgColor={"buttonColor"} backgroundColor={"transparent"}>
         <MessengerBody socket={socket} />
       </Box>
-      <Box h={{ sm: "15%", "2xl": "10%" }}>
+      <Box h={["10%", "10%", "10%", "10%", "15%", "10%"]}>
         <MessengerFooter socket={socket} />
       </Box>
     </Box>
