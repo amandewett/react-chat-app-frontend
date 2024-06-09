@@ -87,7 +87,7 @@ const ChatHeaderContainer = () => {
             </MenuButton>
             <MenuList border={0} bgColor={"transparent"}>
               {notifications.length > 0 &&
-                notifications.map((notification: MessageResponseProps) => (
+                notifications.reverse().map((notification: MessageResponseProps) => (
                   <AppMenuListItem key={notification.id} onClick={() => handleOnNotificationClick(notification.chatId)}>
                     <HStack>
                       <Avatar
