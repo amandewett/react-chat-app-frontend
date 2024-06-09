@@ -20,7 +20,7 @@ type NewMessageType = {
 };
 
 const ChatBody = () => {
-  const { selectedChat, userDetails, setMessages, setChats, setNotification, notifications, setIsSocketConnected, isSocketConnected } = useContext(AppContext);
+  const { selectedChat, userDetails, setMessages, setChats, setNotification, notifications, setIsSocketConnected } = useContext(AppContext);
   const { mutate: mutateChatList } = useMutation({
     mutationFn: () => axiosInstance.get(`api/chat/all`),
     onSuccess(data: any) {

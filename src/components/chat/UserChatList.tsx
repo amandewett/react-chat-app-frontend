@@ -7,7 +7,7 @@ import IosSpinner from "../IosSpinner";
 import { ChatProps, UserChatListProps } from "../../utils/customTypes";
 import UserListItem from "./UserListItem";
 
-const UserChatList = ({ socket }: UserChatListProps) => {
+const UserChatList = ({}: UserChatListProps) => {
   const { userDetails, setSelectedChat, setChats, chats, selectedChat } = useContext(AppContext);
 
   const {

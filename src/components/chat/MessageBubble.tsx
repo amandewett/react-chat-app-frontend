@@ -2,7 +2,7 @@ import { useContext } from "react";
 import { MessageBubbleProps } from "../../utils/customTypes";
 import { AppContext } from "../../store/context/appContext";
 import { isSameSender, isLastMessage } from "../../utils/messagesLogic";
-import { Avatar, Box, HStack, Text, Tooltip, Wrap } from "@chakra-ui/react";
+import { Avatar, Box, Text, Tooltip, Wrap } from "@chakra-ui/react";
 
 const MessageBubble = ({ messages, index, currentMessage, myRef }: MessageBubbleProps) => {
   const { userDetails } = useContext(AppContext);

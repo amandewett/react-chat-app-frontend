@@ -31,7 +31,7 @@ const chakraTheme = extendTheme({
     }),
     Button: {
       variants: {
-        solid: (props: StyleFunctionProps) => ({
+        solid: () => ({
           bg: "buttonColor",
           _hover: {
             bg: "hoverColor",

@@ -1,6 +1,6 @@
-import { Box, Button, FormControl, HStack, InputGroup, InputRightAddon, InputRightElement, Textarea } from "@chakra-ui/react";
+import { FormControl, HStack, InputGroup, InputRightElement, Textarea } from "@chakra-ui/react";
 import { useMutation } from "@tanstack/react-query";
-import React, { LegacyRef, useContext, useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import axiosInstance from "../../utils/axiosInstance";
 import { AppContext } from "../../store/context/appContext";
 import { useCustomToast } from "../../hooks/useCustomToast";
@@ -8,7 +8,7 @@ import { ArrowUpIcon } from "@chakra-ui/icons";
 import { MessageResponseProps, MessengerFooterProps } from "../../utils/customTypes";
 
 const MessengerFooter = ({ socket }: MessengerFooterProps) => {
-  const { selectedChat, setChats, messages, setMessages } = useContext(AppContext);
+  const { selectedChat, setChats, setMessages } = useContext(AppContext);
   const toast = useCustomToast();
   const [messageValue, setMessageValue] = useState<string>("");
   const [messageValueBackup, setMessageValueBackup] = useState<string>("");
