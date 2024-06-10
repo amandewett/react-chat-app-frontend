@@ -13,9 +13,9 @@ jobs:
     steps:
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v4
-        with:
-          node-version: ${{ matrix.node-version }}
-          cache: "npm"
+        # with:
+        #   node-version: ${{ matrix.node-version }}
+        #   cache: "npm"
       - name: Get .env file
         run: cp -r /root/env_files/chitchat/.env.production /root/actions_runners/chitchat-action-runner/_work/react-chat-app-frontend/react-chat-app-frontend/
   build:
@@ -27,9 +27,9 @@ jobs:
     steps:
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v4
-        with:
-          node-version: ${{ matrix.node-version }}
-          cache: "npm"
+        # with:
+        #   node-version: ${{ matrix.node-version }}
+        #   cache: "npm"
       - run: npm install --save
       - name: Clear cache
         run: npm cache clean --force
