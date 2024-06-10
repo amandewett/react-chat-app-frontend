@@ -1,4 +1,4 @@
-name: Development CI
+name: Production CI/CD
 
 on:
   push:
@@ -12,7 +12,7 @@ jobs:
         node-version: [20.x]
     steps:
       - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
           cache: "npm"
@@ -26,7 +26,7 @@ jobs:
         node-version: [20.x]
     steps:
       - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
           cache: "npm"
