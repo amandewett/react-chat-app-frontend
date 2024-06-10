@@ -16,6 +16,7 @@ jobs:
 
   fetch-env-file:
     runs-on: [self-hosted, production]
+    needs: pull-project-files
     strategy:
       matrix:
         node-version: [20.x]
@@ -25,6 +26,7 @@ jobs:
 
   make-build:
     runs-on: [self-hosted, production]    
+    needs: fetch-env-file
     strategy:
       matrix:
         node-version: [20.x]
