@@ -1,6 +1,6 @@
 import { DrawerHeader, ModalCloseButton, ModalBody, Avatar, Text, Box, Input } from "@chakra-ui/react";
 import { UserProfileModalProps } from "../../utils/customTypes";
-import { useContext, useRef, useState } from "react";
+import { useContext, useRef } from "react";
 import axios, { AxiosProgressEvent } from "axios";
 import { useMutation } from "@tanstack/react-query";
 import axiosInstance from "../../utils/axiosInstance";
@@ -13,7 +13,6 @@ const UserProfileModal = ({ userName, userEmail, userProfilePicture }: UserProfi
   const { enableLoader, disableLoader } = useContext(LoaderContext);
   userProfilePicture = userProfilePicture ? (userProfilePicture.includes("http") ? userProfilePicture : `${import.meta.env.VITE_SERVER_HOST}/${userProfilePicture}`) : "";
   const profilePicInputRef = useRef<HTMLInputElement>(null);
-  const [uploadProgress, setUploadProgress] = useState<number>(0);
   const toast = useCustomToast();
   const allowedFileSize = import.meta.env.VITE_ALLOWED_FILE_SIZE_IN_MB || "2";
 
@@ -62,14 +61,10 @@ const UserProfileModal = ({ userName, userEmail, userProfilePicture }: UserProfi
                 "Content-Type": "multipart/form-data",
               },
               baseURL: import.meta.env.VITE_SERVER_HOST,
-              onUploadProgress(progressEvent: AxiosProgressEvent) {
-                setUploadProgress(Math.round(100 * progressEvent.loaded) / progressEvent.total!);
-              },
             });
 
             if (data.status) {
               mutateSignup(data.result[0]);
-              setUploadProgress(0);
             } else {
               disableLoader();
               toast({
