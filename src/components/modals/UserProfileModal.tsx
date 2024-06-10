@@ -6,9 +6,11 @@ import { useMutation } from "@tanstack/react-query";
 import axiosInstance from "../../utils/axiosInstance";
 import { useCustomToast } from "../../hooks/useCustomToast";
 import { AppContext } from "../../store/context/appContext";
+import { LoaderContext } from "../../store/context/loaderContext";
 
 const UserProfileModal = ({ userName, userEmail, userProfilePicture }: UserProfileModalProps) => {
   const { userDetails, setUserDetails } = useContext(AppContext);
+  const { enableLoader, disableLoader } = useContext(LoaderContext);
   userProfilePicture = userProfilePicture ? (userProfilePicture.includes("http") ? userProfilePicture : `${import.meta.env.VITE_SERVER_HOST}/${userProfilePicture}`) : "";
   const profilePicInputRef = useRef<HTMLInputElement>(null);
   const [uploadProgress, setUploadProgress] = useState<number>(0);
@@ -26,7 +28,9 @@ const UserProfileModal = ({ userName, userEmail, userProfilePicture }: UserProfi
           },
         }
       ),
-    onSettled: () => {},
+    onSettled: () => {
+      disableLoader();
+    },
     onError(error: any) {
       toast({
         title: error.response.data.message,
@@ -52,6 +56,7 @@ const UserProfileModal = ({ userName, userEmail, userProfilePicture }: UserProfi
           const formData = new FormData();
           formData.append("files", file);
           try {
+            enableLoader();
             const { data } = await axios.post("/api/file/upload", formData, {
               headers: {
                 "Content-Type": "multipart/form-data",
@@ -66,6 +71,7 @@ const UserProfileModal = ({ userName, userEmail, userProfilePicture }: UserProfi
               mutateSignup(data.result[0]);
               setUploadProgress(0);
             } else {
+              disableLoader();
               toast({
                 title: `File upload failed`,
                 status: "error",
@@ -74,6 +80,7 @@ const UserProfileModal = ({ userName, userEmail, userProfilePicture }: UserProfi
 
             return;
           } catch (e: any) {
+            disableLoader();
             toast({
               title: `Error`,
               description: JSON.stringify(e.response.data.message),
