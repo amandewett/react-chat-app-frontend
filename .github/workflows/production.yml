@@ -38,3 +38,5 @@ jobs:
         run: if [ -d "/root/frontend_applications/chitchat/" ]; then rm -r /root/frontend_applications/chitchat/*; fi
       - name: Move new build
         run: ls && cd build && mv -f * /root/frontend_applications/chitchat/
+      - name: Remove project files
+        run: rm -r actions_runners/chitchat-action-runner/_work/react-chat-app-frontend/react-chat-app-frontend/*
