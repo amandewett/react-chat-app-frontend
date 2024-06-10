@@ -7,9 +7,15 @@ on:
 jobs:
   fetch-env-file:
     runs-on: [self-hosted, production]
+    strategy:
+      matrix:
+        node-version: [20.x]
     steps:
-      - name: Checkout source code
-        uses: actions/checkout@v3
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: "npm"
       - name: Get .env file
         run: cp -r /root/env_files/chitchat/.env.production /root/actions_runners/chitchat-action-runner/_work/react-chat-app-frontend/react-chat-app-frontend/
   build:

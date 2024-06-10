@@ -1,7 +1,7 @@
 import { DrawerHeader, ModalCloseButton, ModalBody, Avatar, Text, Box, Input } from "@chakra-ui/react";
 import { UserProfileModalProps } from "../../utils/customTypes";
 import { useContext, useRef } from "react";
-import axios, { AxiosProgressEvent } from "axios";
+import axios from "axios";
 import { useMutation } from "@tanstack/react-query";
 import axiosInstance from "../../utils/axiosInstance";
 import { useCustomToast } from "../../hooks/useCustomToast";
