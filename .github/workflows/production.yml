@@ -5,21 +5,26 @@ on:
     branches: [master]
 
 jobs:
-  fetch-env-file:
-    runs-on: [self-hosted, production]
+  pull-project-files:
+    runs-on: [self-hosted, production]    
     strategy:
       matrix:
         node-version: [20.x]
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v4
+
+  fetch-env-file:
+    runs-on: [self-hosted, production]
+    strategy:
+      matrix:
+        node-version: [20.x]
+    steps:
       - name: Get .env file
         run: cp -r /root/env_files/chitchat/.env.production /root/actions_runners/chitchat-action-runner/_work/react-chat-app-frontend/react-chat-app-frontend/
-  build:
-    runs-on: [self-hosted, production]
-    needs: fetch-env-file
+
+  make-build:
+    runs-on: [self-hosted, production]    
     strategy:
       matrix:
         node-version: [20.x]
