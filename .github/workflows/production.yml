@@ -31,6 +31,8 @@ jobs:
           node-version: ${{ matrix.node-version }}
           cache: "npm"
       - run: npm install --save
+      - name: Clear cache
+        run: npm cache clean --force
       - run: npm run build
       - name: Remove previous build
         run: if [ -d "/root/frontend_applications/chitchat/" ]; then rm -r /root/frontend_applications/chitchat/*; fi
