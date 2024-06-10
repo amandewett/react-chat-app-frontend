@@ -64,6 +64,7 @@ const UserProfileModal = ({ userName, userEmail, userProfilePicture }: UserProfi
             });
 
             if (data.status) {
+              //updating user details with new profile picture
               mutateSignup(data.result[0]);
             } else {
               disableLoader();
