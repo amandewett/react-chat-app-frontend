@@ -48,7 +48,7 @@ const Signup = ({ handleTabChange }: SignupComponentProps) => {
   });
 
   const profilePickerDetails = async (files: any | null) => {
-    if (files[0].type === "image/jpeg" || files[0].type === "image/png") {
+    if (files[0].type === "image/jpeg" || files[0].type === "image/png" || files[0].type === "image/jpg") {
       if ((files[0].size / 1024 / 1024).toFixed(1) <= allowedFileSize) {
         const formData = new FormData();
         formData.append("files", files[0]);

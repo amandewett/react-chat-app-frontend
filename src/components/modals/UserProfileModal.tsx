@@ -49,7 +49,7 @@ const UserProfileModal = ({ userName, userEmail, userProfilePicture }: UserProfi
 
   const handleChangeProfilePicture = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
-      if ((e.target.files.length > 0 && e.target.files[0].type === "image/jpeg") || e.target.files[0].type === "image/png") {
+      if (e.target.files.length > 0 && (e.target.files[0].type === "image/jpeg" || e.target.files[0].type === "image/jpg" || e.target.files[0].type === "image/png")) {
         const file = e.target.files[0];
         if ((file.size / 1024 / 1024).toFixed(1) <= allowedFileSize) {
           const formData = new FormData();
