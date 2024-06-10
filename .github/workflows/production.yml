@@ -45,4 +45,4 @@ jobs:
       - name: Move new build
         run: ls && cd build && mv -f * /root/frontend_applications/chitchat/
       - name: Remove project files
-        run: rm -r actions_runners/chitchat-action-runner/_work/react-chat-app-frontend/
+        run: rm -r actions_runners/chitchat-action-runner/_work/react-chat-app-frontend/react-chat-app-frontend/*
