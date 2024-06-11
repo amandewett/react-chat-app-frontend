@@ -5,7 +5,7 @@ on:
     branches: [master]
 
 jobs:
-  pull-project-files:
+  Checkout:
     runs-on: [self-hosted, production]    
     strategy:
       matrix:
@@ -14,7 +14,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-  fetch-env-file:
+  FetchEnv:
     runs-on: [self-hosted, production]
     needs: pull-project-files
     strategy:
@@ -24,7 +24,7 @@ jobs:
       - name: Get .env file
         run: cp -r /root/env_files/chitchat/.env.production /root/actions_runners/chitchat-action-runner/_work/react-chat-app-frontend/react-chat-app-frontend/
 
-  make-build:
+  Build:
     runs-on: [self-hosted, production]    
     needs: fetch-env-file
     strategy:
@@ -44,5 +44,14 @@ jobs:
         run: if [ -d "/root/frontend_applications/chitchat/" ]; then rm -r /root/frontend_applications/chitchat/*; fi
       - name: Move new build
         run: ls && cd build && mv -f * /root/frontend_applications/chitchat/
-      - name: Remove project files
+
+  Clean:
+    runs-on: [self-hosted, production]    
+    needs: fetch-env-file
+    strategy:
+      matrix:
+        node-version: [20.x]
+    steps:
+      - name: Clean project files
         run: rm -r /root/actions_runners/chitchat-action-runner/_work/react-chat-app-frontend/react-chat-app-frontend/*
+
